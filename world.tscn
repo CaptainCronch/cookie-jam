@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://ceo1vya1vw0r8"]
+
+[ext_resource type="Texture2D" uid="uid://0clg7r6hvwtq" path="res://icon.svg" id="1_f3sb7"]
+[ext_resource type="Script" uid="uid://dded46d5rqlqr" path="res://camera.gd" id="2_tlwt5"]
+[ext_resource type="PackedScene" uid="uid://c772u1gct8vp4" path="res://unit.tscn" id="3_tlwt5"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tlwt5"]
+radius = 50.0
+
+[node name="World" type="Node2D" unique_id=370314774]
+y_sort_enabled = true
+
+[node name="Environment" type="Node2D" parent="." unique_id=1131195652]
+
+[node name="Icon" type="Sprite2D" parent="Environment" unique_id=109447954]
+modulate = Color(2.055, 2.055, 2.055, 1)
+z_index = -10
+scale = Vector2(20, 10)
+texture = ExtResource("1_f3sb7")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1544898292 node_paths=PackedStringArray("selector")]
+zoom = Vector2(0.5, 0.5)
+script = ExtResource("2_tlwt5")
+selector = NodePath("Selector")
+
+[node name="Selector" type="Area2D" parent="Camera2D" unique_id=1232840017]
+collision_layer = 2
+collision_mask = 2
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Camera2D/Selector" unique_id=807636665]
+shape = SubResource("CircleShape2D_tlwt5")
+
+[node name="Polygon2D" type="Polygon2D" parent="Camera2D/Selector" unique_id=119346375]
+visible = false
+color = Color(0, 1, 0, 0.3882353)
+polygon = PackedVector2Array(-24, -44, -6, -48, 12, -46, 22, -45, 31, -40, 41, -32, 45, -22, 47, -6, 47, 10, 41, 23, 30, 33, 20, 42, 1, 50, -19, 50, -34, 44, -42, 31, -46, 15, -48, 2, -44, -15, -37, -26, -29, -37)
+
+[node name="Unit" parent="." unique_id=1355565438 instance=ExtResource("3_tlwt5")]
+position = Vector2(-94, -43)
+
+[node name="Unit2" parent="." unique_id=1534122592 instance=ExtResource("3_tlwt5")]
+position = Vector2(63, -80)
+
+[node name="Unit3" parent="." unique_id=178245987 instance=ExtResource("3_tlwt5")]
+position = Vector2(-60, 114)
+
+[node name="Unit4" parent="." unique_id=1240262886 instance=ExtResource("3_tlwt5")]
+position = Vector2(60, 45)
+
+[node name="Unit5" parent="." unique_id=1145246410 instance=ExtResource("3_tlwt5")]
+position = Vector2(-25, 101)
+
+[node name="Unit6" parent="." unique_id=1295580040 instance=ExtResource("3_tlwt5")]
+position = Vector2(79, 112)
+
+[connection signal="body_entered" from="Camera2D/Selector" to="Camera2D" method="_on_selector_body_entered"]
