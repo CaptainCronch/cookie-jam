@@ -4,7 +4,7 @@ class_name Unit
 @export var default_speed := 1000.0
 @export var smooth_buffer := 100.0
 @export var close_buffer := 20.0
-@export var separate_strength := 1000.0
+@export var separate_strength := 2000.0
 @export var acceleration := 10.0
 
 @export var separate_area: Area2D
@@ -15,8 +15,9 @@ var direction := Vector2()
 var desired_position := Vector2()
 var distance := 0.0
 var away := false
-var idle := true 
+var idle := true
 var in_separate_area: Array[Area2D]
+var boost := Vector2()
 
 @onready var separate_shape: CircleShape2D = separate_collider.shape
 
@@ -25,6 +26,7 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
+	#boost = direction * -10000 if Input.is_action_pressed("shift") else Vector2()
 	pass
 
 
@@ -45,9 +47,11 @@ func _physics_process(delta: float) -> void:
 	#separate()
 	#if not idle: print("normal: " + str((direction * speed * distance_factor).length()))
 	var desired_velocity = ((direction * speed * distance_factor) + separate()).limit_length(speed)
-	velocity = Global.decay_towards_vec2(velocity, desired_velocity, acceleration, delta)
+	velocity = Global.decay_towards_vec2(velocity, desired_velocity + boost, acceleration, delta)
 	#velocity = ((direction * speed * distance_factor) + separate()).limit_length(speed)
 	move_and_slide()
+	
+	boost = Vector2()
 
 
 func separate() -> Vector2:
@@ -72,17 +76,20 @@ func separate() -> Vector2:
 	return total
 
 
-func move_to(pos: Vector2) -> void: desired_position = pos
-
-
-func move_away_from(pos: Vector2) -> void:
+func move_to(pos: Vector2) -> void:
 	desired_position = pos
-	away = true
+	#away = false
 
 
-func stop_moving_away() -> void:
-	desired_position = global_position + (direction * smooth_buffer)
-	away = false
+func move_away_from(pos: Vector2, power := speed) -> void:
+	desired_position = global_position
+	boost = pos.direction_to(global_position) * power
+	#away = true
+
+
+#func stop_moving_away() -> void:
+	#desired_position = global_position + (direction * smooth_buffer)
+	#away = false
 
 
 func selected(yes: bool) -> void:

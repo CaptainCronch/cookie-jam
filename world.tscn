@@ -33,6 +33,14 @@ polygon = PackedVector2Array(-14, -30.727264, -20, -126.45453, 3, -31.909088, 16
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1544898292 node_paths=PackedStringArray("selector", "towards_point", "away_point")]
 zoom = Vector2(0.5, 0.5)
 script = ExtResource("2_tlwt5")
+drag_sensitivity = null
+drag_smooth = null
+zoom_sensitivity = null
+zoom_max = null
+zoom_min = null
+zoom_smooth = null
+selector_radius = null
+away_power = null
 selector = NodePath("Selector")
 towards_point = NodePath("../TowardsPoint")
 away_point = NodePath("../AwayPoint")

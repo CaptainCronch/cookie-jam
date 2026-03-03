@@ -83,6 +83,8 @@ func selection() -> void:
 
 func commanding() -> void:
 	if Input.is_action_pressed("space") or Input.is_action_pressed("shift") or Input.is_action_pressed("control"):
+		away_point.visible = false
+		towards_point.visible = false
 		return
 	
 	if Input.is_action_pressed("mouse2"):
@@ -94,8 +96,8 @@ func commanding() -> void:
 		towards_point.visible = true
 		away_point.visible = false
 		towards_point.global_position = get_global_mouse_position()
-	if Input.is_action_just_released("mouse2"): 
-		for unit in selected_units: unit.stop_moving_away()
+	if Input.is_action_just_released("mouse2"):
+		#for unit in selected_units: unit.stop_moving_away()
 		away_point.visible = false
 		towards_point.visible = false
 
