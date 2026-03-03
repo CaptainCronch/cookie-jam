@@ -6,6 +6,7 @@ extends Camera2D
 @export var zoom_max := Vector2(1.0, 1.0)
 @export var zoom_min := Vector2(0.2, 0.2)
 @export var zoom_smooth := 5.0
+@export var selector_radius := 50.0
 
 @export var selector: Area2D
 @export var towards_point: Node2D
@@ -16,6 +17,10 @@ var zoom_desired := zoom
 var selected_units: Array[Unit] = []
 var selected_anything := false
 var deselecting := false
+var can_select := true
+
+@onready var selector_shape: CircleShape2D = selector.get_node("CollisionShape2D").shape
+@onready var selector_visualizer: Polygon2D = selector.get_node("Polygon2D")
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
@@ -28,7 +33,11 @@ func _process(delta: float) -> void:
 	selection()
 	commanding()
 	camera_move(delta)
+	
+	if Input.is_action_just_pressed("tab"): can_select = !can_select
 	away_point.global_position = get_global_mouse_position()
+	selector_shape.radius = selector_radius * (1/zoom.x) 
+	selector_visualizer.scale = Vector2(1/zoom.x, 1/zoom.y)
 
 
 func _physics_process(_delta: float) -> void:
@@ -46,6 +55,8 @@ func _physics_process(_delta: float) -> void:
 
 func selection() -> void:
 	selector.position = get_local_mouse_position()
+	
+	if not can_select: return
 	
 	if Input.is_action_pressed("a"):
 		for unit in get_tree().get_nodes_in_group("Units"):

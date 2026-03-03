@@ -13,10 +13,22 @@ y_sort_enabled = true
 [node name="Environment" type="Node2D" parent="." unique_id=1131195652]
 
 [node name="Icon" type="Sprite2D" parent="Environment" unique_id=109447954]
-modulate = Color(2.055, 2.055, 2.055, 1)
+modulate = Color(0.31, 0.31, 0.31, 1)
 z_index = -10
 scale = Vector2(20, 10)
 texture = ExtResource("1_f3sb7")
+
+[node name="TowardsPoint" type="Polygon2D" parent="." unique_id=2096268932]
+visible = false
+scale = Vector2(1, 0.84615386)
+color = Color(0.2976, 0.93, 0.46624002, 1)
+polygon = PackedVector2Array(-23, -9, 0, 27, 29, -12, 11, -17.909088, 9, -110.09091, 78, -158.54544, 6, -201.09091, -7, -133.72726, -7, -19.090912)
+
+[node name="AwayPoint" type="Polygon2D" parent="." unique_id=156727767]
+visible = false
+scale = Vector2(1, 0.84615386)
+color = Color(0.94, 0.3384, 0.3384, 1)
+polygon = PackedVector2Array(-14, -30.727264, -20, -126.45453, 3, -31.909088, 16, -133.54544, 20, -14.181824, 55.99997, -91, 24, -2.3636475, 104.99997, -42.54544, 62.99997, 8.272736, 80.99997, 46.09091, 31, 31.909088, 41, 85.09091, -9, 40.18181, -19, 75.63635, -21, 23.636353, -67, 33.09091, -46, 1.1818237, -94, -22.45456, -55, -22.45456, -59, -61.45453, -33, -17.727264, -39, -85.09091)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1544898292 node_paths=PackedStringArray("selector", "towards_point", "away_point")]
 zoom = Vector2(0.5, 0.5)
@@ -26,7 +38,6 @@ towards_point = NodePath("../TowardsPoint")
 away_point = NodePath("../AwayPoint")
 
 [node name="Selector" type="Area2D" parent="Camera2D" unique_id=1232840017]
-collision_layer = 2
 collision_mask = 2
 monitoring = false
 monitorable = false
@@ -35,7 +46,6 @@ monitorable = false
 shape = SubResource("CircleShape2D_tlwt5")
 
 [node name="Polygon2D" type="Polygon2D" parent="Camera2D/Selector" unique_id=119346375]
-visible = false
 color = Color(0, 1, 0, 0.3882353)
 polygon = PackedVector2Array(-24, -44, -6, -48, 12, -46, 22, -45, 31, -40, 41, -32, 45, -22, 47, -6, 47, 10, 41, 23, 30, 33, 20, 42, 1, 50, -19, 50, -34, 44, -42, 31, -46, 15, -48, 2, -44, -15, -37, -26, -29, -37)
 
@@ -89,17 +99,5 @@ position = Vector2(147, 277)
 
 [node name="Unit17" parent="." unique_id=1268174673 instance=ExtResource("3_tlwt5")]
 position = Vector2(147, 277)
-
-[node name="TowardsPoint" type="Polygon2D" parent="." unique_id=2096268932]
-visible = false
-scale = Vector2(1, 0.84615386)
-color = Color(0.2976, 0.93, 0.46624002, 1)
-polygon = PackedVector2Array(-23, -9, 0, 27, 29, -12, 11, -17.909088, 9, -110.09091, 78, -158.54544, 6, -201.09091, -7, -133.72726, -7, -19.090912)
-
-[node name="AwayPoint" type="Polygon2D" parent="." unique_id=156727767]
-visible = false
-scale = Vector2(1, 0.84615386)
-color = Color(0.94, 0.3384, 0.3384, 1)
-polygon = PackedVector2Array(-14, -30.727264, -20, -126.45453, 3, -31.909088, 16, -133.54544, 20, -14.181824, 55.99997, -91, 24, -2.3636475, 104.99997, -42.54544, 62.99997, 8.272736, 80.99997, 46.09091, 31, 31.909088, 41, 85.09091, -9, 40.18181, -19, 75.63635, -21, 23.636353, -67, 33.09091, -46, 1.1818237, -94, -22.45456, -55, -22.45456, -59, -61.45453, -33, -17.727264, -39, -85.09091)
 
 [connection signal="body_entered" from="Camera2D/Selector" to="Camera2D" method="_on_selector_body_entered"]

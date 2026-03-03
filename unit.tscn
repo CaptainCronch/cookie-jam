@@ -21,7 +21,6 @@ separate_collider = NodePath("Separate/CollisionShape2D")
 [node name="Polygon2D" type="Polygon2D" parent="." unique_id=846218414]
 visible = false
 position = Vector2(-4, -3)
-color = Color(0, 0, 0, 1)
 polygon = PackedVector2Array(-34, 11, -21, 25, 30, 30, 52, 6, 48, -14, 25, -23, -22, -23, -36, -16, -43, -3)
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=405392591]
