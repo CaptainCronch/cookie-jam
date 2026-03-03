@@ -28,6 +28,18 @@ func _process(delta: float) -> void:
 	camera_move(delta)
 
 
+func _physics_process(_delta: float) -> void:
+	for body in selector.get_overlapping_bodies():
+		if body is Unit:
+			if deselecting and selected_units.has(body):
+				selected_units.erase(body)
+				body.selected(false)
+			if not deselecting and not selected_units.has(body):
+				selected_units.append(body)
+				body.selected(true)
+			selected_anything = true
+
+
 func selection() -> void:
 	selector.position = get_local_mouse_position() 
 	if not Input.is_action_pressed("space"):
@@ -40,6 +52,7 @@ func selection() -> void:
 	elif Input.is_action_just_released("mouse1") and not selected_anything:
 		for unit in selected_units: unit.selected(false)
 		selected_units = []
+		#print(selected_units) 
 	deselecting = Input.is_action_pressed("mouse2")
 
 
@@ -66,12 +79,14 @@ func camera_move(delta: float) -> void:
 	global_position = Global.decay_towards_vec2(global_position, drag_desired, drag_smooth, delta)
 
 
-func _on_selector_body_entered(body: Node2D) -> void:
-	if body is Unit:
-		if deselecting:
-			selected_units.erase(body)
-			body.selected(false)
-		else: 
-			selected_units.append(body)
-			body.selected(true)
-		selected_anything = true
+#func _on_selector_body_entered(body: Node2D) -> void:
+	#if body is Unit:
+		#if deselecting:
+			#selected_units.erase(body)
+			#body.selected(false)
+			#print(selected_units)
+		#else:
+			#selected_units.append(body)
+			#body.selected(true)
+			#print(selected_units)
+		#selected_anything = true

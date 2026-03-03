@@ -4,13 +4,16 @@
 [ext_resource type="Texture2D" uid="uid://0clg7r6hvwtq" path="res://icon.svg" id="2_davkp"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_tlwt5"]
-radius = 30.0
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ctwoc"]
+radius = 100.0
 
 [node name="Unit" type="CharacterBody2D" unique_id=1355565438]
 z_as_relative = false
 collision_layer = 2
-collision_mask = 3
 motion_mode = 1
+wall_min_slide_angle = 0.0
 script = ExtResource("1_ctwoc")
 
 [node name="Polygon2D" type="Polygon2D" parent="." unique_id=846218414]
@@ -26,3 +29,10 @@ texture = ExtResource("2_davkp")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=534851731]
 shape = SubResource("CircleShape2D_tlwt5")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=2037624737]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1604043903]
+shape = SubResource("CircleShape2D_ctwoc")
