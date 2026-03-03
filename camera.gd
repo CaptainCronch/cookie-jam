@@ -8,6 +8,8 @@ extends Camera2D
 @export var zoom_smooth := 5.0
 
 @export var selector: Area2D
+@export var towards_point: Node2D
+@export var away_point: Node2D
 
 var drag_desired := global_position
 var zoom_desired := zoom
@@ -26,9 +28,11 @@ func _process(delta: float) -> void:
 	selection()
 	commanding()
 	camera_move(delta)
+	away_point.global_position = get_global_mouse_position()
 
 
 func _physics_process(_delta: float) -> void:
+	if not selector.monitoring: return
 	for body in selector.get_overlapping_bodies():
 		if body is Unit:
 			if deselecting and selected_units.has(body):
@@ -41,8 +45,18 @@ func _physics_process(_delta: float) -> void:
 
 
 func selection() -> void:
-	selector.position = get_local_mouse_position() 
-	if not Input.is_action_pressed("space"):
+	selector.position = get_local_mouse_position()
+	
+	if Input.is_action_pressed("a"):
+		for unit in get_tree().get_nodes_in_group("Units"):
+			if unit is Unit:
+				selected_units.append(unit)
+				unit.selected(true)
+	
+	if Input.is_action_just_pressed("space"):
+		for unit in selected_units: unit.selected(false)
+		selected_units = []
+	if not Input.is_action_pressed("space"):  
 		deselecting = false
 		selector.get_node("Polygon2D").visible = false
 		return
@@ -62,10 +76,17 @@ func commanding() -> void:
 	
 	if Input.is_action_pressed("mouse2"):
 		for unit in selected_units: unit.move_away_from(get_global_mouse_position())
+		away_point.visible = true
+		towards_point.visible = false
 	elif Input.is_action_pressed("mouse1"):
 		for unit in selected_units: unit.move_to(get_global_mouse_position())
+		towards_point.visible = true
+		away_point.visible = false
+		towards_point.global_position = get_global_mouse_position()
 	if Input.is_action_just_released("mouse2"): 
 		for unit in selected_units: unit.stop_moving_away()
+		away_point.visible = false
+		towards_point.visible = false
 
    
 func camera_move(delta: float) -> void:
