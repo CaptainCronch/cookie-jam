@@ -1,5 +1,7 @@
 extends Node
 
+var camera: God
+
 
 func _ready():
 	#get_window().mode = Window.MODE_FULLSCREEN
