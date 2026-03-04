@@ -9,7 +9,7 @@ radius = 20.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_ctwoc"]
 radius = 75.0
 
-[node name="Unit" type="CharacterBody2D" unique_id=1355565438 node_paths=PackedStringArray("separate_area", "separate_collider") groups=["Units"]]
+[node name="Unit" type="CharacterBody2D" unique_id=1355565438 node_paths=PackedStringArray("separate_area", "separate_collider", "item_sprites") groups=["Units"]]
 z_as_relative = false
 collision_layer = 2
 motion_mode = 1
@@ -17,6 +17,8 @@ wall_min_slide_angle = 0.0
 script = ExtResource("1_ctwoc")
 separate_area = NodePath("Separate")
 separate_collider = NodePath("Separate/CollisionShape2D")
+item_sprites = [NodePath("Sprite2D2")]
+metadata/_edit_group_ = true
 
 [node name="Polygon2D" type="Polygon2D" parent="." unique_id=846218414]
 visible = false
@@ -33,10 +35,15 @@ shape = SubResource("CircleShape2D_tlwt5")
 
 [node name="Separate" type="Area2D" parent="." unique_id=2037624737]
 collision_layer = 2
-collision_mask = 2
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Separate" unique_id=1604043903]
 shape = SubResource("CircleShape2D_ctwoc")
 
-[connection signal="area_entered" from="Separate" to="." method="_on_separate_area_entered"]
-[connection signal="area_exited" from="Separate" to="." method="_on_separate_area_exited"]
+[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=863178962]
+visible = false
+modulate = Color(0.34, 0.17566666, 0, 1)
+position = Vector2(-1.5199184e-06, -130)
+rotation = 3.0246556
+scale = Vector2(0.73, 0.38)
+texture = ExtResource("2_davkp")
