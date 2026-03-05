@@ -38,6 +38,7 @@ var current_item := ITEM.NONE:
 		current_item = value
 var last_item := ITEM.WOOD
 var last_resource: Interactable
+var times_called := 0
 
 @onready var separate_shape: CircleShape2D = separate_collider.shape
 
@@ -134,9 +135,16 @@ func move_away_from(pos: Vector2, power := speed * away_multiplier) -> void:
 
 
 func set_goal(goal: Interactable) -> void:
-	if not goal.is_connected("done", _on_resource_done):
-		goal.done.connect(_on_resource_done)
-	#last_resource = goal
+	##times_called += 1
+	#var time := float(randi_range(0, 10))
+	#if time > 0.0:
+		#await get_tree().create_timer(time / 100.0).timeout # have some units wait before setting their goal because it's slowing everything
+		#if not is_instance_valid(goal): return
+		#current_goal = goal
+		#desired_position = current_goal.global_position
+	#else:
+	if not is_instance_valid(goal): return
+	if not goal.done.is_connected(_on_resource_done): goal.done.connect(_on_resource_done)
 	current_goal = goal
 	desired_position = current_goal.global_position
 

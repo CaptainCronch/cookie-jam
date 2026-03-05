@@ -7,6 +7,7 @@
 radius = 100.0
 
 [node name="Tree" type="Area2D" unique_id=655526278 groups=["Resource", "Trees"]]
+modulate = Color(0.63320976, 0.35001087, 6.738305e-07, 1)
 monitoring = false
 script = ExtResource("1_nnvrw")
 item = 1

@@ -66,7 +66,7 @@ func selection() -> void:
 	
 	if Input.is_action_pressed("a"):
 		for unit in get_tree().get_nodes_in_group("Units"):
-			if unit is Unit:
+			if unit is Unit and not selected_units.has(unit):
 				selected_units.append(unit)
 				unit.selected(true)
 	
@@ -127,9 +127,15 @@ func camera_move(delta: float) -> void:
 
 
 func select_interactable(object: Interactable) -> void:
+	var units_to_remove: Array[Unit] = []
+	print("selected units total: ", selected_units.size())
 	for unit in selected_units:
 		if unit.current_item == object.item: continue
+		units_to_remove.append(unit)
+	for unit in units_to_remove:
 		unit.set_goal(object)
+		selected_units.erase(unit)
+		unit.selected(false)
 
 
 #func _on_selector_body_entered(body: Node2D) -> void:

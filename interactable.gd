@@ -9,11 +9,17 @@ signal done(type: Unit.ITEM)
 @export var item: Unit.ITEM = Unit.ITEM.NONE
 @export var push_force := 2.0
 
+var can_be_selected := true
+
 @onready var health := max_health
 
 
 func _ready() -> void:
 	input_event.connect(_on_input_event)
+
+
+func _process(_delta: float) -> void:
+	can_be_selected = true
 
 
 func interact(_origin: Unit, _strength := 1) -> void:
@@ -48,6 +54,7 @@ func finished(_origin: Unit) -> void:
 
 func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event is InputEventMouseButton:
-		if event.button_index == MouseButton.MOUSE_BUTTON_RIGHT:
-			if not Input.is_action_pressed("space"):
+		if event.button_index == MouseButton.MOUSE_BUTTON_RIGHT and event.pressed:
+			if not Input.is_action_pressed("space") and can_be_selected:
 				Global.camera.select_interactable(self)
+				can_be_selected = false
