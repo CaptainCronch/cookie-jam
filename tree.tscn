@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://bc0n2usldvntm"]
+
+[ext_resource type="Script" uid="uid://df3m4mxqgmoi7" path="res://tree.gd" id="1_nnvrw"]
+[ext_resource type="Texture2D" uid="uid://0clg7r6hvwtq" path="res://icon.svg" id="2_gvmkm"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_aqk2v"]
+radius = 100.0
+
+[node name="Tree" type="Area2D" unique_id=655526278 groups=["Resource", "Trees"]]
+monitoring = false
+script = ExtResource("1_nnvrw")
+item = 1
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=439858846]
+shape = SubResource("CircleShape2D_aqk2v")
+
+[node name="Polygon2D2" type="Polygon2D" parent="." unique_id=54301891]
+position = Vector2(5, 5)
+scale = Vector2(1, 0.49)
+polygon = PackedVector2Array(-95, 26, -72, 60, -54, 85, -20, 102, 1, 102, 38, 95, 68, 73, 80, 45, 90, 17, 98, -6, 95, -37, 71, -62, 40, -85, 17, -91, -29, -100, -63, -94, -72, -71, -73, -49, -86, -16, -88, 5, -89, 19)
+
+[node name="Polygon2D" type="Polygon2D" parent="." unique_id=102299716]
+texture = ExtResource("2_gvmkm")
+texture_offset = Vector2(604.876, 981.965)
+texture_scale = Vector2(0.105, 0.105)
+polygon = PackedVector2Array(-56, 1, -43, 16, -38, 33, -18, 32, -7, 39, 3, 34, 17, 38, 38, 33, 46, 23, 61, 20, 47, 10, 66, -6, 42, -9, 57, -25, 26, -18, 23, -288, 50, -196, 133, -155, 126, -250, 217, -223, 171, -295, 296, -310, 244, -351, 274, -358, 271, -412, 239, -414, 253, -491, 199, -493, 168, -572, 101, -557, 72, -506, 4, -586, -117, -562, -119, -466, -208, -538, -309, -405, -242, -349, -217, -345, -227, -264, -144, -273, -133, -276, -113, -232, -60, -279, -54, -279, -29, -273, -12, -26, -37, -21, -28, -7)

@@ -2,16 +2,17 @@ extends Interactable
 class_name WoodTree
 
 
-func interact(strength := 1) -> void:
+func interact(origin: Unit, strength := 1) -> void:
+	if not origin.current_item == Unit.ITEM.NONE: return
 	health -= strength
-	give.emit(TYPE.TREE)
+	origin.give(item)
 	if health <= 0:
-		finished()
+		finished(origin)
 
 
-func finished() -> void:
-	done.emit(TYPE.TREE)
-	# spawn log here
+func finished(_origin: Unit) -> void:
+	# spawn log here? nah
 	# spawn particles
 	# play sound here
+	done.emit(item)
 	queue_free()

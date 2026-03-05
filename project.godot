@@ -24,6 +24,7 @@ Global="*uid://bgg3rsy7fam86"
 window/size/viewport_width=1280
 window/size/viewport_height=720
 window/size/mode=3
+window/size/always_on_top=true
 
 [editor_plugins]
 
@@ -33,6 +34,9 @@ enabled=PackedStringArray("res://addons/RadialMenu/plugin.cfg")
 
 Units="Player units"
 Resource=""
+Banks=""
+Pit=""
+Trees=""
 
 [input]
 

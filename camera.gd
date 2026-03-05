@@ -73,9 +73,10 @@ func selection() -> void:
 	if Input.is_action_just_pressed("space"):
 		for unit in selected_units: unit.selected(false) 
 		selected_units = []
-	if not Input.is_action_pressed("space"):  
+	elif not Input.is_action_pressed("space"):  
 		deselecting = false
 		selector.get_node("Polygon2D").visible = false
+		selector.monitoring = false
 		return
 	selector.monitoring = Input.is_action_pressed("mouse1") or Input.is_action_pressed("mouse2")
 	selector.get_node("Polygon2D").visible = true
@@ -127,6 +128,7 @@ func camera_move(delta: float) -> void:
 
 func select_interactable(object: Interactable) -> void:
 	for unit in selected_units:
+		if unit.current_item == object.item: continue
 		unit.set_goal(object)
 
 

@@ -1,6 +1,25 @@
 extends Node
 
 var camera: God
+var ui: UI
+
+var wood := 0
+var clay := 0:
+	set(value):
+		ui.clay_label.text = str(clay)
+		clay = value
+var souls := 0:
+	set(value):
+		ui.souls_label.text = str(souls)
+		souls = value
+var ash := 0:
+	set(value):
+		ui.ash_label.text = str(ash)
+		ash = value
+var glassy_clay := 0:
+	set(value):
+		ui.glassy_clay_label.text = str(glassy_clay)
+		glassy_clay = value
 
 
 func _ready():

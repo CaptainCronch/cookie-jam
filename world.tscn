@@ -1,18 +1,109 @@
 [gd_scene format=3 uid="uid://ceo1vya1vw0r8"]
 
 [ext_resource type="Texture2D" uid="uid://0clg7r6hvwtq" path="res://icon.svg" id="1_f3sb7"]
-[ext_resource type="Script" uid="uid://df3m4mxqgmoi7" path="res://tree.gd" id="2_aqk2v"]
+[ext_resource type="Script" uid="uid://daweajpr78dxr" path="res://ui.gd" id="1_pkg7o"]
 [ext_resource type="Script" uid="uid://dded46d5rqlqr" path="res://camera.gd" id="2_tlwt5"]
+[ext_resource type="PackedScene" uid="uid://bc0n2usldvntm" path="res://tree.tscn" id="3_pkg7o"]
 [ext_resource type="PackedScene" uid="uid://c772u1gct8vp4" path="res://unit.tscn" id="3_tlwt5"]
+[ext_resource type="Script" uid="uid://dg5x45ui655g4" path="res://bank.gd" id="4_036b0"]
+[ext_resource type="Script" uid="uid://dlfhxrkc76nto" path="res://pit.gd" id="5_dwbse"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_aqk2v"]
-radius = 100.0
+[sub_resource type="LabelSettings" id="LabelSettings_dwbse"]
+font_size = 22
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_tlwt5"]
 radius = 50.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_036b0"]
+radius = 150.0
+
 [node name="World" type="Node2D" unique_id=370314774]
 y_sort_enabled = true
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=661678817 node_paths=PackedStringArray("wood_label", "clay_label", "souls_label", "ash_label", "glassy_clay_label")]
+script = ExtResource("1_pkg7o")
+wood_label = NodePath("MarginContainer/Resources/Wood")
+clay_label = NodePath("MarginContainer/Resources/Clay")
+souls_label = NodePath("MarginContainer/Resources/Souls")
+ash_label = NodePath("MarginContainer/Resources/Ash")
+glassy_clay_label = NodePath("MarginContainer/Resources/GlassyClay")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI" unique_id=1650681504]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -73.0
+offset_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Resources" type="HBoxContainer" parent="UI/MarginContainer" unique_id=1498969206]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TextureRect5" type="TextureRect" parent="UI/MarginContainer/Resources" unique_id=122549138]
+self_modulate = Color(0, 1.6803957, 1.5182867, 1)
+layout_mode = 2
+texture = ExtResource("1_f3sb7")
+expand_mode = 2
+
+[node name="GlassyClay" type="Label" parent="UI/MarginContainer/Resources" unique_id=598659304]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_dwbse")
+
+[node name="TextureRect4" type="TextureRect" parent="UI/MarginContainer/Resources" unique_id=511757033]
+self_modulate = Color(0.29763597, 0.15190616, 0.24445827, 1)
+layout_mode = 2
+texture = ExtResource("1_f3sb7")
+expand_mode = 2
+
+[node name="Ash" type="Label" parent="UI/MarginContainer/Resources" unique_id=1625110129]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_dwbse")
+
+[node name="TextureRect3" type="TextureRect" parent="UI/MarginContainer/Resources" unique_id=1917735414]
+self_modulate = Color(0.838467, 0.00042894125, 0.8116336, 1)
+layout_mode = 2
+texture = ExtResource("1_f3sb7")
+expand_mode = 2
+
+[node name="Souls" type="Label" parent="UI/MarginContainer/Resources" unique_id=623038497]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_dwbse")
+
+[node name="TextureRect2" type="TextureRect" parent="UI/MarginContainer/Resources" unique_id=1134961853]
+self_modulate = Color(0.92292815, 0.1956042, 0, 1)
+layout_mode = 2
+texture = ExtResource("1_f3sb7")
+expand_mode = 2
+
+[node name="Clay" type="Label" parent="UI/MarginContainer/Resources" unique_id=1362472210]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_dwbse")
+
+[node name="TextureRect" type="TextureRect" parent="UI/MarginContainer/Resources" unique_id=840807344]
+self_modulate = Color(0.7036201, 0.45503622, 0, 1)
+layout_mode = 2
+texture = ExtResource("1_f3sb7")
+expand_mode = 2
+
+[node name="Wood" type="Label" parent="UI/MarginContainer/Resources" unique_id=2015509336]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_dwbse")
 
 [node name="Environment" type="Node2D" parent="." unique_id=1131195652]
 y_sort_enabled = true
@@ -23,24 +114,41 @@ z_index = -10
 scale = Vector2(20, 10)
 texture = ExtResource("1_f3sb7")
 
-[node name="Tree" type="Area2D" parent="Environment" unique_id=522941525 groups=["Resource"]]
-position = Vector2(791, 231)
-monitoring = false
-script = ExtResource("2_aqk2v")
+[node name="Tree" parent="Environment" unique_id=655526278 instance=ExtResource("3_pkg7o")]
+position = Vector2(-1124, -390)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Tree" unique_id=974565477]
-shape = SubResource("CircleShape2D_aqk2v")
+[node name="Tree2" parent="Environment" unique_id=1356027889 instance=ExtResource("3_pkg7o")]
+position = Vector2(-897, -491)
 
-[node name="Polygon2D2" type="Polygon2D" parent="Environment/Tree" unique_id=1686270079]
-position = Vector2(5, 5)
-scale = Vector2(1, 0.49)
-polygon = PackedVector2Array(-95, 26, -72, 60, -54, 85, -20, 102, 1, 102, 38, 95, 68, 73, 80, 45, 90, 17, 98, -6, 95, -37, 71, -62, 40, -85, 17, -91, -29, -100, -63, -94, -72, -71, -73, -49, -86, -16, -88, 5, -89, 19)
+[node name="Tree3" parent="Environment" unique_id=718757590 instance=ExtResource("3_pkg7o")]
+position = Vector2(-700, -510)
 
-[node name="Polygon2D" type="Polygon2D" parent="Environment/Tree" unique_id=1780875352]
-texture = ExtResource("1_f3sb7")
-texture_offset = Vector2(604.876, 935.515)
-texture_scale = Vector2(0.105, 0.105)
-polygon = PackedVector2Array(-56, 1, -43, 16, -38, 33, -18, 32, -7, 39, 3, 34, 17, 38, 38, 33, 46, 23, 61, 20, 47, 10, 66, -6, 42, -9, 57, -25, 26, -18, 23, -288, 50, -196, 133, -155, 126, -250, 217, -223, 171, -295, 296, -310, 244, -351, 274, -358, 271, -412, 239, -414, 253, -491, 199, -493, 168, -572, 101, -557, 72, -506, 4, -586, -117, -562, -119, -466, -208, -538, -309, -405, -242, -349, -217, -345, -227, -264, -144, -273, -133, -276, -113, -232, -60, -279, -54, -279, -29, -273, -12, -26, -37, -21, -28, -7)
+[node name="Tree4" parent="Environment" unique_id=446935403 instance=ExtResource("3_pkg7o")]
+position = Vector2(-499, -510)
+
+[node name="Tree5" parent="Environment" unique_id=1042652732 instance=ExtResource("3_pkg7o")]
+position = Vector2(-302, -506)
+
+[node name="Tree6" parent="Environment" unique_id=590464711 instance=ExtResource("3_pkg7o")]
+position = Vector2(-82, -514)
+
+[node name="Tree7" parent="Environment" unique_id=518795093 instance=ExtResource("3_pkg7o")]
+position = Vector2(134, -499)
+
+[node name="Tree8" parent="Environment" unique_id=1473035968 instance=ExtResource("3_pkg7o")]
+position = Vector2(350, -499)
+
+[node name="Tree9" parent="Environment" unique_id=1193197352 instance=ExtResource("3_pkg7o")]
+position = Vector2(528, -488)
+
+[node name="Tree10" parent="Environment" unique_id=749167971 instance=ExtResource("3_pkg7o")]
+position = Vector2(737, -431)
+
+[node name="Tree11" parent="Environment" unique_id=536435533 instance=ExtResource("3_pkg7o")]
+position = Vector2(961, -416)
+
+[node name="Tree12" parent="Environment" unique_id=2038340559 instance=ExtResource("3_pkg7o")]
+position = Vector2(1147, -310)
 
 [node name="TowardsPoint" type="Polygon2D" parent="." unique_id=2096268932]
 visible = false
@@ -74,64 +182,163 @@ shape = SubResource("CircleShape2D_tlwt5")
 color = Color(0, 1, 0, 0.3882353)
 polygon = PackedVector2Array(-24, -44, -6, -48, 12, -46, 22, -45, 31, -40, 41, -32, 45, -22, 47, -6, 47, 10, 41, 23, 30, 33, 20, 42, 1, 50, -19, 50, -34, 44, -42, 31, -46, 15, -48, 2, -44, -15, -37, -26, -29, -37)
 
+[node name="Bank" type="Area2D" parent="." unique_id=484995942 groups=["Banks"]]
+position = Vector2(-725, 535)
+script = ExtResource("4_036b0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bank" unique_id=1115646980]
+shape = SubResource("CircleShape2D_036b0")
+
+[node name="Polygon2D" type="Polygon2D" parent="Bank" unique_id=1317841750]
+position = Vector2(0, 27)
+texture = ExtResource("1_f3sb7")
+texture_offset = Vector2(271.58, 418.725)
+texture_scale = Vector2(0.22, 0.22)
+texture_rotation = 0.24958208
+polygon = PackedVector2Array(-145, 15, -6, 45, 149, -13, 149, -157, 63, -236, -74, -196, -148, -122)
+
+[node name="Polygon2D2" type="Polygon2D" parent="Bank" unique_id=321830456]
+position = Vector2(0, 27)
+texture = ExtResource("1_f3sb7")
+texture_offset = Vector2(298.745, 374.655)
+texture_scale = Vector2(0.22, 0.22)
+texture_rotation = -0.24783675
+polygon = PackedVector2Array(-145, 15, -6, 45, -7, -99, -74, -196, -148, -122)
+
+[node name="Polygon2D3" type="Polygon2D" parent="Bank" unique_id=1954767661]
+position = Vector2(0, 27)
+texture = ExtResource("1_f3sb7")
+texture_offset = Vector2(250.75, 334.67)
+texture_scale = Vector2(0.22, 0.22)
+texture_rotation = 0.7819075
+polygon = PackedVector2Array(-6, 45, 149, -13, 149, -157, -7, -98)
+
+[node name="Polygon2D4" type="Polygon2D" parent="Bank" unique_id=875143834]
+position = Vector2(0, 27)
+texture = ExtResource("1_f3sb7")
+texture_offset = Vector2(271.58, 418.725)
+texture_scale = Vector2(0.22, 0.22)
+texture_rotation = 0.24958208
+polygon = PackedVector2Array(149, -157, 63, -236, -74, -196, -7, -96)
+
+[node name="Bank2" type="Area2D" parent="." unique_id=211076495 groups=["Banks"]]
+position = Vector2(498, 433)
+script = ExtResource("4_036b0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bank2" unique_id=509512069]
+shape = SubResource("CircleShape2D_036b0")
+
+[node name="Polygon2D" type="Polygon2D" parent="Bank2" unique_id=158412246]
+position = Vector2(0, 27)
+texture = ExtResource("1_f3sb7")
+texture_offset = Vector2(271.58, 418.725)
+texture_scale = Vector2(0.22, 0.22)
+texture_rotation = 0.24958208
+polygon = PackedVector2Array(-145, 15, -6, 45, 149, -13, 149, -157, 63, -236, -74, -196, -148, -122)
+
+[node name="Polygon2D2" type="Polygon2D" parent="Bank2" unique_id=2061088598]
+position = Vector2(0, 27)
+texture = ExtResource("1_f3sb7")
+texture_offset = Vector2(298.745, 374.655)
+texture_scale = Vector2(0.22, 0.22)
+texture_rotation = -0.24783675
+polygon = PackedVector2Array(-145, 15, -6, 45, -7, -99, -74, -196, -148, -122)
+
+[node name="Polygon2D3" type="Polygon2D" parent="Bank2" unique_id=777708581]
+position = Vector2(0, 27)
+texture = ExtResource("1_f3sb7")
+texture_offset = Vector2(250.75, 334.67)
+texture_scale = Vector2(0.22, 0.22)
+texture_rotation = 0.7819075
+polygon = PackedVector2Array(-6, 45, 149, -13, 149, -157, -7, -98)
+
+[node name="Polygon2D4" type="Polygon2D" parent="Bank2" unique_id=1587790346]
+position = Vector2(0, 27)
+texture = ExtResource("1_f3sb7")
+texture_offset = Vector2(271.58, 418.725)
+texture_scale = Vector2(0.22, 0.22)
+texture_rotation = 0.24958208
+polygon = PackedVector2Array(149, -157, 63, -236, -74, -196, -7, -96)
+
+[node name="Pit" type="Area2D" parent="." unique_id=1148622083 groups=["Banks", "Pit"]]
+position = Vector2(-1240, 1966)
+script = ExtResource("5_dwbse")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pit" unique_id=1627257651]
+shape = SubResource("CircleShape2D_036b0")
+
+[node name="Polygon2D" type="Polygon2D" parent="Pit" unique_id=606560738]
+self_modulate = Color(0.34214166, 0.011067082, 0, 1)
+texture = ExtResource("1_f3sb7")
+texture_offset = Vector2(210.39, 228.86)
+texture_scale = Vector2(0.3, 0.3)
+texture_rotation = -0.49741885
+polygon = PackedVector2Array(-141, 32, -119, 59, -101, 65, -65, 75, -20, 82, 36, 78, 75, 74, 131, 56, 147, 43, 170, 13, 162, -22, 132, -41, 92, -54, 51, -63, -8, -74, -64, -75, -103, -69, -132, -49, -149, -22, -153, -1, -149, 17)
+
+[node name="Polygon2D2" type="Polygon2D" parent="Pit" unique_id=1571537696]
+self_modulate = Color(0.020899888, 0, 0.334193, 1)
+scale = Vector2(-0.7004261, 0.65531087)
+texture = ExtResource("1_f3sb7")
+texture_offset = Vector2(210.39, 228.86)
+texture_scale = Vector2(0.3, 0.3)
+texture_rotation = -0.49741885
+polygon = PackedVector2Array(-141, 32, -119, 59, -101, 65, -65, 75, -20, 82, 36, 78, 75, 74, 131, 56, 147, 43, 170, 13, 162, -22, 132, -41, 92, -54, 51, -63, -8, -74, -64, -75, -103, -69, -132, -49, -149, -22, -153, -1, -149, 17)
+
+[node name="Polygon2D3" type="Polygon2D" parent="Pit" unique_id=415790752]
+self_modulate = Color(0.94031644, 2.1315663, 3.5384132e-06, 1)
+scale = Vector2(0.46982905, 0.28901762)
+texture = ExtResource("1_f3sb7")
+texture_offset = Vector2(210.39, 228.86)
+texture_scale = Vector2(0.3, 0.3)
+texture_rotation = -0.49741885
+polygon = PackedVector2Array(-141, 32, -119, 59, -101, 65, -65, 75, -20, 82, 36, 78, 75, 74, 131, 56, 147, 43, 170, 13, 162, -22, 132, -41, 92, -54, 51, -63, -8, -74, -64, -75, -103, -69, -132, -49, -149, -22, -153, -1, -149, 17)
+
 [node name="Unit" parent="." unique_id=1355565438 instance=ExtResource("3_tlwt5")]
-position = Vector2(-94, -43)
+position = Vector2(-481, 99)
 
 [node name="Unit2" parent="." unique_id=1534122592 instance=ExtResource("3_tlwt5")]
-position = Vector2(63, -80)
+position = Vector2(-388, -25)
 
-[node name="Unit3" parent="." unique_id=178245987 instance=ExtResource("3_tlwt5")]
-position = Vector2(-60, 114)
+[node name="Unit3" parent="." unique_id=1967001947 instance=ExtResource("3_tlwt5")]
+position = Vector2(-324, 111)
 
-[node name="Unit4" parent="." unique_id=1240262886 instance=ExtResource("3_tlwt5")]
-position = Vector2(60, 45)
+[node name="Unit4" parent="." unique_id=1137452663 instance=ExtResource("3_tlwt5")]
+position = Vector2(-232, -15)
 
-[node name="Unit5" parent="." unique_id=1145246410 instance=ExtResource("3_tlwt5")]
-position = Vector2(-25, 101)
+[node name="Unit5" parent="." unique_id=785491918 instance=ExtResource("3_tlwt5")]
+position = Vector2(-171, 120)
 
-[node name="Unit6" parent="." unique_id=1295580040 instance=ExtResource("3_tlwt5")]
-position = Vector2(79, 112)
+[node name="Unit6" parent="." unique_id=1138257257 instance=ExtResource("3_tlwt5")]
+position = Vector2(-78, -4)
 
-[node name="Unit7" parent="." unique_id=1005501263 instance=ExtResource("3_tlwt5")]
-position = Vector2(256, 173)
+[node name="Unit7" parent="." unique_id=1000988231 instance=ExtResource("3_tlwt5")]
+position = Vector2(-14, 132)
 
-[node name="Unit8" parent="." unique_id=1361184269 instance=ExtResource("3_tlwt5")]
-position = Vector2(260, -4)
+[node name="Unit8" parent="." unique_id=1608027876 instance=ExtResource("3_tlwt5")]
+position = Vector2(78, 6)
 
-[node name="Unit9" parent="." unique_id=622524299 instance=ExtResource("3_tlwt5")]
-position = Vector2(271, -258)
+[node name="Unit9" parent="." unique_id=570677551 instance=ExtResource("3_tlwt5")]
+position = Vector2(-623, 370)
 
-[node name="Unit10" parent="." unique_id=533380183 instance=ExtResource("3_tlwt5")]
-position = Vector2(-40, -325)
+[node name="Unit10" parent="." unique_id=1415906614 instance=ExtResource("3_tlwt5")]
+position = Vector2(-530, 246)
 
-[node name="Unit11" parent="." unique_id=1481092901 instance=ExtResource("3_tlwt5")]
-position = Vector2(-214, -177)
+[node name="Unit11" parent="." unique_id=1195816801 instance=ExtResource("3_tlwt5")]
+position = Vector2(-466, 382)
 
-[node name="Unit12" parent="." unique_id=2003382342 instance=ExtResource("3_tlwt5")]
-position = Vector2(-289, 20)
+[node name="Unit12" parent="." unique_id=636070600 instance=ExtResource("3_tlwt5")]
+position = Vector2(-374, 256)
 
-[node name="Unit13" parent="." unique_id=1372458398 instance=ExtResource("3_tlwt5")]
-position = Vector2(-232, 148)
+[node name="Unit13" parent="." unique_id=2030187028 instance=ExtResource("3_tlwt5")]
+position = Vector2(-304, 389)
 
-[node name="Unit14" parent="." unique_id=1744677552 instance=ExtResource("3_tlwt5")]
-position = Vector2(-124, 254)
+[node name="Unit14" parent="." unique_id=950338311 instance=ExtResource("3_tlwt5")]
+position = Vector2(-211, 265)
 
-[node name="Unit15" parent="." unique_id=1884211189 instance=ExtResource("3_tlwt5")]
-position = Vector2(9, 254)
+[node name="Unit15" parent="." unique_id=1547348472 instance=ExtResource("3_tlwt5")]
+position = Vector2(-147, 401)
 
-[node name="Unit16" parent="." unique_id=1032803811 instance=ExtResource("3_tlwt5")]
-position = Vector2(147, 277)
-
-[node name="Unit17" parent="." unique_id=1268174673 instance=ExtResource("3_tlwt5")]
-position = Vector2(124, -288)
-
-[node name="Unit18" parent="." unique_id=1838846470 instance=ExtResource("3_tlwt5")]
-position = Vector2(-237, -354)
-
-[node name="Unit19" parent="." unique_id=778818004 instance=ExtResource("3_tlwt5")]
-position = Vector2(-379, -216)
-
-[node name="Unit20" parent="." unique_id=882581225 instance=ExtResource("3_tlwt5")]
-position = Vector2(-462, 30)
+[node name="Unit16" parent="." unique_id=474335259 instance=ExtResource("3_tlwt5")]
+position = Vector2(-55, 275)
 
 [connection signal="body_entered" from="Camera2D/Selector" to="Camera2D" method="_on_selector_body_entered"]
