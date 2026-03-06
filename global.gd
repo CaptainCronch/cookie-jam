@@ -4,22 +4,10 @@ var camera: God
 var ui: UI
 
 var wood := 0
-var clay := 0:
-	set(value):
-		ui.clay_label.text = str(clay)
-		clay = value
-var souls := 0:
-	set(value):
-		ui.souls_label.text = str(souls)
-		souls = value
-var ash := 0:
-	set(value):
-		ui.ash_label.text = str(ash)
-		ash = value
-var glassy_clay := 0:
-	set(value):
-		ui.glassy_clay_label.text = str(glassy_clay)
-		glassy_clay = value
+var clay := 0
+var souls := 0
+var ash := 0
+var glassy_clay := 0
 
 
 func _ready():
@@ -44,6 +32,14 @@ func _process(_delta):
 			get_window().mode = Window.MODE_FULLSCREEN
 		else:
 			get_window().mode = Window.MODE_WINDOWED
+
+
+func refresh_ui() -> void:
+	ui.wood_label.text = str(wood)
+	ui.clay_label.text = str(clay)
+	ui.souls_label.text = str(souls)
+	ui.ash_label.text = str(ash)
+	ui.glassy_clay_label.text = str(glassy_clay)
 
 
 func mouse_switch(pos := Vector2(0, 0)) -> void :
