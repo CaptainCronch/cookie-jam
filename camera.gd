@@ -5,7 +5,7 @@ class_name God
 @export var drag_smooth := 10.0
 @export var zoom_sensitivity := 0.05
 @export var zoom_max := Vector2(1.0, 1.0)
-@export var zoom_min := Vector2(0.2, 0.2)
+@export var zoom_min := Vector2(0.01, 0.01)
 @export var zoom_smooth := 5.0
 @export var selector_radius := 50.0
 
@@ -70,7 +70,8 @@ func selection() -> void:
 			if unit is Unit and not selected_units.has(unit):
 				selected_anything = true
 				selected_units.append(unit)
-				unit.freed.connect(_on_unit_freed)
+				if not unit.freed.is_connected(_on_unit_freed):
+					unit.freed.connect(_on_unit_freed)
 				unit.selected(true)
 	
 	if Input.is_action_just_released("space") and not selected_anything:
@@ -141,6 +142,7 @@ func select_interactable(object: Interactable) -> void:
 	for unit in selected_units:
 		#if not is_instance_valid(unit): continue
 		if unit.current_item == object.item: continue
+		if not unit.current_item == Unit.ITEM.NONE and not object.is_in_group("Banks"): continue
 		units_to_remove.append(unit)
 	for unit in units_to_remove:
 		unit.set_goal(object)

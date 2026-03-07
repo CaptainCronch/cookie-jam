@@ -39,6 +39,7 @@ Pit=""
 Trees=""
 Enemies=""
 Buildings=""
+Vision=""
 
 [input]
 

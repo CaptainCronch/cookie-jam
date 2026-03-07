@@ -1,14 +1,16 @@
 extends CanvasLayer
 class_name UI
 
-enum BUILDINGS {NONE = -1, BANK = 0, ARBORETUM = 1, MINE = 2}
+enum BUILDINGS {NONE = -1, BANK = 0, VISION = 1, MINE = 2}
 
 const BUILDING_SCENES: Array[PackedScene] = [
 	preload("uid://cjyybc2wyh54a"), # bank.tscn
+	preload("uid://b64nxffbem5uy"), # vision.tscn
+	
 ]
 const BUILDING_COSTS: Array[Dictionary] = [
 	{"wood": 5, "clay": 0, "souls": 0, "ash": 0, "glassy_clay": 0},
-	{"wood": 20, "clay": 30, "souls": 0, "ash": 0, "glassy_clay": 0},
+	{"wood": 0, "clay": 0, "souls": 0, "ash": 0, "glassy_clay": 0},
 	{"wood": 60, "clay": 40, "souls": 0, "ash": 0, "glassy_clay": 0},
 ]
 
@@ -23,7 +25,7 @@ const BUILDING_COSTS: Array[Dictionary] = [
 
 var can_cancel_build := false
 var current_building: BUILDINGS = BUILDINGS.NONE
-var unlocked_buildings: Array[bool] = [true, false, false, false, false, false, false, false]
+var unlocked_buildings: Array[bool] = [true, true, false, false, false, false, false, false]
 
 
 func _ready() -> void:
@@ -48,10 +50,11 @@ func _process(_delta: float) -> void:
 
 
 func build() -> void:
+	#print(str(current_building))
 	if check_cost(current_building) and unlocked_buildings[current_building]:
 		var scene := BUILDING_SCENES[current_building].instantiate()
-		get_tree().current_scene.add_child(scene)
 		scene.global_position = camera.get_global_mouse_position()
+		get_tree().current_scene.add_child(scene)
 	build_preview.hide()
 	current_building = BUILDINGS.NONE
 

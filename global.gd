@@ -2,6 +2,7 @@ extends Node
 
 var camera: God
 var ui: UI
+var fog: Fog
 
 var wood := 0
 var clay := 0
