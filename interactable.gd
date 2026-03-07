@@ -7,6 +7,7 @@ signal done(type: Unit.ITEM)
 
 @export var max_health := 10
 @export var item: Unit.ITEM = Unit.ITEM.NONE
+@export var is_resource := false
 @export var push_force := 2.0
 
 var can_be_selected := true
@@ -48,8 +49,18 @@ func deposit(origin: Unit, type: Unit.ITEM, strength := 1) -> void:
 	origin.current_item = Unit.ITEM.NONE
 
 
+func damage(origin: Enemy, strength := 1) -> void:
+	health -= strength
+	if health <= 0:
+		die(origin)
+
+
 func finished(_origin: Unit) -> void:
 	pass
+
+
+func die(_origin: Enemy) -> void:
+	queue_free()
 
 
 func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:

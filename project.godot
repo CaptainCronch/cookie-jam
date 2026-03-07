@@ -37,6 +37,8 @@ Resource=""
 Banks=""
 Pit=""
 Trees=""
+Enemies=""
+Buildings=""
 
 [input]
 
@@ -125,6 +127,7 @@ mute={
 
 2d_physics/layer_1="Environment"
 2d_physics/layer_2="Player"
+2d_physics/layer_3="Enemy"
 
 [physics]
 

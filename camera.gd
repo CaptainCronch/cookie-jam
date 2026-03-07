@@ -55,8 +55,9 @@ func _physics_process(_delta: float) -> void:
 				body.selected(false)
 			if not deselecting and not selected_units.has(body):
 				selected_units.append(body)
+				body.freed.connect(_on_unit_freed)
 				body.selected(true)
-			#selected_anything = true
+			selected_anything = true
 
 
 func selection() -> void:
@@ -67,13 +68,18 @@ func selection() -> void:
 	if Input.is_action_pressed("a"):
 		for unit in get_tree().get_nodes_in_group("Units"):
 			if unit is Unit and not selected_units.has(unit):
+				selected_anything = true
 				selected_units.append(unit)
+				unit.freed.connect(_on_unit_freed)
 				unit.selected(true)
 	
-	if Input.is_action_just_pressed("space"):
-		for unit in selected_units: unit.selected(false) 
+	if Input.is_action_just_released("space") and not selected_anything:
+		for unit in selected_units:
+			#if is_instance_valid(unit):
+			unit.selected(false) 
 		selected_units = []
-	elif not Input.is_action_pressed("space"):  
+	elif not Input.is_action_pressed("space"): 
+		selected_anything = false
 		deselecting = false
 		selector.get_node("Polygon2D").visible = false
 		selector.monitoring = false
@@ -95,11 +101,15 @@ func commanding() -> void:
 		return
 	
 	if Input.is_action_pressed("mouse1") and Input.is_action_pressed("shift"):
-		for unit in selected_units: unit.move_away_from(get_global_mouse_position())
+		for unit in selected_units: 
+			#if is_instance_valid(unit):
+			unit.move_away_from(get_global_mouse_position())
 		away_point.visible = true
 		towards_point.visible = false
 	elif Input.is_action_pressed("mouse1"):
-		for unit in selected_units: unit.move_to(get_global_mouse_position())
+		for unit in selected_units:
+			#if is_instance_valid(unit):
+			unit.move_to(get_global_mouse_position())
 		towards_point.visible = true
 		away_point.visible = false
 		towards_point.global_position = get_global_mouse_position()
@@ -128,14 +138,24 @@ func camera_move(delta: float) -> void:
 
 func select_interactable(object: Interactable) -> void:
 	var units_to_remove: Array[Unit] = []
-	print("selected units total: ", selected_units.size())
 	for unit in selected_units:
+		#if not is_instance_valid(unit): continue
 		if unit.current_item == object.item: continue
 		units_to_remove.append(unit)
 	for unit in units_to_remove:
 		unit.set_goal(object)
 		selected_units.erase(unit)
 		unit.selected(false)
+
+
+func _on_unit_freed(unit: Unit) -> void:
+	selected_units.erase(unit)
+	#var units_to_remove: Array[Unit] = []
+	#for unit in selected_units:
+		#if not is_instance_valid(unit):
+			#units_to_remove.append(unit)
+	#for unit in units_to_remove:
+		#selected_units.erase(unit)
 
 
 #func _on_selector_body_entered(body: Node2D) -> void:
