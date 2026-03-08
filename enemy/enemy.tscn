@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://np7lmt4qtbuk"]
+
+[ext_resource type="Script" uid="uid://d2ulln5x8he37" path="res://enemy/enemy.gd" id="1_4gyqm"]
+[ext_resource type="Texture2D" uid="uid://ctti6c1h81u0p" path="res://enemy/evil-icon.png" id="2_4gyqm"]
+[ext_resource type="Shader" uid="uid://bd32iv0tuwoe0" path="res://shaders/health-checkerboard.gdshader" id="2_qi2p4"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ctwoc"]
+radius = 75.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iifgy"]
+resource_local_to_scene = true
+shader = ExtResource("2_qi2p4")
+shader_parameter/size = 16.0
+shader_parameter/speed = 20.0
+shader_parameter/speed_boost = -99999.0
+shader_parameter/color = Color(1, 1, 1, 0)
+shader_parameter/level = 1.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tlwt5"]
+radius = 30.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4gyqm"]
+radius = 500.0
+
+[node name="Enemy" type="CharacterBody2D" unique_id=1355565438 node_paths=PackedStringArray("separate_area", "separate_collider", "aggro_area", "sprite") groups=["Enemies"]]
+z_as_relative = false
+collision_layer = 4
+motion_mode = 1
+wall_min_slide_angle = 0.0
+script = ExtResource("1_4gyqm")
+separate_area = NodePath("Separate")
+separate_collider = NodePath("Separate/CollisionShape2D")
+aggro_area = NodePath("Aggro")
+sprite = NodePath("Sprite2D")
+metadata/_edit_group_ = true
+
+[node name="Separate" type="Area2D" parent="." unique_id=2037624737]
+collision_layer = 4
+collision_mask = 7
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Separate" unique_id=1604043903]
+shape = SubResource("CircleShape2D_ctwoc")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1900457831]
+modulate = Color(1, 0.43, 0.43, 1)
+material = SubResource("ShaderMaterial_iifgy")
+position = Vector2(0, -60)
+scale = Vector2(0.5, 1)
+texture = ExtResource("2_4gyqm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=534851731]
+shape = SubResource("CircleShape2D_tlwt5")
+
+[node name="Aggro" type="Area2D" parent="." unique_id=1706569884]
+collision_layer = 4
+collision_mask = 6
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Aggro" unique_id=219674969]
+self_modulate = Color(1, 1, 1, 0.101960786)
+shape = SubResource("CircleShape2D_4gyqm")
+
+[connection signal="area_entered" from="Aggro" to="." method="_on_aggro_area_entered"]
+[connection signal="area_exited" from="Aggro" to="." method="_on_aggro_area_exited"]

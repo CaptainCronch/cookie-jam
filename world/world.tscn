@@ -1,0 +1,666 @@
+[gd_scene format=3 uid="uid://ceo1vya1vw0r8"]
+
+[ext_resource type="Texture2D" uid="uid://0clg7r6hvwtq" path="res://icon.svg" id="1_f3sb7"]
+[ext_resource type="Script" uid="uid://daweajpr78dxr" path="res://world/ui.gd" id="1_pkg7o"]
+[ext_resource type="Script" uid="uid://dded46d5rqlqr" path="res://world/camera.gd" id="2_tlwt5"]
+[ext_resource type="Texture2D" uid="uid://i628tjcomtel" path="res://resources/wood.png" id="3_dqqhb"]
+[ext_resource type="Script" uid="uid://o2yv2fne47d6" path="res://addons/advanced_radial_menu/radial_menu_class.gd" id="3_gbfbk"]
+[ext_resource type="Material" uid="uid://djhix3qn8fa8a" path="res://shaders/checkerboard_material.tres" id="3_ioo17"]
+[ext_resource type="Texture2D" uid="uid://cgfo2mox3wksu" path="res://resources/clay.png" id="3_m0cxt"]
+[ext_resource type="PackedScene" uid="uid://bc0n2usldvntm" path="res://resources/tree.tscn" id="3_pkg7o"]
+[ext_resource type="PackedScene" uid="uid://c772u1gct8vp4" path="res://unit/unit.tscn" id="3_tlwt5"]
+[ext_resource type="Shader" uid="uid://mbyb0q7bxowv" path="res://world/fog.gdshader" id="5_2o6r5"]
+[ext_resource type="Script" uid="uid://dlfhxrkc76nto" path="res://buildings/pit.gd" id="5_dwbse"]
+[ext_resource type="Script" uid="uid://cxoie1xj6kpjo" path="res://world/fog.gd" id="5_ic0uy"]
+[ext_resource type="PackedScene" uid="uid://np7lmt4qtbuk" path="res://enemy/enemy.tscn" id="6_wse8f"]
+[ext_resource type="PackedScene" uid="uid://cjyybc2wyh54a" path="res://buildings/bank.tscn" id="7_ioo17"]
+[ext_resource type="Texture2D" uid="uid://bsmup4uu4b2d2" path="res://world/x-magenta.png" id="7_j34ew"]
+[ext_resource type="PackedScene" uid="uid://b64nxffbem5uy" path="res://buildings/vision.tscn" id="8_k3n1d"]
+[ext_resource type="Texture2D" uid="uid://dxvldek3102j8" path="res://buildings/bank-empty.png" id="8_p2iis"]
+[ext_resource type="Texture2D" uid="uid://bvc3ur0d50ihi" path="res://buildings/vision.png" id="9_aysyn"]
+[ext_resource type="PackedScene" uid="uid://creiomrfyolun" path="res://resources/deposit.tscn" id="12_j34ew"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_dwbse"]
+font_size = 22
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_70uel"]
+shader = ExtResource("5_2o6r5")
+shader_parameter/size = 64.0000029925
+shader_parameter/speed = 10.0000004275
+shader_parameter/color = Color(0, 0, 0, 1)
+
+[sub_resource type="Gradient" id="Gradient_k3n1d"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.8, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_2o6r5"]
+gradient = SubResource("Gradient_k3n1d")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.15, 0.15)
+
+[sub_resource type="Gradient" id="Gradient_mad0u"]
+offsets = PackedFloat32Array(0.14285715, 0.25238097, 0.6)
+colors = PackedColorArray(0.008399992, 0.28, 0.12156668, 1, 0.1337, 0.2, 0.122, 1, 0.17, 0.15640001, 0.102000006, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ocfjn"]
+noise_type = 0
+seed = 7
+fractal_type = 3
+domain_warp_enabled = true
+domain_warp_frequency = 0.01
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_dqqhb"]
+width = 2048
+height = 2048
+generate_mipmaps = false
+noise = SubResource("FastNoiseLite_ocfjn")
+color_ramp = SubResource("Gradient_mad0u")
+seamless = true
+normalize = false
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tlwt5"]
+radius = 50.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_036b0"]
+radius = 150.0
+
+[node name="World" type="Node2D" unique_id=370314774]
+y_sort_enabled = true
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=661678817 node_paths=PackedStringArray("wood_label", "clay_label", "souls_label", "ash_label", "glassy_clay_label", "build_menu", "camera", "build_preview")]
+script = ExtResource("1_pkg7o")
+wood_label = NodePath("Resources/HBoxContainer/Wood")
+clay_label = NodePath("Resources/HBoxContainer/Clay")
+souls_label = NodePath("Resources/HBoxContainer/Souls")
+ash_label = NodePath("Resources/HBoxContainer/Ash")
+glassy_clay_label = NodePath("Resources/HBoxContainer/GlassyClay")
+build_menu = NodePath("BuildMenu")
+camera = NodePath("../Camera2D")
+build_preview = NodePath("../BuildPreview")
+
+[node name="Resources" type="MarginContainer" parent="UI" unique_id=1650681504]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -73.0
+offset_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/Resources" unique_id=1498969206]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TextureRect5" type="TextureRect" parent="UI/Resources/HBoxContainer" unique_id=122549138]
+self_modulate = Color(0, 1.6803957, 1.5182867, 1)
+layout_mode = 2
+texture = ExtResource("1_f3sb7")
+expand_mode = 2
+
+[node name="GlassyClay" type="Label" parent="UI/Resources/HBoxContainer" unique_id=598659304]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_dwbse")
+
+[node name="TextureRect4" type="TextureRect" parent="UI/Resources/HBoxContainer" unique_id=511757033]
+self_modulate = Color(0.29763597, 0.15190616, 0.24445827, 1)
+layout_mode = 2
+texture = ExtResource("1_f3sb7")
+expand_mode = 2
+
+[node name="Ash" type="Label" parent="UI/Resources/HBoxContainer" unique_id=1625110129]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_dwbse")
+
+[node name="TextureRect3" type="TextureRect" parent="UI/Resources/HBoxContainer" unique_id=1917735414]
+self_modulate = Color(0.838467, 0.00042894125, 0.8116336, 1)
+layout_mode = 2
+texture = ExtResource("1_f3sb7")
+expand_mode = 2
+
+[node name="Souls" type="Label" parent="UI/Resources/HBoxContainer" unique_id=623038497]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_dwbse")
+
+[node name="TextureRect2" type="TextureRect" parent="UI/Resources/HBoxContainer" unique_id=1134961853]
+layout_mode = 2
+texture = ExtResource("3_m0cxt")
+expand_mode = 2
+
+[node name="Clay" type="Label" parent="UI/Resources/HBoxContainer" unique_id=1362472210]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_dwbse")
+
+[node name="TextureRect" type="TextureRect" parent="UI/Resources/HBoxContainer" unique_id=840807344]
+layout_mode = 2
+texture = ExtResource("3_dqqhb")
+expand_mode = 2
+
+[node name="Wood" type="Label" parent="UI/Resources/HBoxContainer" unique_id=2015509336]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_dwbse")
+
+[node name="ClickCheck" type="Control" parent="UI" unique_id=29033671]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="BuildMenu" type="Control" parent="UI" unique_id=77413917]
+visible = false
+z_index = 101
+material = ExtResource("3_ioo17")
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -256.0
+offset_top = -256.0
+offset_right = 256.0
+offset_bottom = 256.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+script = ExtResource("3_gbfbk")
+select_action_name = "mouse1"
+action_released = true
+keep_selection_outside = false
+first_in_center = true
+arc_inner_radius = 64.0
+children_size = 85
+hover_color = Color(0, 0, 0, 1)
+metadata/_custom_type_script = "uid://o2yv2fne47d6"
+
+[node name="TextureRect" type="TextureRect" parent="UI/BuildMenu" unique_id=792255134]
+layout_mode = 0
+offset_left = 213.5
+offset_top = 213.5
+offset_right = 298.5
+offset_bottom = 298.5
+pivot_offset = Vector2(42.5, 42.5)
+texture = ExtResource("7_j34ew")
+expand_mode = 2
+
+[node name="TextureRect2" type="TextureRect" parent="UI/BuildMenu" unique_id=1360258267]
+layout_mode = 0
+offset_left = 254.91106
+offset_top = 58.951874
+offset_right = 339.91107
+offset_bottom = 143.95187
+pivot_offset = Vector2(42.500008, 42.5)
+texture = ExtResource("8_p2iis")
+expand_mode = 2
+
+[node name="TextureRect3" type="TextureRect" parent="UI/BuildMenu" unique_id=1884949385]
+layout_mode = 0
+offset_left = 172.08896
+offset_top = 58.951874
+offset_right = 257.08896
+offset_bottom = 143.95187
+pivot_offset = Vector2(42.5, 42.5)
+texture = ExtResource("9_aysyn")
+expand_mode = 2
+
+[node name="TextureRect4" type="TextureRect" parent="UI/BuildMenu" unique_id=1677477576]
+layout_mode = 0
+offset_left = 100.362915
+offset_top = 100.362915
+offset_right = 185.36292
+offset_bottom = 185.36292
+pivot_offset = Vector2(42.5, 42.5)
+texture = ExtResource("1_f3sb7")
+expand_mode = 2
+
+[node name="TextureRect5" type="TextureRect" parent="UI/BuildMenu" unique_id=1983441688]
+layout_mode = 0
+offset_left = 58.951874
+offset_top = 172.08894
+offset_right = 143.95187
+offset_bottom = 257.08893
+pivot_offset = Vector2(42.5, 42.499992)
+texture = ExtResource("1_f3sb7")
+expand_mode = 2
+
+[node name="TextureRect6" type="TextureRect" parent="UI/BuildMenu" unique_id=119968610]
+layout_mode = 0
+offset_left = 58.951874
+offset_top = 254.91106
+offset_right = 143.95189
+offset_bottom = 339.91107
+pivot_offset = Vector2(42.500008, 42.500008)
+texture = ExtResource("1_f3sb7")
+expand_mode = 2
+
+[node name="TextureRect7" type="TextureRect" parent="UI/BuildMenu" unique_id=771133345]
+layout_mode = 0
+offset_left = 100.36291
+offset_top = 326.6371
+offset_right = 185.36292
+offset_bottom = 411.6371
+pivot_offset = Vector2(42.500004, 42.5)
+texture = ExtResource("1_f3sb7")
+expand_mode = 2
+
+[node name="TextureRect8" type="TextureRect" parent="UI/BuildMenu" unique_id=265946721]
+layout_mode = 0
+offset_left = 172.08896
+offset_top = 368.04816
+offset_right = 257.08896
+offset_bottom = 453.04816
+pivot_offset = Vector2(42.5, 42.5)
+texture = ExtResource("1_f3sb7")
+expand_mode = 2
+
+[node name="TextureRect9" type="TextureRect" parent="UI/BuildMenu" unique_id=1939308679]
+layout_mode = 0
+offset_left = 254.91104
+offset_top = 368.04813
+offset_right = 339.91104
+offset_bottom = 453.04813
+pivot_offset = Vector2(42.5, 42.5)
+texture = ExtResource("1_f3sb7")
+expand_mode = 2
+
+[node name="TextureRect10" type="TextureRect" parent="UI/BuildMenu" unique_id=1315126686]
+layout_mode = 0
+offset_left = 326.63705
+offset_top = 326.6371
+offset_right = 411.63705
+offset_bottom = 411.6371
+pivot_offset = Vector2(42.5, 42.5)
+texture = ExtResource("1_f3sb7")
+expand_mode = 2
+
+[node name="TextureRect11" type="TextureRect" parent="UI/BuildMenu" unique_id=1756634361]
+layout_mode = 0
+offset_left = 368.04816
+offset_top = 254.91101
+offset_right = 453.04816
+offset_bottom = 339.911
+pivot_offset = Vector2(42.5, 42.5)
+texture = ExtResource("1_f3sb7")
+expand_mode = 2
+
+[node name="TextureRect12" type="TextureRect" parent="UI/BuildMenu" unique_id=1740133186]
+layout_mode = 0
+offset_left = 368.04813
+offset_top = 172.08893
+offset_right = 453.04813
+offset_bottom = 257.08893
+pivot_offset = Vector2(42.5, 42.5)
+texture = ExtResource("1_f3sb7")
+expand_mode = 2
+
+[node name="TextureRect13" type="TextureRect" parent="UI/BuildMenu" unique_id=1197445853]
+layout_mode = 0
+offset_left = 326.6371
+offset_top = 100.362915
+offset_right = 411.6371
+offset_bottom = 185.36292
+pivot_offset = Vector2(42.5, 42.5)
+texture = ExtResource("1_f3sb7")
+expand_mode = 2
+
+[node name="Environment" type="Node2D" parent="." unique_id=1131195652]
+y_sort_enabled = true
+
+[node name="Fog" type="Sprite2D" parent="Environment" unique_id=5950817]
+z_index = 200
+material = SubResource("ShaderMaterial_70uel")
+script = ExtResource("5_ic0uy")
+vision = SubResource("GradientTexture2D_2o6r5")
+
+[node name="GroundContainer" type="Node2D" parent="Environment" unique_id=1189467784]
+scale = Vector2(1.5, 0.5)
+
+[node name="Ground" type="Sprite2D" parent="Environment/GroundContainer" unique_id=109447954]
+z_index = -10
+texture_repeat = 2
+scale = Vector2(5, 5)
+texture = SubResource("NoiseTexture2D_dqqhb")
+region_enabled = true
+region_rect = Rect2(0, 0, 20480, 20480)
+
+[node name="Deposit" parent="Environment" unique_id=655526278 instance=ExtResource("12_j34ew")]
+position = Vector2(1448, 295)
+
+[node name="Tree" parent="Environment" unique_id=1532094479 instance=ExtResource("3_pkg7o")]
+position = Vector2(-1124, -390)
+
+[node name="Tree2" parent="Environment" unique_id=1356027889 instance=ExtResource("3_pkg7o")]
+position = Vector2(-897, -491)
+
+[node name="Tree3" parent="Environment" unique_id=718757590 instance=ExtResource("3_pkg7o")]
+position = Vector2(-700, -510)
+
+[node name="Tree4" parent="Environment" unique_id=446935403 instance=ExtResource("3_pkg7o")]
+position = Vector2(-499, -510)
+
+[node name="Tree5" parent="Environment" unique_id=1042652732 instance=ExtResource("3_pkg7o")]
+position = Vector2(-302, -506)
+
+[node name="Tree6" parent="Environment" unique_id=590464711 instance=ExtResource("3_pkg7o")]
+position = Vector2(-82, -514)
+
+[node name="Tree7" parent="Environment" unique_id=518795093 instance=ExtResource("3_pkg7o")]
+position = Vector2(134, -499)
+
+[node name="Tree8" parent="Environment" unique_id=1473035968 instance=ExtResource("3_pkg7o")]
+position = Vector2(350, -499)
+
+[node name="Tree9" parent="Environment" unique_id=1193197352 instance=ExtResource("3_pkg7o")]
+position = Vector2(528, -488)
+
+[node name="Tree10" parent="Environment" unique_id=749167971 instance=ExtResource("3_pkg7o")]
+position = Vector2(737, -431)
+
+[node name="Tree11" parent="Environment" unique_id=536435533 instance=ExtResource("3_pkg7o")]
+position = Vector2(961, -416)
+
+[node name="Tree12" parent="Environment" unique_id=2038340559 instance=ExtResource("3_pkg7o")]
+position = Vector2(1147, -310)
+
+[node name="Tree13" parent="Environment" unique_id=1183543144 instance=ExtResource("3_pkg7o")]
+position = Vector2(-1117, -604)
+
+[node name="Tree14" parent="Environment" unique_id=297473487 instance=ExtResource("3_pkg7o")]
+position = Vector2(-890, -705)
+
+[node name="Tree15" parent="Environment" unique_id=365680219 instance=ExtResource("3_pkg7o")]
+position = Vector2(-693, -724)
+
+[node name="Tree16" parent="Environment" unique_id=496122536 instance=ExtResource("3_pkg7o")]
+position = Vector2(-492, -724)
+
+[node name="Tree17" parent="Environment" unique_id=1611883430 instance=ExtResource("3_pkg7o")]
+position = Vector2(-295, -720)
+
+[node name="Tree18" parent="Environment" unique_id=1445940672 instance=ExtResource("3_pkg7o")]
+position = Vector2(-75, -728)
+
+[node name="Tree19" parent="Environment" unique_id=1961602887 instance=ExtResource("3_pkg7o")]
+position = Vector2(141, -713)
+
+[node name="Tree20" parent="Environment" unique_id=2126090969 instance=ExtResource("3_pkg7o")]
+position = Vector2(357, -713)
+
+[node name="Tree21" parent="Environment" unique_id=600213825 instance=ExtResource("3_pkg7o")]
+position = Vector2(535, -702)
+
+[node name="Tree22" parent="Environment" unique_id=831238921 instance=ExtResource("3_pkg7o")]
+position = Vector2(744, -645)
+
+[node name="Tree23" parent="Environment" unique_id=2116587077 instance=ExtResource("3_pkg7o")]
+position = Vector2(968, -630)
+
+[node name="Tree24" parent="Environment" unique_id=1555305233 instance=ExtResource("3_pkg7o")]
+position = Vector2(1154, -524)
+
+[node name="TowardsPoint" type="Polygon2D" parent="." unique_id=2096268932]
+visible = false
+z_index = 100
+scale = Vector2(1, 0.84615386)
+color = Color(0.2976, 0.93, 0.46624002, 1)
+polygon = PackedVector2Array(-23, -9, 0, 27, 29, -12, 11, -17.909088, 9, -110.09091, 78, -158.54544, 6, -201.09091, -7, -133.72726, -7, -19.090912)
+
+[node name="AwayPoint" type="Polygon2D" parent="." unique_id=156727767]
+visible = false
+z_index = 100
+scale = Vector2(1, 0.84615386)
+color = Color(0.94, 0.3384, 0.3384, 1)
+polygon = PackedVector2Array(-14, -30.727264, -20, -126.45453, 3, -31.909088, 16, -133.54544, 20, -14.181824, 55.99997, -91, 24, -2.3636475, 104.99997, -42.54544, 62.99997, 8.272736, 80.99997, 46.09091, 31, 31.909088, 41, 85.09091, -9, 40.18181, -19, 75.63635, -21, 23.636353, -67, 33.09091, -46, 1.1818237, -94, -22.45456, -55, -22.45456, -59, -61.45453, -33, -17.727264, -39, -85.09091)
+
+[node name="BuildPreview" type="Sprite2D" parent="." unique_id=319384747]
+visible = false
+texture = ExtResource("1_f3sb7")
+offset = Vector2(0, -64)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1544898292 node_paths=PackedStringArray("selector", "towards_point", "away_point")]
+zoom = Vector2(0.5, 0.5)
+script = ExtResource("2_tlwt5")
+selector = NodePath("Selector")
+towards_point = NodePath("../TowardsPoint")
+away_point = NodePath("../AwayPoint")
+
+[node name="Selector" type="Area2D" parent="Camera2D" unique_id=1232840017]
+collision_mask = 2
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Camera2D/Selector" unique_id=807636665]
+shape = SubResource("CircleShape2D_tlwt5")
+
+[node name="Polygon2D" type="Polygon2D" parent="Camera2D/Selector" unique_id=119346375]
+z_index = 100
+color = Color(0, 1, 0, 0.3882353)
+polygon = PackedVector2Array(-24, -44, -6, -48, 12, -46, 22, -45, 31, -40, 41, -32, 45, -22, 47, -6, 47, 10, 41, 23, 30, 33, 20, 42, 1, 50, -19, 50, -34, 44, -42, 31, -46, 15, -48, 2, -44, -15, -37, -26, -29, -37)
+
+[node name="Vision" parent="." unique_id=1247282839 instance=ExtResource("8_k3n1d")]
+position = Vector2(2719, -1331)
+
+[node name="Bank" parent="." unique_id=1186196441 instance=ExtResource("7_ioo17")]
+position = Vector2(-725, 535)
+
+[node name="Bank2" parent="." unique_id=990262840 instance=ExtResource("7_ioo17")]
+position = Vector2(577, 631)
+
+[node name="Pit" type="Area2D" parent="." unique_id=1148622083 groups=["Banks", "Pit", "Vision"]]
+position = Vector2(-1240, 1966)
+script = ExtResource("5_dwbse")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pit" unique_id=1627257651]
+shape = SubResource("CircleShape2D_036b0")
+
+[node name="Polygon2D" type="Polygon2D" parent="Pit" unique_id=606560738]
+self_modulate = Color(0.34214166, 0.011067082, 0, 1)
+texture = ExtResource("1_f3sb7")
+texture_offset = Vector2(210.39, 228.86)
+texture_scale = Vector2(0.3, 0.3)
+texture_rotation = -0.49741885
+polygon = PackedVector2Array(-141, 32, -119, 59, -101, 65, -65, 75, -20, 82, 36, 78, 75, 74, 131, 56, 147, 43, 170, 13, 162, -22, 132, -41, 92, -54, 51, -63, -8, -74, -64, -75, -103, -69, -132, -49, -149, -22, -153, -1, -149, 17)
+
+[node name="Polygon2D2" type="Polygon2D" parent="Pit" unique_id=1571537696]
+self_modulate = Color(0.020899888, 0, 0.334193, 1)
+scale = Vector2(-0.7004261, 0.65531087)
+texture = ExtResource("1_f3sb7")
+texture_offset = Vector2(210.39, 228.86)
+texture_scale = Vector2(0.3, 0.3)
+texture_rotation = -0.49741885
+polygon = PackedVector2Array(-141, 32, -119, 59, -101, 65, -65, 75, -20, 82, 36, 78, 75, 74, 131, 56, 147, 43, 170, 13, 162, -22, 132, -41, 92, -54, 51, -63, -8, -74, -64, -75, -103, -69, -132, -49, -149, -22, -153, -1, -149, 17)
+
+[node name="Polygon2D3" type="Polygon2D" parent="Pit" unique_id=415790752]
+self_modulate = Color(0.94031644, 2.1315663, 3.5384132e-06, 1)
+scale = Vector2(0.46982905, 0.28901762)
+texture = ExtResource("1_f3sb7")
+texture_offset = Vector2(210.39, 228.86)
+texture_scale = Vector2(0.3, 0.3)
+texture_rotation = -0.49741885
+polygon = PackedVector2Array(-141, 32, -119, 59, -101, 65, -65, 75, -20, 82, 36, 78, 75, 74, 131, 56, 147, 43, 170, 13, 162, -22, 132, -41, 92, -54, 51, -63, -8, -74, -64, -75, -103, -69, -132, -49, -149, -22, -153, -1, -149, 17)
+
+[node name="Enemy" parent="." unique_id=1355565438 instance=ExtResource("6_wse8f")]
+position = Vector2(-5964, -124)
+
+[node name="Enemy2" parent="." unique_id=285274024 instance=ExtResource("6_wse8f")]
+position = Vector2(-6042, 15)
+
+[node name="Enemy3" parent="." unique_id=905446205 instance=ExtResource("6_wse8f")]
+position = Vector2(-6136, -122)
+
+[node name="Enemy4" parent="." unique_id=130711504 instance=ExtResource("6_wse8f")]
+position = Vector2(-6195, 20)
+
+[node name="Enemy5" parent="." unique_id=540954781 instance=ExtResource("6_wse8f")]
+position = Vector2(-6273, 159)
+
+[node name="Enemy6" parent="." unique_id=280521446 instance=ExtResource("6_wse8f")]
+position = Vector2(-6367, 22)
+
+[node name="Enemy7" parent="." unique_id=1853120116 instance=ExtResource("6_wse8f")]
+position = Vector2(-5943, 159)
+
+[node name="Enemy8" parent="." unique_id=1474848979 instance=ExtResource("6_wse8f")]
+position = Vector2(-6021, 298)
+
+[node name="Enemy9" parent="." unique_id=1664361002 instance=ExtResource("6_wse8f")]
+position = Vector2(-6115, 161)
+
+[node name="Enemy10" parent="." unique_id=554002496 instance=ExtResource("6_wse8f")]
+position = Vector2(-6184, 303)
+
+[node name="Enemy11" parent="." unique_id=655378843 instance=ExtResource("6_wse8f")]
+position = Vector2(-6262, 442)
+
+[node name="Enemy12" parent="." unique_id=88470230 instance=ExtResource("6_wse8f")]
+position = Vector2(-6356, 305)
+
+[node name="Enemy13" parent="." unique_id=590809373 instance=ExtResource("6_wse8f")]
+position = Vector2(-5936, 437)
+
+[node name="Enemy14" parent="." unique_id=1505949537 instance=ExtResource("6_wse8f")]
+position = Vector2(-6014, 576)
+
+[node name="Enemy15" parent="." unique_id=2086655943 instance=ExtResource("6_wse8f")]
+position = Vector2(-6108, 439)
+
+[node name="Enemy16" parent="." unique_id=1027602100 instance=ExtResource("6_wse8f")]
+position = Vector2(-6169, 595)
+
+[node name="Enemy17" parent="." unique_id=1664398376 instance=ExtResource("6_wse8f")]
+position = Vector2(-6247, 734)
+
+[node name="Enemy18" parent="." unique_id=1599331326 instance=ExtResource("6_wse8f")]
+position = Vector2(-6341, 597)
+
+[node name="Enemy19" parent="." unique_id=866521055 instance=ExtResource("6_wse8f")]
+position = Vector2(-6417, 458)
+
+[node name="Enemy20" parent="." unique_id=1991656524 instance=ExtResource("6_wse8f")]
+position = Vector2(-6495, 597)
+
+[node name="Enemy21" parent="." unique_id=366510712 instance=ExtResource("6_wse8f")]
+position = Vector2(-6589, 460)
+
+[node name="Enemy22" parent="." unique_id=1136785664 instance=ExtResource("6_wse8f")]
+position = Vector2(-6436, 175)
+
+[node name="Enemy23" parent="." unique_id=2038657605 instance=ExtResource("6_wse8f")]
+position = Vector2(-6514, 314)
+
+[node name="Enemy24" parent="." unique_id=1643628519 instance=ExtResource("6_wse8f")]
+position = Vector2(-6608, 177)
+
+[node name="Enemy25" parent="." unique_id=263118115 instance=ExtResource("6_wse8f")]
+position = Vector2(-6455, -94)
+
+[node name="Enemy26" parent="." unique_id=1290207393 instance=ExtResource("6_wse8f")]
+position = Vector2(-6533, 45)
+
+[node name="Enemy27" parent="." unique_id=1211928304 instance=ExtResource("6_wse8f")]
+position = Vector2(-6627, -92)
+
+[node name="Enemy28" parent="." unique_id=1653458405 instance=ExtResource("6_wse8f")]
+position = Vector2(-6213, -236)
+
+[node name="Enemy29" parent="." unique_id=1241200104 instance=ExtResource("6_wse8f")]
+position = Vector2(-6291, -97)
+
+[node name="Enemy30" parent="." unique_id=594145450 instance=ExtResource("6_wse8f")]
+position = Vector2(-6385, -234)
+
+[node name="Unit" parent="." unique_id=1632187357 instance=ExtResource("3_tlwt5")]
+position = Vector2(319, 8)
+
+[node name="Unit2" parent="." unique_id=1506427624 instance=ExtResource("3_tlwt5")]
+position = Vector2(276, 162)
+
+[node name="Unit3" parent="." unique_id=992257395 instance=ExtResource("3_tlwt5")]
+position = Vector2(162, 48)
+
+[node name="Unit4" parent="." unique_id=1621617012 instance=ExtResource("3_tlwt5")]
+position = Vector2(122, 202)
+
+[node name="Unit5" parent="." unique_id=2028142429 instance=ExtResource("3_tlwt5")]
+position = Vector2(11, 108)
+
+[node name="Unit6" parent="." unique_id=326360978 instance=ExtResource("3_tlwt5")]
+position = Vector2(-32, 262)
+
+[node name="Unit7" parent="." unique_id=2041415698 instance=ExtResource("3_tlwt5")]
+position = Vector2(-146, 148)
+
+[node name="Unit8" parent="." unique_id=1613604625 instance=ExtResource("3_tlwt5")]
+position = Vector2(-186, 302)
+
+[node name="Unit9" parent="." unique_id=1884003250 instance=ExtResource("3_tlwt5")]
+position = Vector2(-297, 202)
+
+[node name="Unit10" parent="." unique_id=973163446 instance=ExtResource("3_tlwt5")]
+position = Vector2(-340, 356)
+
+[node name="Unit11" parent="." unique_id=194524946 instance=ExtResource("3_tlwt5")]
+position = Vector2(-454, 242)
+
+[node name="Unit12" parent="." unique_id=741001718 instance=ExtResource("3_tlwt5")]
+position = Vector2(-494, 396)
+
+[node name="Unit13" parent="." unique_id=45346670 instance=ExtResource("3_tlwt5")]
+position = Vector2(-226, -103)
+
+[node name="Unit14" parent="." unique_id=471027535 instance=ExtResource("3_tlwt5")]
+position = Vector2(-269, 51)
+
+[node name="Unit15" parent="." unique_id=53615805 instance=ExtResource("3_tlwt5")]
+position = Vector2(-383, -63)
+
+[node name="Unit16" parent="." unique_id=730937716 instance=ExtResource("3_tlwt5")]
+position = Vector2(-423, 91)
+
+[node name="Unit17" parent="." unique_id=1046834264 instance=ExtResource("3_tlwt5")]
+position = Vector2(102, -200)
+
+[node name="Unit18" parent="." unique_id=1773597892 instance=ExtResource("3_tlwt5")]
+position = Vector2(59, -46)
+
+[node name="Unit19" parent="." unique_id=740147141 instance=ExtResource("3_tlwt5")]
+position = Vector2(-55, -160)
+
+[node name="Unit20" parent="." unique_id=1601016526 instance=ExtResource("3_tlwt5")]
+position = Vector2(-95, -6)
+
+[node name="Unit21" parent="." unique_id=960652810 instance=ExtResource("3_tlwt5")]
+position = Vector2(410, -288)
+
+[node name="Unit22" parent="." unique_id=65870179 instance=ExtResource("3_tlwt5")]
+position = Vector2(367, -134)
+
+[node name="Unit23" parent="." unique_id=98339521 instance=ExtResource("3_tlwt5")]
+position = Vector2(253, -248)
+
+[node name="Unit24" parent="." unique_id=963282724 instance=ExtResource("3_tlwt5")]
+position = Vector2(213, -94)
+
+[connection signal="mouse_entered" from="UI/ClickCheck" to="UI" method="_on_click_check_mouse_entered"]
+[connection signal="mouse_exited" from="UI/ClickCheck" to="UI" method="_on_click_check_mouse_exited"]
+[connection signal="slot_selected" from="UI/BuildMenu" to="UI" method="_on_build_menu_slot_selected"]
+[connection signal="body_entered" from="Camera2D/Selector" to="Camera2D" method="_on_selector_body_entered"]
