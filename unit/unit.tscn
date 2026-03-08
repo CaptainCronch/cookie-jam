@@ -300,7 +300,7 @@ collision_mask = 7
 shape = SubResource("CircleShape2D_ctwoc")
 
 [node name="Shadow" type="Polygon2D" parent="." unique_id=375450272]
-position = Vector2(-2, 1)
+position = Vector2(3, 1)
 color = Color(0.015686275, 0, 0.050980393, 0.30588236)
 polygon = PackedVector2Array(-46, -2, -46, 3, -41, 9, -37, 12, -35, 13, -26, 18, -11, 19, 1, 19, 17, 17, 23, 16, 29, 12, 33, 7, 34, 2, 34, -3, 32, -6, 29, -10, 22, -12, 10, -14, -4, -14, -15, -14, -25, -14, -35, -12, -40, -10, -44, -7, -46, -5)
 

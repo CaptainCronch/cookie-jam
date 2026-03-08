@@ -315,7 +315,7 @@ func check_resource() -> void: # find closest resource of the type last held to 
 	last_item = ITEM.NONE
 
 
-func _on_resource_done(type: ITEM) -> void:
+func _on_resource_done(type: ITEM, _which: Interactable) -> void:
 	await get_tree().process_frame
 	if current_item == ITEM.NONE:
 		last_item = type

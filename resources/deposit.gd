@@ -25,6 +25,8 @@ func finished(_origin: Unit) -> void:
 
 
 func revive() -> void:
+	$Sprite2D2.hide()
+	$Sprite2D3.show()
 	dead = false
 	add_to_group("Deposits")
 	health = INF

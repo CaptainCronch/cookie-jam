@@ -3,7 +3,7 @@ class_name Interactable
 
 #signal give(type: TYPE)
 #signal deposited()
-signal done(type: Unit.ITEM)
+signal done(type: Unit.ITEM, who: Interactable)
 
 @export var max_health := 10
 @export var item: Unit.ITEM = Unit.ITEM.NONE

@@ -14,5 +14,5 @@ func finished(_origin: Unit) -> void:
 	# spawn log here? nah
 	# spawn particles
 	# play sound here
-	done.emit(item)
+	done.emit(item, self)
 	queue_free()

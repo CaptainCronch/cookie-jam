@@ -40,3 +40,12 @@ skew = 0.17802358
 texture = ExtResource("2_t5v17")
 region_enabled = true
 region_rect = Rect2(-0.5408325, 11.114441, 700.5721, 304.38647)
+
+[node name="Sprite2D3" type="Sprite2D" parent="." unique_id=1477853201]
+visible = false
+self_modulate = Color(1, 0.25, 0, 1)
+position = Vector2(6.45, -99.96)
+scale = Vector2(0.356, 0.745)
+texture = ExtResource("2_t5v17")
+region_enabled = true
+region_rect = Rect2(-0.5408325, 11.114441, 700.5721, 304.38647)

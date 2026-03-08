@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://dnvxrfb6nrces"]
+
+[ext_resource type="Script" uid="uid://cmysuavaekpii" path="res://buildings/arboretum.gd" id="1_fh4i0"]
+[ext_resource type="Texture2D" uid="uid://dhromudbd626c" path="res://resources/tree.png" id="2_bvm8y"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_aqk2v"]
+radius = 70.064255
+
+[node name="Arboretum" type="Area2D" unique_id=655526278 node_paths=PackedStringArray("timer") groups=["Arboretum", "Buildings"]]
+monitoring = false
+script = ExtResource("1_fh4i0")
+timer = NodePath("Timer")
+max_health = 50
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=439858846]
+shape = SubResource("CircleShape2D_aqk2v")
+
+[node name="Shadow" type="Polygon2D" parent="." unique_id=843625031]
+position = Vector2(10, 7)
+scale = Vector2(1.6981466, 1.7043903)
+color = Color(0.015686275, 0, 0.050980393, 0.30588236)
+polygon = PackedVector2Array(-46, -2, -46, 3, -41, 9, -37, 12, -35, 13, -26, 18, -11, 19, 1, 19, 17, 17, 23, 16, 29, 12, 33, 7, 34, 2, 34, -3, 32, -6, 29, -10, 22, -12, 10, -14, -4, -14, -15, -14, -25, -14, -35, -12, -40, -10, -44, -7, -46, -5)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1711040855]
+self_modulate = Color(0, 0.38, 0.31666663, 1)
+position = Vector2(-2.155, -67.725)
+rotation = 3.2847097
+scale = Vector2(0.226, 0.625)
+texture = ExtResource("2_bvm8y")
+region_enabled = true
+region_rect = Rect2(-0.5408325, 11.114441, 700.5721, 304.38647)
+
+[node name="Timer" type="Timer" parent="." unique_id=1264115990]
+wait_time = 5.0
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
