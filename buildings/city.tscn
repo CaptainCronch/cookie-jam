@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://crepqum2d1tg8"]
+
+[ext_resource type="Script" uid="uid://3ywj3otasm5s" path="res://buildings/city.gd" id="1_pa3nq"]
+[ext_resource type="Texture2D" uid="uid://udl3ybaivvh" path="res://buildings/city.png" id="2_i7am7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_036b0"]
+radius = 171.18703
+
+[node name="City" type="Area2D" unique_id=98455971 groups=["Cities"]]
+script = ExtResource("1_pa3nq")
+max_health = 50
+item = 4
+is_resource = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2039452464]
+shape = SubResource("CircleShape2D_036b0")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=761356805]
+position = Vector2(7, -146)
+texture = ExtResource("2_i7am7")
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]

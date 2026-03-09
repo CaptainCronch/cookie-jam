@@ -4,12 +4,13 @@
 [ext_resource type="Texture2D" uid="uid://dhromudbd626c" path="res://resources/tree.png" id="2_clxd3"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_aqk2v"]
-radius = 100.0
+radius = 128.0
 
 [node name="Tree" type="Area2D" unique_id=655526278 groups=["Resource", "Trees"]]
 monitoring = false
 script = ExtResource("1_nnvrw")
 item = 1
+is_resource = true
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=439858846]

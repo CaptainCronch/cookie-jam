@@ -1,19 +1,26 @@
 extends CanvasLayer
 class_name UI
 
-enum BUILDINGS {NONE = -1, BANK = 0, VISION = 1, MINE = 2}
+enum BUILDINGS {NONE = -1, PORTAL_SPAWNER = 0, VISION = 1, BANK = 2, PORTAL = 3, MINE = 4, ARBORETUM = 5}
 
 const BUILDING_SCENES: Array[PackedScene] = [
-	preload("uid://cjyybc2wyh54a"), # bank.tscn
+	preload("uid://dstq5xmmf1su8"), # portal_spawner.tscn
 	preload("uid://b64nxffbem5uy"), # vision.tscn
-	null, # mine!
+	preload("uid://cjyybc2wyh54a"), # bank.tscn
+	preload("uid://eikxsl3mu278"),  # portal.tscn
+	null,                           # mine!
+	preload("uid://dnvxrfb6nrces"), # arboretum.tscn
 ]
 const BUILDING_COSTS: Array[Dictionary] = [
-	{"wood": 0, "clay": 0, "souls": 0, "ash": 0, "glassy_clay": 0},
-	{"wood": 0, "clay": 0, "souls": 0, "ash": 0, "glassy_clay": 0},
-	{"wood": 0, "clay": 0, "souls": 0, "ash": 0, "glassy_clay": 0},
+	{"wood": 10, "clay": 0, "souls": 0, "ash": 0, "glassy_clay": 0},
+	{"wood": 50, "clay": 0, "souls": 0, "ash": 0, "glassy_clay": 0},
+	{"wood": 50, "clay": 10, "souls": 0, "ash": 0, "glassy_clay": 0},
+	{"wood": 20, "clay": 30, "souls": 10, "ash": 0, "glassy_clay": 0},
+	{"wood": 50, "clay": 30, "souls": 0, "ash": 10, "glassy_clay": 0},
+	{"wood": 30, "clay": 50, "souls": 0, "ash": 10, "glassy_clay": 0},
 ]
 
+@export var unit_label: Label
 @export var wood_label: Label
 @export var clay_label: Label
 @export var souls_label: Label
@@ -23,10 +30,13 @@ const BUILDING_COSTS: Array[Dictionary] = [
 @export var camera: God
 @export var build_preview: Sprite2D
 @export var mine_check: Area2D
+@export var info_box: PanelContainer
+@export var info_label: Label
+@export var victory_text: MarginContainer
 
 var can_cancel_build := false
 var current_building: BUILDINGS = BUILDINGS.NONE
-var unlocked_buildings: Array[bool] = [true, true, true, false, false, false, false, false]
+var unlocked_buildings: Array[bool] = [true, true, false, false, false, false]
 
 
 func _ready() -> void:
@@ -48,11 +58,13 @@ func _process(_delta: float) -> void:
 			else:
 				children[i].modulate = Color(0.6, 0.6, 0.6, 0.6)
 		build_menu.show()
+		info_box.show()
 		build_menu.enabled = true
 		build_menu.position = get_viewport().get_mouse_position() - build_menu.size/2 #camera.get_global_transform_with_canvas().origin + camera.get_local_mouse_position()
 	if Input.is_action_just_released("mouse1") or Input.is_action_just_released("control") and can_cancel_build:
 		#build_preview.hide()
 		build_menu.hide()
+		info_box.hide()
 		build_menu.enabled = false
 	if Input.is_action_just_pressed("mouse1") and not current_building == BUILDINGS.NONE and not build_menu.enabled:
 		if current_building == BUILDINGS.MINE:
@@ -107,3 +119,21 @@ func _on_click_check_mouse_entered() -> void: can_cancel_build = true
 
 
 func _on_click_check_mouse_exited() -> void: can_cancel_build = false
+
+
+func _on_build_menu_selection_changed(new_selection: int) -> void:
+	match new_selection:
+		-1:
+			info_label.text = "Cancel selection"
+		0:
+			info_label.text = "Minor Gateway. Spawns demons. Requires 10 wood."
+		1:
+			info_label.text = "Vision Beacon. Grants sight over an area. Requires 50 wood."
+		2:
+			info_label.text = "Collector. Grants control over resources. Requires 50 wood and 10 clay."
+		3:
+			info_label.text = "Major Gateway. Increases demon limit. Requires 20 wood, 30 clay, and 10 souls."
+		4:
+			info_label.text = "Clay Mine. Refreshes clay deposits. Requires 50 wood, 30 clay, and 10 ash."
+		5:
+			info_label.text = "Arboretum. Grows trees. Requires 30 wood, 50 clay, and 10 ash."

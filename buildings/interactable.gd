@@ -33,19 +33,19 @@ func deposit(origin: Unit, type: Unit.ITEM, strength := 1) -> void:
 			return
 		Unit.ITEM.WOOD:
 			Global.wood += strength
-			Global.ui.wood_label.text = str(Global.wood)
+			Global.refresh_ui()
 		Unit.ITEM.CLAY:
 			Global.clay += strength
-			Global.ui.clay_label.text = str(Global.clay)
+			Global.refresh_ui()
 		Unit.ITEM.BODY:
 			Global.souls += 1
-			Global.ui.souls_label.text = str(Global.souls)
+			Global.refresh_ui()
 		Unit.ITEM.ASH:
 			Global.ash += strength
-			Global.ui.ash_label.text = str(Global.ash)
+			Global.refresh_ui()
 		Unit.ITEM.GLASSY_CLAY:
 			Global.glassy_clay += strength
-			Global.ui.glassy_clay_label.text = str(Global.glassy_clay)
+			Global.refresh_ui()
 	origin.current_item = Unit.ITEM.NONE
 
 

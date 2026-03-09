@@ -1,19 +1,34 @@
 extends Node
 
+signal earned_soul
+
+const WAVE_TIME := 30.0
+
 var camera: God
 var ui: UI
 var fog: Fog
 
+var max_units := 5
+var bonus_units := 0
+var units := 0
 var wood := 0
 var clay := 0
-var souls := 0
+var souls := 0:
+	set(value):
+		if value > souls: earned_soul.emit()
+		souls = value
 var ash := 0
 var glassy_clay := 0
+var wave := 1
+
+@onready var timer := Timer.new()
 
 
 func _ready():
 	#get_window().mode = Window.MODE_FULLSCREEN
-	pass
+	add_child(timer)
+	timer.timeout.connect(spawn_wave)
+	timer.start(WAVE_TIME * 4)
 
 
 func _process(_delta):
@@ -36,11 +51,21 @@ func _process(_delta):
 
 
 func refresh_ui() -> void:
+	ui.unit_label.text = str(units) + "/" + str(max_units)
 	ui.wood_label.text = str(wood)
 	ui.clay_label.text = str(clay)
 	ui.souls_label.text = str(souls)
 	ui.ash_label.text = str(ash)
 	ui.glassy_clay_label.text = str(glassy_clay)
+
+
+func spawn_wave() -> void:
+	var cities := get_tree().get_nodes_in_group("Cities")
+	if cities.size() == 0: return
+	for i in wave:
+		cities[randi_range(0, cities.size() - 1)].spawn_enemy()
+	wave += 1
+	timer.start(WAVE_TIME)
 
 
 func mouse_switch(pos := Vector2(0, 0)) -> void :

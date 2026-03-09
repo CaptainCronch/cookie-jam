@@ -12,6 +12,8 @@ class_name God
 @export var selector: Area2D
 @export var towards_point: Node2D
 @export var away_point: Node2D
+@export var music: AudioStreamPlayer
+@export var ambient: AudioStreamPlayer
 
 var drag_desired := global_position
 var zoom_desired := zoom
@@ -135,6 +137,9 @@ func camera_move(delta: float) -> void:
 		#drag_desired += old_mouse_pos - get_global_mouse_position()
 	#global_position += old_mouse_pos - get_global_mouse_position()
 	global_position = Global.decay_towards_vec2(global_position, drag_desired, drag_smooth, delta)
+	
+	music.volume_linear = clamp(inverse_lerp(0.1, 0.5, zoom.x), 0.0, 1.0)
+	ambient.volume_linear = clamp((inverse_lerp(zoom_min.x, 0.2, zoom.x) * -1.0 ) + 0.8, 0.0, 1.0)
 
 
 func select_interactable(object: Interactable) -> void:
@@ -142,7 +147,7 @@ func select_interactable(object: Interactable) -> void:
 	var units_to_remove: Array[Unit] = []
 	for unit in selected_units:
 		#if not is_instance_valid(unit): continue
-		if not unit.current_item == Unit.ITEM.NONE and not object.is_in_group("Banks"): continue
+		if not unit.current_item == Unit.ITEM.NONE and not (object.is_in_group("Banks") or object.is_in_group("Pit")): continue
 		if unit.current_item == object.item: continue
 		units_to_remove.append(unit)
 	for unit in units_to_remove:

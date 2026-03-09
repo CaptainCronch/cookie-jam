@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://du2lw4k1vgxy4"]
+
+[ext_resource type="Texture2D" uid="uid://blkn008fnq75i" path="res://buildings/blood-puddle.png" id="1_fysl4"]
+
+[node name="Puddle" type="Sprite2D" unique_id=1670316015]
+z_index = -2
+scale = Vector2(2, 2)
+texture = ExtResource("1_fysl4")

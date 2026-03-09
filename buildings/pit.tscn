@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://bdq2u6jukn06x"]
+
+[ext_resource type="Script" uid="uid://dlfhxrkc76nto" path="res://buildings/pit.gd" id="1_i46k3"]
+[ext_resource type="Texture2D" uid="uid://cvfe517k84uvk" path="res://buildings/pit.png" id="2_ysupm"]
+[ext_resource type="Texture2D" uid="uid://c8jn2ree31btd" path="res://resources/idol-2.png" id="3_505hl"]
+[ext_resource type="Texture2D" uid="uid://binoe7uwmn1nv" path="res://resources/idol-1.png" id="3_ysupm"]
+[ext_resource type="Texture2D" uid="uid://dqrcoj2xfl6g4" path="res://resources/idol-3.png" id="4_85bvx"]
+[ext_resource type="Texture2D" uid="uid://bc757euedbdlp" path="res://resources/idol-4.png" id="5_5lluo"]
+[ext_resource type="Texture2D" uid="uid://dbtg6icie0qoe" path="res://resources/idol-5.png" id="6_b4l0q"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_036b0"]
+radius = 200.0
+
+[node name="Pit" type="Area2D" unique_id=98455971 node_paths=PackedStringArray("idol") groups=["Banks", "Pit", "Vision"]]
+script = ExtResource("1_i46k3")
+level_sprites = Array[CompressedTexture2D]([ExtResource("3_ysupm"), ExtResource("3_505hl"), ExtResource("4_85bvx"), ExtResource("5_5lluo"), ExtResource("6_b4l0q")])
+idol = NodePath("Idol")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2039452464]
+shape = SubResource("CircleShape2D_036b0")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=761356805]
+z_index = -3
+texture = ExtResource("2_ysupm")
+
+[node name="Timer" type="Timer" parent="." unique_id=1291194774]
+wait_time = 5.0
+autostart = true
+
+[node name="Shadow" type="Polygon2D" parent="." unique_id=1948970789]
+visible = false
+position = Vector2(48, -275)
+scale = Vector2(7.4131093, 4.665408)
+color = Color(0.015686275, 0, 0.050980393, 0.30588236)
+polygon = PackedVector2Array(-46, -2, -46, 3, -43.08176, 9.119496, -38.36478, 12.264151, -34.27673, 14.779874, -26, 18, -11, 19, 1, 19, 17, 17, 23, 16, 29, 12, 33, 7, 34, 2, 33.724037, -2.7864685, 32, -6, 29, -10, 22, -12, 10, -14, -4, -14, -15, -14, -25, -14, -35, -12, -40, -10, -44, -7, -45.32511, -4.501217)
+
+[node name="Idol" type="Sprite2D" parent="." unique_id=192129422]
+position = Vector2(5, -713)
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -1,7 +1,7 @@
 shader_type canvas_item;
 
 uniform float size : hint_range(1.0, 100.0) = 16.0;
-uniform float speed : hint_range(1.0, 100.0) = 20.0;
+uniform float speed : hint_range(-100.0, 100.0) = 20.0;
 uniform vec4 color : source_color = vec4(1.0, 1.0, 1.0, 0.0); 
 uniform float outer_radius : hint_range(0.0, 1.0) = 1.0;
 uniform float main_alpha : hint_range(0.0, 1.0) = 1.0;

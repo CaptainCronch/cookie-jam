@@ -1,7 +1,9 @@
 [gd_scene format=3 uid="uid://creiomrfyolun"]
 
 [ext_resource type="Script" uid="uid://dlhoirxqgd4dt" path="res://resources/deposit.gd" id="1_gp5bx"]
-[ext_resource type="Texture2D" uid="uid://dhromudbd626c" path="res://resources/tree.png" id="2_t5v17"]
+[ext_resource type="Texture2D" uid="uid://bmwtsvnt37c0i" path="res://resources/deposit.png" id="2_hq6ly"]
+[ext_resource type="Texture2D" uid="uid://xasknfidk6xx" path="res://resources/deposit-depleted.png" id="3_abqoh"]
+[ext_resource type="Texture2D" uid="uid://cfwnvu10h7qxx" path="res://resources/deposit-mine.png" id="4_7hfw0"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_aqk2v"]
 radius = 128.0
@@ -9,7 +11,7 @@ radius = 128.0
 [node name="Deposit" type="Area2D" unique_id=655526278 groups=["Deposits", "Resource"]]
 monitoring = false
 script = ExtResource("1_gp5bx")
-max_health = 2
+max_health = 20
 item = 2
 is_resource = true
 metadata/_edit_group_ = true
@@ -18,34 +20,25 @@ metadata/_edit_group_ = true
 shape = SubResource("CircleShape2D_aqk2v")
 
 [node name="Shadow" type="Polygon2D" parent="." unique_id=843625031]
-position = Vector2(16, -2)
-scale = Vector2(2.907859, 2.0329432)
+position = Vector2(18, 11)
+scale = Vector2(3.002114, 2.2728896)
 color = Color(0.015686275, 0, 0.050980393, 0.30588236)
-polygon = PackedVector2Array(-46, -2, -46, 3, -41, 9, -37, 12, -35, 13, -26, 18, -11, 19, 1, 19, 17, 17, 23, 16, 29, 12, 33, 7, 34, 2, 34, -3, 32, -6, 29, -10, 22, -12, 10, -14, -4, -14, -15, -14, -25, -14, -35, -12, -40, -10, -44, -7, -46, -5)
+polygon = PackedVector2Array(-46, -2, -46, 3, -42.75809, 9.679308, -37.969185, 13.639025, -33.86441, 16.278837, -26, 18, -11, 19, 1, 19, 17, 17, 23, 16, 29, 12, 33, 7, 34, 2, 34, -3, 32, -6, 29, -10, 22, -12, 10, -14, -4, -14, -15, -14, -25, -14, -35, -12, -40, -10, -44, -7, -46, -5)
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1711040855]
-self_modulate = Color(1.3938819, 0.69401765, 0, 1)
-position = Vector2(6.45, -82.385)
-scale = Vector2(0.431, 0.625)
-texture = ExtResource("2_t5v17")
-region_enabled = true
+position = Vector2(-2, -88)
+texture = ExtResource("2_hq6ly")
 region_rect = Rect2(-0.5408325, 11.114441, 700.5721, 304.38647)
 
 [node name="Sprite2D2" type="Sprite2D" parent="." unique_id=1178175522]
 visible = false
 self_modulate = Color(0.8032252, 0.3988295, 0, 1)
-position = Vector2(20.195, -57.415)
-scale = Vector2(0.496, 0.465)
-skew = 0.17802358
-texture = ExtResource("2_t5v17")
-region_enabled = true
+position = Vector2(5, -78)
+texture = ExtResource("3_abqoh")
 region_rect = Rect2(-0.5408325, 11.114441, 700.5721, 304.38647)
 
 [node name="Sprite2D3" type="Sprite2D" parent="." unique_id=1477853201]
 visible = false
-self_modulate = Color(1, 0.25, 0, 1)
-position = Vector2(6.45, -99.96)
-scale = Vector2(0.356, 0.745)
-texture = ExtResource("2_t5v17")
-region_enabled = true
+position = Vector2(-1, -79)
+texture = ExtResource("4_7hfw0")
 region_rect = Rect2(-0.5408325, 11.114441, 700.5721, 304.38647)

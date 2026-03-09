@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://eikxsl3mu278"]
+
+[ext_resource type="Script" uid="uid://cm246fvu44q52" path="res://buildings/portal.gd" id="1_3r2wf"]
+[ext_resource type="Texture2D" uid="uid://cl2lkt7yqy4cu" path="res://buildings/portal-large.png" id="2_3r2wf"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_036b0"]
+radius = 100.0
+
+[node name="Portal" type="Area2D" unique_id=1247282839]
+script = ExtResource("1_3r2wf")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1514454512]
+shape = SubResource("CircleShape2D_036b0")
+
+[node name="Shadow" type="Polygon2D" parent="." unique_id=1937887757]
+position = Vector2(15.000001, 1.9999999)
+scale = Vector2(2.7207143, 2.0658498)
+color = Color(0.015686275, 0, 0.050980393, 0.30588236)
+polygon = PackedVector2Array(-46, -2, -46, 3, -43.08176, 9.119496, -38.36478, 12.264151, -34.27673, 14.779874, -26, 18, -11, 19, 1, 19, 17, 17, 23, 16, 29, 12, 33, 7, 34, 2, 34, -3, 32, -6, 29, -10, 22, -12, 10, -14, -4, -14, -15, -14, -25, -14, -35, -12, -40, -10, -44, -7, -46, -5)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2117377725]
+position = Vector2(5, -92)
+texture = ExtResource("2_3r2wf")

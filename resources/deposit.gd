@@ -19,14 +19,16 @@ func finished(_origin: Unit) -> void:
 	# play sound here
 	dead = true
 	remove_from_group("Deposits")
-	done.emit(item)
+	done.emit(item, self)
 	$Sprite2D.hide()
 	$Sprite2D2.show()
+	$Sprite2D3.hide()
 
 
 func revive() -> void:
+	$Sprite2D.hide()
 	$Sprite2D2.hide()
 	$Sprite2D3.show()
 	dead = false
 	add_to_group("Deposits")
-	health = INF
+	health = 60
