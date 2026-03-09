@@ -4,7 +4,7 @@ class_name Enemy
 const BODY = preload("uid://bldwnwc8e611l")
 const PUDDLE = preload("uid://du2lw4k1vgxy4")
 
-@export var default_speed := 400.0
+@export var default_speed := 300.0
 @export var smooth_buffer := 100.0
 @export var close_buffer := 30.0
 @export var acceleration := 10.0

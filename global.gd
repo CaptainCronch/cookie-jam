@@ -2,7 +2,7 @@ extends Node
 
 signal earned_soul
 
-const WAVE_TIME := 30.0
+const WAVE_TIME := 60.0
 
 var camera: God
 var ui: UI
@@ -28,7 +28,7 @@ func _ready():
 	#get_window().mode = Window.MODE_FULLSCREEN
 	add_child(timer)
 	timer.timeout.connect(spawn_wave)
-	timer.start(WAVE_TIME * 4)
+	timer.start(WAVE_TIME * 5)
 
 
 func _process(_delta):
