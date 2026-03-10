@@ -9,6 +9,8 @@ func _ready() -> void:
 	var rand := randi_range(0, 2)
 	if rand == 1: $Sprite2D.texture = alt
 	elif rand == 2:$Sprite2D.texture = alt2
+	if Global.timer.is_stopped():
+		Global.timer.start(Global.WAVE_TIME)
 
 
 #func interact(origin: Unit, _strength := 1) -> void:

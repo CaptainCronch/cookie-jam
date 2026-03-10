@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://cypx0xe27be6w"]
+
+[ext_resource type="Texture2D" uid="uid://dkrmufmnvbrv4" path="res://particles/clay-crumbs.png" id="1_fo83v"]
+[ext_resource type="Script" uid="uid://dgmf4drf5gfkp" path="res://self_destruct_particles.gd" id="2_ykkt8"]
+
+[sub_resource type="Curve" id="Curve_bpsee"]
+_data = [Vector2(0, 0), 0.0, 11.346993, 0, 0, Vector2(0.08189654, 1), 0.105322585, 0.0, 0, 0, Vector2(0.83189654, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -18.768538, 0.0, 0, 0]
+point_count = 4
+
+[node name="ClayCrumbs" type="CPUParticles2D" unique_id=1552947772]
+emitting = false
+amount = 20
+texture = ExtResource("1_fo83v")
+one_shot = true
+explosiveness = 0.9
+lifetime_randomness = 0.2
+emission_shape = 2
+emission_sphere_radius = 128.0
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 800.0
+initial_velocity_max = 800.0
+damping_min = 3000.0
+damping_max = 3000.0
+angle_max = 360.0
+scale_amount_curve = SubResource("Curve_bpsee")
+script = ExtResource("2_ykkt8")

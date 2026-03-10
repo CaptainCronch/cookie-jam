@@ -5,8 +5,9 @@ const ENEMY = preload("uid://np7lmt4qtbuk")
 const VICTIM = preload("uid://bgi6kgxyt0l8h")
 
 
-func interact(origin: Unit, strength := 1) -> void:
-	if not origin.current_item == Unit.ITEM.NONE: return
+func interact(origin: Unit, strength := 1) -> bool:
+	if dead: return false
+	if not origin.current_item == Unit.ITEM.NONE: return false
 	if randi_range(0, 4) == 4:
 		if randi_range(0, 1) == 1:
 			spawn_enemy()
@@ -16,12 +17,15 @@ func interact(origin: Unit, strength := 1) -> void:
 	origin.give(item)
 	if health <= 0:
 		finished(origin)
+	return true
 
 
 func finished(_origin: Unit) -> void:
 	# spawn log here? nah
 	# spawn particles
 	# play sound here
+	remove_from_group("Cities")
+	dead = true
 	done.emit(item, self)
 	queue_free()
 

@@ -7,13 +7,14 @@ class_name God
 @export var zoom_max := Vector2(2.0, 2.0)
 @export var zoom_min := Vector2(0.05, 0.05)
 @export var zoom_smooth := 5.0
-@export var selector_radius := 50.0
+@export var selector_radius := 64.0
 
 @export var selector: Area2D
 @export var towards_point: Node2D
 @export var away_point: Node2D
 @export var music: AudioStreamPlayer
 @export var ambient: AudioStreamPlayer
+@export var clouds: Clouds
 
 var drag_desired := global_position
 var zoom_desired := zoom
@@ -27,7 +28,10 @@ var last_selected: Interactable
 @onready var selector_visualizer: Polygon2D = selector.get_node("Polygon2D")
 
 
-func _ready() -> void: Global.camera = self
+func _ready() -> void:
+	Global.camera = self
+	$Selector/Polygon2D.polygon = generate_circle_polygon(selector_radius, 32)
+	$Selector/Polygon2D.uv = generate_circle_polygon(0.5, 32, Vector2(0.5, 0.5))
 
 
 func _input(event: InputEvent) -> void:
@@ -42,8 +46,10 @@ func _process(delta: float) -> void:
 	commanding()
 	camera_move(delta)
 	
-	if Input.is_action_just_pressed("tab"): can_select = !can_select
+	towards_point.global_position = get_global_mouse_position()
 	away_point.global_position = get_global_mouse_position()
+	
+	if Input.is_action_just_pressed("tab"): can_select = !can_select
 	selector_shape.radius = selector_radius * (1/zoom.x) 
 	selector_visualizer.scale = Vector2(1/zoom.x, 1/zoom.y)
 
@@ -115,7 +121,6 @@ func commanding() -> void:
 			unit.move_to(get_global_mouse_position())
 		towards_point.visible = true
 		away_point.visible = false
-		towards_point.global_position = get_global_mouse_position()
 	#if (Input.is_action_just_released("mouse1") and Input.is_action_pressed("shift")) or (Input.is_action_pressed("mouse1") and Input.is_action_just_released("shift")) or (Input.is_action_just_released("mouse1") and Input.is_action_just_released("shift")):
 	else:
 		#for unit in selected_units: unit.stop_moving_away()
@@ -140,6 +145,7 @@ func camera_move(delta: float) -> void:
 	
 	music.volume_linear = clamp(inverse_lerp(0.1, 0.5, zoom.x), 0.0, 1.0)
 	ambient.volume_linear = clamp((inverse_lerp(zoom_min.x, 0.2, zoom.x) * -1.0 ) + 0.8, 0.0, 1.0)
+	clouds.change_clouds(clamp((inverse_lerp(zoom_min.x, 0.15, zoom.x) * -1.0) + 1.0, 0.0, 1.0))
 
 
 func select_interactable(object: Interactable) -> void:
@@ -154,6 +160,18 @@ func select_interactable(object: Interactable) -> void:
 		unit.set_goal(object)
 		selected_units.erase(unit)
 		unit.selected(false)
+
+
+func generate_circle_polygon(radius: float, num_sides: int, bonus := Vector2()) -> PackedVector2Array:
+	var angle_delta: float = (PI * 2) / num_sides
+	var vector: Vector2 = Vector2(radius, 0)
+	var points: PackedVector2Array
+
+	for _i in num_sides:
+		points.append(vector + bonus)
+		vector = vector.rotated(angle_delta)
+
+	return points
 
 
 func _on_unit_freed(unit: Unit) -> void:

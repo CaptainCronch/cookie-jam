@@ -7,7 +7,6 @@
 [ext_resource type="Script" uid="uid://dded46d5rqlqr" path="res://world/camera.gd" id="2_tlwt5"]
 [ext_resource type="AudioStream" uid="uid://d2hupjfh755p8" path="res://world/Stinger_v1.mp3" id="3_avd5l"]
 [ext_resource type="Texture2D" uid="uid://i628tjcomtel" path="res://resources/wood.png" id="3_dqqhb"]
-[ext_resource type="Texture2D" uid="uid://csajxojqkdeb5" path="res://resources/clay-gray.png" id="3_ftqqi"]
 [ext_resource type="Script" uid="uid://o2yv2fne47d6" path="res://addons/advanced_radial_menu/radial_menu_class.gd" id="3_gbfbk"]
 [ext_resource type="Texture2D" uid="uid://dpiksumdpaobv" path="res://resources/soul-3.png" id="3_inp7a"]
 [ext_resource type="Material" uid="uid://djhix3qn8fa8a" path="res://shaders/checkerboard_material.tres" id="3_ioo17"]
@@ -16,6 +15,7 @@
 [ext_resource type="Shader" uid="uid://mbyb0q7bxowv" path="res://shaders/fog.gdshader" id="5_2o6r5"]
 [ext_resource type="Script" uid="uid://cxoie1xj6kpjo" path="res://world/fog.gd" id="5_ic0uy"]
 [ext_resource type="Texture2D" uid="uid://diobx47deyomu" path="res://world/unit-icon.png" id="6_bwxdu"]
+[ext_resource type="Texture2D" uid="uid://bw046gslbhc46" path="res://resources/ash.png" id="6_ll3gq"]
 [ext_resource type="Texture2D" uid="uid://bsmup4uu4b2d2" path="res://world/x-magenta.png" id="7_j34ew"]
 [ext_resource type="Texture2D" uid="uid://dxvldek3102j8" path="res://buildings/bank-empty.png" id="8_p2iis"]
 [ext_resource type="Texture2D" uid="uid://bvc3ur0d50ihi" path="res://buildings/vision.png" id="9_aysyn"]
@@ -31,6 +31,8 @@
 [ext_resource type="Shader" uid="uid://cfnr1xeyiulul" path="res://shaders/checkerboard.gdshader" id="17_avd5l"]
 [ext_resource type="Shader" uid="uid://bmvfbfgv0bdep" path="res://shaders/checkerboard-blur.gdshader" id="20_0pnie"]
 [ext_resource type="PackedScene" uid="uid://bdq2u6jukn06x" path="res://buildings/pit.tscn" id="24_llyeo"]
+[ext_resource type="Shader" uid="uid://bntp4pcxqbmjt" path="res://shaders/clouds.gdshader" id="25_jgi7c"]
+[ext_resource type="Script" uid="uid://w61fkfnnxxap" path="res://world/clouds.gd" id="25_ll3gq"]
 [ext_resource type="PackedScene" uid="uid://bgi6kgxyt0l8h" path="res://enemies/victim.tscn" id="27_2tavo"]
 [ext_resource type="PackedScene" uid="uid://crepqum2d1tg8" path="res://buildings/city.tscn" id="32_lwhbe"]
 
@@ -39,6 +41,7 @@ font_size = 22
 
 [sub_resource type="LabelSettings" id="LabelSettings_k8wd0"]
 line_spacing = -3.0
+font_size = 22
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ll3gq"]
 shader = ExtResource("17_avd5l")
@@ -54,6 +57,27 @@ font_size = 22
 
 [sub_resource type="LabelSettings" id="LabelSettings_lwhbe"]
 font_size = 24
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cqwbg"]
+shader = ExtResource("25_jgi7c")
+shader_parameter/x_speed = 0.01
+shader_parameter/y_speed = 0.01
+shader_parameter/alpha = 0.0
+
+[sub_resource type="Gradient" id="Gradient_jgi7c"]
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_cqwbg"]
+seed = 25498
+frequency = 0.0126
+fractal_lacunarity = 2.1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_q3kex"]
+generate_mipmaps = false
+noise = SubResource("FastNoiseLite_cqwbg")
+color_ramp = SubResource("Gradient_jgi7c")
+seamless = true
+seamless_blend_skirt = 0.2
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_70uel"]
 shader = ExtResource("5_2o6r5")
@@ -165,7 +189,7 @@ bus = &"Ambient"
 stream = ExtResource("3_avd5l")
 bus = &"Music"
 
-[node name="UI" type="CanvasLayer" parent="." unique_id=661678817 node_paths=PackedStringArray("unit_label", "wood_label", "clay_label", "souls_label", "ash_label", "glassy_clay_label", "build_menu", "camera", "build_preview", "mine_check", "info_box", "info_label", "victory_text")]
+[node name="UI" type="CanvasLayer" parent="." unique_id=661678817 node_paths=PackedStringArray("unit_label", "wood_label", "clay_label", "souls_label", "ash_label", "glassy_clay_label", "build_menu", "camera", "build_preview", "mine_check", "info_box", "info_label", "victory_text", "controls")]
 script = ExtResource("1_pkg7o")
 unit_label = NodePath("Resources/HBoxContainer/Unit")
 wood_label = NodePath("Resources/HBoxContainer/Wood")
@@ -180,6 +204,7 @@ mine_check = NodePath("../MineCheck")
 info_box = NodePath("InfoBox")
 info_label = NodePath("InfoBox/MarginContainer/Label")
 victory_text = NodePath("Victory")
+controls = NodePath("Controls")
 
 [node name="Resources" type="MarginContainer" parent="UI" unique_id=1650681504]
 anchors_preset = 3
@@ -214,11 +239,9 @@ text = "0"
 label_settings = SubResource("LabelSettings_dwbse")
 
 [node name="TextureRect4" type="TextureRect" parent="UI/Resources/HBoxContainer" unique_id=511757033]
-self_modulate = Color(0.36078432, 0.36078432, 0.36078432, 1)
 layout_mode = 2
-texture = ExtResource("3_ftqqi")
+texture = ExtResource("6_ll3gq")
 expand_mode = 2
-flip_v = true
 
 [node name="Ash" type="Label" parent="UI/Resources/HBoxContainer" unique_id=1625110129]
 custom_minimum_size = Vector2(60, 0)
@@ -390,9 +413,11 @@ theme_override_constants/margin_bottom = 16
 
 [node name="Label" type="Label" parent="UI/Controls" unique_id=1730743809]
 layout_mode = 2
-text = "Space + Left click - Select
-Space + Right click - Deselect
-A - Select all
+text = "Scroll wheel - Zoom
+Middle click - Pan
+Space + Left click - Select units
+Space + Right click - Deselect units
+A - Select all units
 Left click - Go command
 Shift + Left click - Away command
 Right click - Interact command
@@ -452,6 +477,16 @@ autowrap_mode = 3
 y_sort_enabled = true
 script = ExtResource("10_p2iis")
 sprites = Array[CompressedTexture2D]([ExtResource("11_3ljsx"), ExtResource("12_gi7ib"), ExtResource("13_0pnie")])
+
+[node name="Clouds" type="Sprite2D" parent="Environment" unique_id=1247739074]
+z_index = 199
+texture_repeat = 2
+material = SubResource("ShaderMaterial_cqwbg")
+scale = Vector2(32, 32)
+texture = SubResource("NoiseTexture2D_q3kex")
+region_enabled = true
+region_rect = Rect2(0, 0, 1024, 1024)
+script = ExtResource("25_ll3gq")
 
 [node name="Fog" type="Sprite2D" parent="Environment" unique_id=5950817]
 z_index = 200
@@ -590,803 +625,1142 @@ position = Vector2(-9419, 4995)
 [node name="City16" parent="Environment" unique_id=170262964 instance=ExtResource("32_lwhbe")]
 position = Vector2(-7557, 7490)
 
-[node name="Tree" parent="Environment" unique_id=1110461696 instance=ExtResource("3_pkg7o")]
+[node name="Trees" type="Node2D" parent="Environment" unique_id=317549292]
+y_sort_enabled = true
+
+[node name="Tree" parent="Environment/Trees" unique_id=1110461696 instance=ExtResource("3_pkg7o")]
 position = Vector2(-469, -1061)
 
-[node name="Tree3" parent="Environment" unique_id=1965786315 instance=ExtResource("3_pkg7o")]
+[node name="Tree3" parent="Environment/Trees" unique_id=1965786315 instance=ExtResource("3_pkg7o")]
 position = Vector2(1029, -863)
 
-[node name="Tree6" parent="Environment" unique_id=1320237971 instance=ExtResource("3_pkg7o")]
+[node name="Tree6" parent="Environment/Trees" unique_id=1320237971 instance=ExtResource("3_pkg7o")]
 position = Vector2(-1379, -330)
 
-[node name="Tree9" parent="Environment" unique_id=130487188 instance=ExtResource("3_pkg7o")]
+[node name="Tree9" parent="Environment/Trees" unique_id=130487188 instance=ExtResource("3_pkg7o")]
 position = Vector2(-1046, 1164)
 
-[node name="Tree11" parent="Environment" unique_id=1667792410 instance=ExtResource("3_pkg7o")]
+[node name="Tree11" parent="Environment/Trees" unique_id=1667792410 instance=ExtResource("3_pkg7o")]
 position = Vector2(596, 1480)
 
-[node name="Tree13" parent="Environment" unique_id=239448334 instance=ExtResource("3_pkg7o")]
+[node name="Tree13" parent="Environment/Trees" unique_id=239448334 instance=ExtResource("3_pkg7o")]
 position = Vector2(1645, 586)
 
-[node name="Tree14" parent="Environment" unique_id=1129302828 instance=ExtResource("3_pkg7o")]
+[node name="Tree14" parent="Environment/Trees" unique_id=1129302828 instance=ExtResource("3_pkg7o")]
 position = Vector2(1645, -100)
 
-[node name="Tree15" parent="Environment" unique_id=1604752782 instance=ExtResource("3_pkg7o")]
+[node name="Tree15" parent="Environment/Trees" unique_id=1604752782 instance=ExtResource("3_pkg7o")]
 position = Vector2(3071, -1277)
 
-[node name="Tree16" parent="Environment" unique_id=1790220231 instance=ExtResource("3_pkg7o")]
+[node name="Tree16" parent="Environment/Trees" unique_id=1790220231 instance=ExtResource("3_pkg7o")]
 position = Vector2(3374, -960)
 
-[node name="Tree17" parent="Environment" unique_id=1210585236 instance=ExtResource("3_pkg7o")]
+[node name="Tree17" parent="Environment/Trees" unique_id=1210585236 instance=ExtResource("3_pkg7o")]
 position = Vector2(3533, -1306)
 
-[node name="Tree18" parent="Environment" unique_id=1618752792 instance=ExtResource("3_pkg7o")]
+[node name="Tree18" parent="Environment/Trees" unique_id=1618752792 instance=ExtResource("3_pkg7o")]
 position = Vector2(1182, -3887)
 
-[node name="Tree19" parent="Environment" unique_id=550624244 instance=ExtResource("3_pkg7o")]
+[node name="Tree19" parent="Environment/Trees" unique_id=550624244 instance=ExtResource("3_pkg7o")]
 position = Vector2(1485, -3570)
 
-[node name="Tree20" parent="Environment" unique_id=2086027593 instance=ExtResource("3_pkg7o")]
+[node name="Tree20" parent="Environment/Trees" unique_id=2086027593 instance=ExtResource("3_pkg7o")]
 position = Vector2(1644, -3916)
 
-[node name="Tree21" parent="Environment" unique_id=1165264351 instance=ExtResource("3_pkg7o")]
+[node name="Tree21" parent="Environment/Trees" unique_id=1165264351 instance=ExtResource("3_pkg7o")]
 position = Vector2(-2481, -2777)
 
-[node name="Tree22" parent="Environment" unique_id=1488536511 instance=ExtResource("3_pkg7o")]
+[node name="Tree22" parent="Environment/Trees" unique_id=1488536511 instance=ExtResource("3_pkg7o")]
 position = Vector2(-2178, -2460)
 
-[node name="Tree23" parent="Environment" unique_id=1546156236 instance=ExtResource("3_pkg7o")]
+[node name="Tree23" parent="Environment/Trees" unique_id=1546156236 instance=ExtResource("3_pkg7o")]
 position = Vector2(-2019, -2806)
 
-[node name="Tree24" parent="Environment" unique_id=233978589 instance=ExtResource("3_pkg7o")]
+[node name="Tree24" parent="Environment/Trees" unique_id=233978589 instance=ExtResource("3_pkg7o")]
 position = Vector2(-4168, 525)
 
-[node name="Tree25" parent="Environment" unique_id=826273037 instance=ExtResource("3_pkg7o")]
+[node name="Tree25" parent="Environment/Trees" unique_id=826273037 instance=ExtResource("3_pkg7o")]
 position = Vector2(-3865, 842)
 
-[node name="Tree26" parent="Environment" unique_id=579597709 instance=ExtResource("3_pkg7o")]
+[node name="Tree26" parent="Environment/Trees" unique_id=579597709 instance=ExtResource("3_pkg7o")]
 position = Vector2(-3706, 496)
 
-[node name="Tree27" parent="Environment" unique_id=599113121 instance=ExtResource("3_pkg7o")]
+[node name="Tree27" parent="Environment/Trees" unique_id=599113121 instance=ExtResource("3_pkg7o")]
 position = Vector2(-2611, 2933)
 
-[node name="Tree28" parent="Environment" unique_id=486132366 instance=ExtResource("3_pkg7o")]
+[node name="Tree28" parent="Environment/Trees" unique_id=486132366 instance=ExtResource("3_pkg7o")]
 position = Vector2(-2308, 3250)
 
-[node name="Tree29" parent="Environment" unique_id=1098262230 instance=ExtResource("3_pkg7o")]
+[node name="Tree29" parent="Environment/Trees" unique_id=1098262230 instance=ExtResource("3_pkg7o")]
 position = Vector2(-2149, 2904)
 
-[node name="Tree30" parent="Environment" unique_id=2102316545 instance=ExtResource("3_pkg7o")]
+[node name="Tree30" parent="Environment/Trees" unique_id=2102316545 instance=ExtResource("3_pkg7o")]
 position = Vector2(-2611, 2933)
 
-[node name="Tree31" parent="Environment" unique_id=413389348 instance=ExtResource("3_pkg7o")]
+[node name="Tree31" parent="Environment/Trees" unique_id=413389348 instance=ExtResource("3_pkg7o")]
 position = Vector2(-2308, 3250)
 
-[node name="Tree32" parent="Environment" unique_id=56851430 instance=ExtResource("3_pkg7o")]
+[node name="Tree32" parent="Environment/Trees" unique_id=56851430 instance=ExtResource("3_pkg7o")]
 position = Vector2(-2149, 2904)
 
-[node name="Tree33" parent="Environment" unique_id=976426058 instance=ExtResource("3_pkg7o")]
+[node name="Tree33" parent="Environment/Trees" unique_id=976426058 instance=ExtResource("3_pkg7o")]
 position = Vector2(807, 2861)
 
-[node name="Tree34" parent="Environment" unique_id=534170586 instance=ExtResource("3_pkg7o")]
+[node name="Tree34" parent="Environment/Trees" unique_id=534170586 instance=ExtResource("3_pkg7o")]
 position = Vector2(1110, 3178)
 
-[node name="Tree35" parent="Environment" unique_id=91452520 instance=ExtResource("3_pkg7o")]
+[node name="Tree35" parent="Environment/Trees" unique_id=91452520 instance=ExtResource("3_pkg7o")]
 position = Vector2(1269, 2832)
 
-[node name="Tree36" parent="Environment" unique_id=645577220 instance=ExtResource("3_pkg7o")]
+[node name="Tree36" parent="Environment/Trees" unique_id=645577220 instance=ExtResource("3_pkg7o")]
 position = Vector2(2408, 1376)
 
-[node name="Tree37" parent="Environment" unique_id=694119873 instance=ExtResource("3_pkg7o")]
+[node name="Tree37" parent="Environment/Trees" unique_id=694119873 instance=ExtResource("3_pkg7o")]
 position = Vector2(2711, 1693)
 
-[node name="Tree38" parent="Environment" unique_id=1612022903 instance=ExtResource("3_pkg7o")]
+[node name="Tree38" parent="Environment/Trees" unique_id=1612022903 instance=ExtResource("3_pkg7o")]
 position = Vector2(2870, 1347)
 
-[node name="Tree39" parent="Environment" unique_id=2034867202 instance=ExtResource("3_pkg7o")]
+[node name="Tree39" parent="Environment/Trees" unique_id=2034867202 instance=ExtResource("3_pkg7o")]
 position = Vector2(-4081, -1551)
 
-[node name="Tree40" parent="Environment" unique_id=1120126480 instance=ExtResource("3_pkg7o")]
+[node name="Tree40" parent="Environment/Trees" unique_id=1120126480 instance=ExtResource("3_pkg7o")]
 position = Vector2(-3778, -1234)
 
-[node name="Tree41" parent="Environment" unique_id=131472802 instance=ExtResource("3_pkg7o")]
+[node name="Tree41" parent="Environment/Trees" unique_id=131472802 instance=ExtResource("3_pkg7o")]
 position = Vector2(-3619, -1580)
 
-[node name="Tree42" parent="Environment" unique_id=82325074 instance=ExtResource("3_pkg7o")]
+[node name="Tree42" parent="Environment/Trees" unique_id=82325074 instance=ExtResource("3_pkg7o")]
 position = Vector2(-6941, -2952)
 
-[node name="Tree43" parent="Environment" unique_id=305180665 instance=ExtResource("3_pkg7o")]
+[node name="Tree43" parent="Environment/Trees" unique_id=305180665 instance=ExtResource("3_pkg7o")]
 position = Vector2(-6638, -2635)
 
-[node name="Tree44" parent="Environment" unique_id=425564426 instance=ExtResource("3_pkg7o")]
+[node name="Tree44" parent="Environment/Trees" unique_id=425564426 instance=ExtResource("3_pkg7o")]
 position = Vector2(-6479, -2981)
 
-[node name="Tree45" parent="Environment" unique_id=62686770 instance=ExtResource("3_pkg7o")]
+[node name="Tree45" parent="Environment/Trees" unique_id=62686770 instance=ExtResource("3_pkg7o")]
 position = Vector2(-6346, -2730)
 
-[node name="Tree46" parent="Environment" unique_id=1638313743 instance=ExtResource("3_pkg7o")]
+[node name="Tree46" parent="Environment/Trees" unique_id=1638313743 instance=ExtResource("3_pkg7o")]
 position = Vector2(-6043, -2413)
 
-[node name="Tree47" parent="Environment" unique_id=1060511453 instance=ExtResource("3_pkg7o")]
+[node name="Tree47" parent="Environment/Trees" unique_id=1060511453 instance=ExtResource("3_pkg7o")]
 position = Vector2(-5884, -2759)
 
-[node name="Tree48" parent="Environment" unique_id=67594077 instance=ExtResource("3_pkg7o")]
+[node name="Tree48" parent="Environment/Trees" unique_id=67594077 instance=ExtResource("3_pkg7o")]
 position = Vector2(-7430, -2613)
 
-[node name="Tree49" parent="Environment" unique_id=1805437353 instance=ExtResource("3_pkg7o")]
+[node name="Tree49" parent="Environment/Trees" unique_id=1805437353 instance=ExtResource("3_pkg7o")]
 position = Vector2(-7127, -2296)
 
-[node name="Tree50" parent="Environment" unique_id=145266288 instance=ExtResource("3_pkg7o")]
+[node name="Tree50" parent="Environment/Trees" unique_id=145266288 instance=ExtResource("3_pkg7o")]
 position = Vector2(-6968, -2642)
 
-[node name="Tree51" parent="Environment" unique_id=1715978899 instance=ExtResource("3_pkg7o")]
+[node name="Tree51" parent="Environment/Trees" unique_id=1715978899 instance=ExtResource("3_pkg7o")]
 position = Vector2(-3690, -5863)
 
-[node name="Tree52" parent="Environment" unique_id=567515398 instance=ExtResource("3_pkg7o")]
+[node name="Tree52" parent="Environment/Trees" unique_id=567515398 instance=ExtResource("3_pkg7o")]
 position = Vector2(-3387, -5546)
 
-[node name="Tree53" parent="Environment" unique_id=765397739 instance=ExtResource("3_pkg7o")]
+[node name="Tree53" parent="Environment/Trees" unique_id=765397739 instance=ExtResource("3_pkg7o")]
 position = Vector2(-3228, -5892)
 
-[node name="Tree54" parent="Environment" unique_id=1716107612 instance=ExtResource("3_pkg7o")]
+[node name="Tree54" parent="Environment/Trees" unique_id=1716107612 instance=ExtResource("3_pkg7o")]
 position = Vector2(-3095, -5641)
 
-[node name="Tree55" parent="Environment" unique_id=1704941422 instance=ExtResource("3_pkg7o")]
+[node name="Tree55" parent="Environment/Trees" unique_id=1704941422 instance=ExtResource("3_pkg7o")]
 position = Vector2(-2792, -5324)
 
-[node name="Tree56" parent="Environment" unique_id=271404185 instance=ExtResource("3_pkg7o")]
+[node name="Tree56" parent="Environment/Trees" unique_id=271404185 instance=ExtResource("3_pkg7o")]
 position = Vector2(-2633, -5670)
 
-[node name="Tree57" parent="Environment" unique_id=1531417242 instance=ExtResource("3_pkg7o")]
+[node name="Tree57" parent="Environment/Trees" unique_id=1531417242 instance=ExtResource("3_pkg7o")]
 position = Vector2(-4179, -5524)
 
-[node name="Tree58" parent="Environment" unique_id=968721305 instance=ExtResource("3_pkg7o")]
+[node name="Tree58" parent="Environment/Trees" unique_id=968721305 instance=ExtResource("3_pkg7o")]
 position = Vector2(-3876, -5207)
 
-[node name="Tree59" parent="Environment" unique_id=1538889604 instance=ExtResource("3_pkg7o")]
+[node name="Tree59" parent="Environment/Trees" unique_id=1538889604 instance=ExtResource("3_pkg7o")]
 position = Vector2(-3717, -5553)
 
-[node name="Tree60" parent="Environment" unique_id=637861137 instance=ExtResource("3_pkg7o")]
+[node name="Tree60" parent="Environment/Trees" unique_id=637861137 instance=ExtResource("3_pkg7o")]
 position = Vector2(467, -7024)
 
-[node name="Tree61" parent="Environment" unique_id=1902536073 instance=ExtResource("3_pkg7o")]
+[node name="Tree61" parent="Environment/Trees" unique_id=1902536073 instance=ExtResource("3_pkg7o")]
 position = Vector2(770, -6707)
 
-[node name="Tree62" parent="Environment" unique_id=1799917290 instance=ExtResource("3_pkg7o")]
+[node name="Tree62" parent="Environment/Trees" unique_id=1799917290 instance=ExtResource("3_pkg7o")]
 position = Vector2(929, -7053)
 
-[node name="Tree63" parent="Environment" unique_id=1879638350 instance=ExtResource("3_pkg7o")]
+[node name="Tree63" parent="Environment/Trees" unique_id=1879638350 instance=ExtResource("3_pkg7o")]
 position = Vector2(1062, -6802)
 
-[node name="Tree64" parent="Environment" unique_id=1439343432 instance=ExtResource("3_pkg7o")]
+[node name="Tree64" parent="Environment/Trees" unique_id=1439343432 instance=ExtResource("3_pkg7o")]
 position = Vector2(1365, -6485)
 
-[node name="Tree65" parent="Environment" unique_id=1823538554 instance=ExtResource("3_pkg7o")]
+[node name="Tree65" parent="Environment/Trees" unique_id=1823538554 instance=ExtResource("3_pkg7o")]
 position = Vector2(1524, -6831)
 
-[node name="Tree66" parent="Environment" unique_id=691491969 instance=ExtResource("3_pkg7o")]
+[node name="Tree66" parent="Environment/Trees" unique_id=691491969 instance=ExtResource("3_pkg7o")]
 position = Vector2(-22, -6685)
 
-[node name="Tree67" parent="Environment" unique_id=2045153714 instance=ExtResource("3_pkg7o")]
+[node name="Tree67" parent="Environment/Trees" unique_id=2045153714 instance=ExtResource("3_pkg7o")]
 position = Vector2(281, -6368)
 
-[node name="Tree68" parent="Environment" unique_id=1121596064 instance=ExtResource("3_pkg7o")]
+[node name="Tree68" parent="Environment/Trees" unique_id=1121596064 instance=ExtResource("3_pkg7o")]
 position = Vector2(440, -6714)
 
-[node name="Tree69" parent="Environment" unique_id=37464707 instance=ExtResource("3_pkg7o")]
+[node name="Tree69" parent="Environment/Trees" unique_id=37464707 instance=ExtResource("3_pkg7o")]
 position = Vector2(467, -7024)
 
-[node name="Tree70" parent="Environment" unique_id=1147886357 instance=ExtResource("3_pkg7o")]
+[node name="Tree70" parent="Environment/Trees" unique_id=1147886357 instance=ExtResource("3_pkg7o")]
 position = Vector2(770, -6707)
 
-[node name="Tree71" parent="Environment" unique_id=622554974 instance=ExtResource("3_pkg7o")]
+[node name="Tree71" parent="Environment/Trees" unique_id=622554974 instance=ExtResource("3_pkg7o")]
 position = Vector2(929, -7053)
 
-[node name="Tree72" parent="Environment" unique_id=859501890 instance=ExtResource("3_pkg7o")]
+[node name="Tree72" parent="Environment/Trees" unique_id=859501890 instance=ExtResource("3_pkg7o")]
 position = Vector2(1062, -6802)
 
-[node name="Tree73" parent="Environment" unique_id=352535433 instance=ExtResource("3_pkg7o")]
+[node name="Tree73" parent="Environment/Trees" unique_id=352535433 instance=ExtResource("3_pkg7o")]
 position = Vector2(1365, -6485)
 
-[node name="Tree74" parent="Environment" unique_id=1012723325 instance=ExtResource("3_pkg7o")]
+[node name="Tree74" parent="Environment/Trees" unique_id=1012723325 instance=ExtResource("3_pkg7o")]
 position = Vector2(1524, -6831)
 
-[node name="Tree75" parent="Environment" unique_id=237007802 instance=ExtResource("3_pkg7o")]
+[node name="Tree75" parent="Environment/Trees" unique_id=237007802 instance=ExtResource("3_pkg7o")]
 position = Vector2(-22, -6685)
 
-[node name="Tree76" parent="Environment" unique_id=1535473228 instance=ExtResource("3_pkg7o")]
+[node name="Tree76" parent="Environment/Trees" unique_id=1535473228 instance=ExtResource("3_pkg7o")]
 position = Vector2(281, -6368)
 
-[node name="Tree77" parent="Environment" unique_id=1947038473 instance=ExtResource("3_pkg7o")]
+[node name="Tree77" parent="Environment/Trees" unique_id=1947038473 instance=ExtResource("3_pkg7o")]
 position = Vector2(440, -6714)
 
-[node name="Tree78" parent="Environment" unique_id=883005348 instance=ExtResource("3_pkg7o")]
+[node name="Tree78" parent="Environment/Trees" unique_id=883005348 instance=ExtResource("3_pkg7o")]
 position = Vector2(3991, -5818)
 
-[node name="Tree79" parent="Environment" unique_id=1213846888 instance=ExtResource("3_pkg7o")]
+[node name="Tree79" parent="Environment/Trees" unique_id=1213846888 instance=ExtResource("3_pkg7o")]
 position = Vector2(4294, -5501)
 
-[node name="Tree80" parent="Environment" unique_id=1247645740 instance=ExtResource("3_pkg7o")]
+[node name="Tree80" parent="Environment/Trees" unique_id=1247645740 instance=ExtResource("3_pkg7o")]
 position = Vector2(4453, -5847)
 
-[node name="Tree81" parent="Environment" unique_id=1071774537 instance=ExtResource("3_pkg7o")]
+[node name="Tree81" parent="Environment/Trees" unique_id=1071774537 instance=ExtResource("3_pkg7o")]
 position = Vector2(4586, -5596)
 
-[node name="Tree82" parent="Environment" unique_id=598529635 instance=ExtResource("3_pkg7o")]
+[node name="Tree82" parent="Environment/Trees" unique_id=598529635 instance=ExtResource("3_pkg7o")]
 position = Vector2(4889, -5279)
 
-[node name="Tree83" parent="Environment" unique_id=1811103888 instance=ExtResource("3_pkg7o")]
+[node name="Tree83" parent="Environment/Trees" unique_id=1811103888 instance=ExtResource("3_pkg7o")]
 position = Vector2(5048, -5625)
 
-[node name="Tree84" parent="Environment" unique_id=298859461 instance=ExtResource("3_pkg7o")]
+[node name="Tree84" parent="Environment/Trees" unique_id=298859461 instance=ExtResource("3_pkg7o")]
 position = Vector2(3502, -5479)
 
-[node name="Tree85" parent="Environment" unique_id=427796141 instance=ExtResource("3_pkg7o")]
+[node name="Tree85" parent="Environment/Trees" unique_id=427796141 instance=ExtResource("3_pkg7o")]
 position = Vector2(3805, -5162)
 
-[node name="Tree86" parent="Environment" unique_id=222524139 instance=ExtResource("3_pkg7o")]
+[node name="Tree86" parent="Environment/Trees" unique_id=222524139 instance=ExtResource("3_pkg7o")]
 position = Vector2(3964, -5508)
 
-[node name="Tree87" parent="Environment" unique_id=405069987 instance=ExtResource("3_pkg7o")]
+[node name="Tree87" parent="Environment/Trees" unique_id=405069987 instance=ExtResource("3_pkg7o")]
 position = Vector2(5815, -2479)
 
-[node name="Tree88" parent="Environment" unique_id=932065255 instance=ExtResource("3_pkg7o")]
+[node name="Tree88" parent="Environment/Trees" unique_id=932065255 instance=ExtResource("3_pkg7o")]
 position = Vector2(6118, -2162)
 
-[node name="Tree89" parent="Environment" unique_id=1060465658 instance=ExtResource("3_pkg7o")]
+[node name="Tree89" parent="Environment/Trees" unique_id=1060465658 instance=ExtResource("3_pkg7o")]
 position = Vector2(6277, -2508)
 
-[node name="Tree90" parent="Environment" unique_id=1697742447 instance=ExtResource("3_pkg7o")]
+[node name="Tree90" parent="Environment/Trees" unique_id=1697742447 instance=ExtResource("3_pkg7o")]
 position = Vector2(6410, -2257)
 
-[node name="Tree91" parent="Environment" unique_id=2123667569 instance=ExtResource("3_pkg7o")]
+[node name="Tree91" parent="Environment/Trees" unique_id=2123667569 instance=ExtResource("3_pkg7o")]
 position = Vector2(6713, -1940)
 
-[node name="Tree92" parent="Environment" unique_id=858709045 instance=ExtResource("3_pkg7o")]
+[node name="Tree92" parent="Environment/Trees" unique_id=858709045 instance=ExtResource("3_pkg7o")]
 position = Vector2(6872, -2286)
 
-[node name="Tree93" parent="Environment" unique_id=1585629415 instance=ExtResource("3_pkg7o")]
+[node name="Tree93" parent="Environment/Trees" unique_id=1585629415 instance=ExtResource("3_pkg7o")]
 position = Vector2(5326, -2140)
 
-[node name="Tree94" parent="Environment" unique_id=1668701652 instance=ExtResource("3_pkg7o")]
+[node name="Tree94" parent="Environment/Trees" unique_id=1668701652 instance=ExtResource("3_pkg7o")]
 position = Vector2(5629, -1823)
 
-[node name="Tree95" parent="Environment" unique_id=754620084 instance=ExtResource("3_pkg7o")]
+[node name="Tree95" parent="Environment/Trees" unique_id=754620084 instance=ExtResource("3_pkg7o")]
 position = Vector2(5788, -2169)
 
-[node name="Tree96" parent="Environment" unique_id=1310074151 instance=ExtResource("3_pkg7o")]
+[node name="Tree96" parent="Environment/Trees" unique_id=1310074151 instance=ExtResource("3_pkg7o")]
 position = Vector2(5669, 1251)
 
-[node name="Tree97" parent="Environment" unique_id=1573543040 instance=ExtResource("3_pkg7o")]
+[node name="Tree97" parent="Environment/Trees" unique_id=1573543040 instance=ExtResource("3_pkg7o")]
 position = Vector2(5972, 1568)
 
-[node name="Tree98" parent="Environment" unique_id=645059345 instance=ExtResource("3_pkg7o")]
+[node name="Tree98" parent="Environment/Trees" unique_id=645059345 instance=ExtResource("3_pkg7o")]
 position = Vector2(6131, 1222)
 
-[node name="Tree99" parent="Environment" unique_id=1386458460 instance=ExtResource("3_pkg7o")]
+[node name="Tree99" parent="Environment/Trees" unique_id=1386458460 instance=ExtResource("3_pkg7o")]
 position = Vector2(6264, 1473)
 
-[node name="Tree100" parent="Environment" unique_id=2106062422 instance=ExtResource("3_pkg7o")]
+[node name="Tree100" parent="Environment/Trees" unique_id=2106062422 instance=ExtResource("3_pkg7o")]
 position = Vector2(6567, 1790)
 
-[node name="Tree101" parent="Environment" unique_id=721692546 instance=ExtResource("3_pkg7o")]
+[node name="Tree101" parent="Environment/Trees" unique_id=721692546 instance=ExtResource("3_pkg7o")]
 position = Vector2(6726, 1444)
 
-[node name="Tree102" parent="Environment" unique_id=1735492103 instance=ExtResource("3_pkg7o")]
+[node name="Tree102" parent="Environment/Trees" unique_id=1735492103 instance=ExtResource("3_pkg7o")]
 position = Vector2(5180, 1590)
 
-[node name="Tree103" parent="Environment" unique_id=260148284 instance=ExtResource("3_pkg7o")]
+[node name="Tree103" parent="Environment/Trees" unique_id=260148284 instance=ExtResource("3_pkg7o")]
 position = Vector2(5483, 1907)
 
-[node name="Tree104" parent="Environment" unique_id=666120334 instance=ExtResource("3_pkg7o")]
+[node name="Tree104" parent="Environment/Trees" unique_id=666120334 instance=ExtResource("3_pkg7o")]
 position = Vector2(5642, 1561)
 
-[node name="Tree105" parent="Environment" unique_id=1432436681 instance=ExtResource("3_pkg7o")]
+[node name="Tree105" parent="Environment/Trees" unique_id=1432436681 instance=ExtResource("3_pkg7o")]
 position = Vector2(3165, 4651)
 
-[node name="Tree106" parent="Environment" unique_id=1643224582 instance=ExtResource("3_pkg7o")]
+[node name="Tree106" parent="Environment/Trees" unique_id=1643224582 instance=ExtResource("3_pkg7o")]
 position = Vector2(3468, 4968)
 
-[node name="Tree107" parent="Environment" unique_id=2010394130 instance=ExtResource("3_pkg7o")]
+[node name="Tree107" parent="Environment/Trees" unique_id=2010394130 instance=ExtResource("3_pkg7o")]
 position = Vector2(3627, 4622)
 
-[node name="Tree108" parent="Environment" unique_id=481325824 instance=ExtResource("3_pkg7o")]
+[node name="Tree108" parent="Environment/Trees" unique_id=481325824 instance=ExtResource("3_pkg7o")]
 position = Vector2(3760, 4873)
 
-[node name="Tree109" parent="Environment" unique_id=562792914 instance=ExtResource("3_pkg7o")]
+[node name="Tree109" parent="Environment/Trees" unique_id=562792914 instance=ExtResource("3_pkg7o")]
 position = Vector2(4063, 5190)
 
-[node name="Tree110" parent="Environment" unique_id=1345259600 instance=ExtResource("3_pkg7o")]
+[node name="Tree110" parent="Environment/Trees" unique_id=1345259600 instance=ExtResource("3_pkg7o")]
 position = Vector2(4222, 4844)
 
-[node name="Tree111" parent="Environment" unique_id=2030922008 instance=ExtResource("3_pkg7o")]
+[node name="Tree111" parent="Environment/Trees" unique_id=2030922008 instance=ExtResource("3_pkg7o")]
 position = Vector2(2676, 4990)
 
-[node name="Tree112" parent="Environment" unique_id=1206454208 instance=ExtResource("3_pkg7o")]
+[node name="Tree112" parent="Environment/Trees" unique_id=1206454208 instance=ExtResource("3_pkg7o")]
 position = Vector2(2979, 5307)
 
-[node name="Tree113" parent="Environment" unique_id=1791749637 instance=ExtResource("3_pkg7o")]
+[node name="Tree113" parent="Environment/Trees" unique_id=1791749637 instance=ExtResource("3_pkg7o")]
 position = Vector2(3138, 4961)
 
-[node name="Tree114" parent="Environment" unique_id=421397075 instance=ExtResource("3_pkg7o")]
+[node name="Tree114" parent="Environment/Trees" unique_id=421397075 instance=ExtResource("3_pkg7o")]
 position = Vector2(-8087, 911)
 
-[node name="Tree115" parent="Environment" unique_id=803827699 instance=ExtResource("3_pkg7o")]
+[node name="Tree115" parent="Environment/Trees" unique_id=803827699 instance=ExtResource("3_pkg7o")]
 position = Vector2(-7784, 1228)
 
-[node name="Tree116" parent="Environment" unique_id=1017091546 instance=ExtResource("3_pkg7o")]
+[node name="Tree116" parent="Environment/Trees" unique_id=1017091546 instance=ExtResource("3_pkg7o")]
 position = Vector2(-7625, 882)
 
-[node name="Tree117" parent="Environment" unique_id=1016820643 instance=ExtResource("3_pkg7o")]
+[node name="Tree117" parent="Environment/Trees" unique_id=1016820643 instance=ExtResource("3_pkg7o")]
 position = Vector2(-7492, 1133)
 
-[node name="Tree118" parent="Environment" unique_id=901060713 instance=ExtResource("3_pkg7o")]
+[node name="Tree118" parent="Environment/Trees" unique_id=901060713 instance=ExtResource("3_pkg7o")]
 position = Vector2(-7189, 1450)
 
-[node name="Tree119" parent="Environment" unique_id=1650288104 instance=ExtResource("3_pkg7o")]
+[node name="Tree119" parent="Environment/Trees" unique_id=1650288104 instance=ExtResource("3_pkg7o")]
 position = Vector2(-7030, 1104)
 
-[node name="Tree120" parent="Environment" unique_id=2050896884 instance=ExtResource("3_pkg7o")]
+[node name="Tree120" parent="Environment/Trees" unique_id=2050896884 instance=ExtResource("3_pkg7o")]
 position = Vector2(-8576, 1250)
 
-[node name="Tree121" parent="Environment" unique_id=997958416 instance=ExtResource("3_pkg7o")]
+[node name="Tree121" parent="Environment/Trees" unique_id=997958416 instance=ExtResource("3_pkg7o")]
 position = Vector2(-8273, 1567)
 
-[node name="Tree122" parent="Environment" unique_id=288150943 instance=ExtResource("3_pkg7o")]
+[node name="Tree122" parent="Environment/Trees" unique_id=288150943 instance=ExtResource("3_pkg7o")]
 position = Vector2(-8114, 1221)
 
-[node name="Tree123" parent="Environment" unique_id=636524327 instance=ExtResource("3_pkg7o")]
+[node name="Tree123" parent="Environment/Trees" unique_id=636524327 instance=ExtResource("3_pkg7o")]
 position = Vector2(-7716, 3415)
 
-[node name="Tree124" parent="Environment" unique_id=1984272064 instance=ExtResource("3_pkg7o")]
+[node name="Tree124" parent="Environment/Trees" unique_id=1984272064 instance=ExtResource("3_pkg7o")]
 position = Vector2(-7413, 3732)
 
-[node name="Tree125" parent="Environment" unique_id=1914679549 instance=ExtResource("3_pkg7o")]
+[node name="Tree125" parent="Environment/Trees" unique_id=1914679549 instance=ExtResource("3_pkg7o")]
 position = Vector2(-7254, 3386)
 
-[node name="Tree126" parent="Environment" unique_id=1526816584 instance=ExtResource("3_pkg7o")]
+[node name="Tree126" parent="Environment/Trees" unique_id=1526816584 instance=ExtResource("3_pkg7o")]
 position = Vector2(-7121, 3637)
 
-[node name="Tree127" parent="Environment" unique_id=1485087036 instance=ExtResource("3_pkg7o")]
+[node name="Tree127" parent="Environment/Trees" unique_id=1485087036 instance=ExtResource("3_pkg7o")]
 position = Vector2(-6818, 3954)
 
-[node name="Tree128" parent="Environment" unique_id=121562334 instance=ExtResource("3_pkg7o")]
+[node name="Tree128" parent="Environment/Trees" unique_id=121562334 instance=ExtResource("3_pkg7o")]
 position = Vector2(-6659, 3608)
 
-[node name="Tree129" parent="Environment" unique_id=1313981246 instance=ExtResource("3_pkg7o")]
+[node name="Tree129" parent="Environment/Trees" unique_id=1313981246 instance=ExtResource("3_pkg7o")]
 position = Vector2(-8205, 3754)
 
-[node name="Tree130" parent="Environment" unique_id=1650442695 instance=ExtResource("3_pkg7o")]
+[node name="Tree130" parent="Environment/Trees" unique_id=1650442695 instance=ExtResource("3_pkg7o")]
 position = Vector2(-7902, 4071)
 
-[node name="Tree131" parent="Environment" unique_id=1969394467 instance=ExtResource("3_pkg7o")]
+[node name="Tree131" parent="Environment/Trees" unique_id=1969394467 instance=ExtResource("3_pkg7o")]
 position = Vector2(-7743, 3725)
 
-[node name="Tree132" parent="Environment" unique_id=1961000311 instance=ExtResource("3_pkg7o")]
+[node name="Tree132" parent="Environment/Trees" unique_id=1961000311 instance=ExtResource("3_pkg7o")]
 position = Vector2(-5676, 4590)
 
-[node name="Tree133" parent="Environment" unique_id=514128114 instance=ExtResource("3_pkg7o")]
+[node name="Tree133" parent="Environment/Trees" unique_id=514128114 instance=ExtResource("3_pkg7o")]
 position = Vector2(-5373, 4907)
 
-[node name="Tree134" parent="Environment" unique_id=239203808 instance=ExtResource("3_pkg7o")]
+[node name="Tree134" parent="Environment/Trees" unique_id=239203808 instance=ExtResource("3_pkg7o")]
 position = Vector2(-5214, 4561)
 
-[node name="Tree135" parent="Environment" unique_id=1288343912 instance=ExtResource("3_pkg7o")]
+[node name="Tree135" parent="Environment/Trees" unique_id=1288343912 instance=ExtResource("3_pkg7o")]
 position = Vector2(-5081, 4812)
 
-[node name="Tree136" parent="Environment" unique_id=1615456918 instance=ExtResource("3_pkg7o")]
+[node name="Tree136" parent="Environment/Trees" unique_id=1615456918 instance=ExtResource("3_pkg7o")]
 position = Vector2(-4778, 5129)
 
-[node name="Tree137" parent="Environment" unique_id=778006703 instance=ExtResource("3_pkg7o")]
+[node name="Tree137" parent="Environment/Trees" unique_id=778006703 instance=ExtResource("3_pkg7o")]
 position = Vector2(-4619, 4783)
 
-[node name="Tree138" parent="Environment" unique_id=62069033 instance=ExtResource("3_pkg7o")]
+[node name="Tree138" parent="Environment/Trees" unique_id=62069033 instance=ExtResource("3_pkg7o")]
 position = Vector2(-6165, 4929)
 
-[node name="Tree139" parent="Environment" unique_id=916778630 instance=ExtResource("3_pkg7o")]
+[node name="Tree139" parent="Environment/Trees" unique_id=916778630 instance=ExtResource("3_pkg7o")]
 position = Vector2(-5862, 5246)
 
-[node name="Tree140" parent="Environment" unique_id=739389426 instance=ExtResource("3_pkg7o")]
+[node name="Tree140" parent="Environment/Trees" unique_id=739389426 instance=ExtResource("3_pkg7o")]
 position = Vector2(-5703, 4900)
 
-[node name="Tree141" parent="Environment" unique_id=898250020 instance=ExtResource("3_pkg7o")]
+[node name="Tree141" parent="Environment/Trees" unique_id=898250020 instance=ExtResource("3_pkg7o")]
 position = Vector2(-7747, 5363)
 
-[node name="Tree142" parent="Environment" unique_id=528797211 instance=ExtResource("3_pkg7o")]
+[node name="Tree142" parent="Environment/Trees" unique_id=528797211 instance=ExtResource("3_pkg7o")]
 position = Vector2(-7444, 5680)
 
-[node name="Tree143" parent="Environment" unique_id=684756946 instance=ExtResource("3_pkg7o")]
+[node name="Tree143" parent="Environment/Trees" unique_id=684756946 instance=ExtResource("3_pkg7o")]
 position = Vector2(-7285, 5334)
 
-[node name="Tree144" parent="Environment" unique_id=1761416067 instance=ExtResource("3_pkg7o")]
+[node name="Tree144" parent="Environment/Trees" unique_id=1761416067 instance=ExtResource("3_pkg7o")]
 position = Vector2(-7152, 5585)
 
-[node name="Tree145" parent="Environment" unique_id=748604909 instance=ExtResource("3_pkg7o")]
+[node name="Tree145" parent="Environment/Trees" unique_id=748604909 instance=ExtResource("3_pkg7o")]
 position = Vector2(-6849, 5902)
 
-[node name="Tree146" parent="Environment" unique_id=883570629 instance=ExtResource("3_pkg7o")]
+[node name="Tree146" parent="Environment/Trees" unique_id=883570629 instance=ExtResource("3_pkg7o")]
 position = Vector2(-6690, 5556)
 
-[node name="Tree147" parent="Environment" unique_id=1487082156 instance=ExtResource("3_pkg7o")]
+[node name="Tree147" parent="Environment/Trees" unique_id=1487082156 instance=ExtResource("3_pkg7o")]
 position = Vector2(-8236, 5702)
 
-[node name="Tree148" parent="Environment" unique_id=1593752460 instance=ExtResource("3_pkg7o")]
+[node name="Tree148" parent="Environment/Trees" unique_id=1593752460 instance=ExtResource("3_pkg7o")]
 position = Vector2(-7933, 6019)
 
-[node name="Tree149" parent="Environment" unique_id=700279251 instance=ExtResource("3_pkg7o")]
+[node name="Tree149" parent="Environment/Trees" unique_id=700279251 instance=ExtResource("3_pkg7o")]
 position = Vector2(-7774, 5673)
 
-[node name="Tree150" parent="Environment" unique_id=1948819660 instance=ExtResource("3_pkg7o")]
+[node name="Tree150" parent="Environment/Trees" unique_id=1948819660 instance=ExtResource("3_pkg7o")]
 position = Vector2(-9787, 4281)
 
-[node name="Tree151" parent="Environment" unique_id=268654208 instance=ExtResource("3_pkg7o")]
+[node name="Tree151" parent="Environment/Trees" unique_id=268654208 instance=ExtResource("3_pkg7o")]
 position = Vector2(-9484, 4598)
 
-[node name="Tree152" parent="Environment" unique_id=1973519049 instance=ExtResource("3_pkg7o")]
+[node name="Tree152" parent="Environment/Trees" unique_id=1973519049 instance=ExtResource("3_pkg7o")]
 position = Vector2(-9325, 4252)
 
-[node name="Tree153" parent="Environment" unique_id=1614773085 instance=ExtResource("3_pkg7o")]
+[node name="Tree153" parent="Environment/Trees" unique_id=1614773085 instance=ExtResource("3_pkg7o")]
 position = Vector2(-9192, 4503)
 
-[node name="Tree154" parent="Environment" unique_id=1998618689 instance=ExtResource("3_pkg7o")]
+[node name="Tree154" parent="Environment/Trees" unique_id=1998618689 instance=ExtResource("3_pkg7o")]
 position = Vector2(-8889, 4820)
 
-[node name="Tree155" parent="Environment" unique_id=741428109 instance=ExtResource("3_pkg7o")]
+[node name="Tree155" parent="Environment/Trees" unique_id=741428109 instance=ExtResource("3_pkg7o")]
 position = Vector2(-8730, 4474)
 
-[node name="Tree156" parent="Environment" unique_id=951227996 instance=ExtResource("3_pkg7o")]
+[node name="Tree156" parent="Environment/Trees" unique_id=951227996 instance=ExtResource("3_pkg7o")]
 position = Vector2(-10276, 4620)
 
-[node name="Tree157" parent="Environment" unique_id=1262086424 instance=ExtResource("3_pkg7o")]
+[node name="Tree157" parent="Environment/Trees" unique_id=1262086424 instance=ExtResource("3_pkg7o")]
 position = Vector2(-9973, 4937)
 
-[node name="Tree158" parent="Environment" unique_id=1634438281 instance=ExtResource("3_pkg7o")]
+[node name="Tree158" parent="Environment/Trees" unique_id=1634438281 instance=ExtResource("3_pkg7o")]
 position = Vector2(-9814, 4591)
 
-[node name="Tree159" parent="Environment" unique_id=213370028 instance=ExtResource("3_pkg7o")]
+[node name="Tree159" parent="Environment/Trees" unique_id=213370028 instance=ExtResource("3_pkg7o")]
 position = Vector2(-5514, 5407)
 
-[node name="Tree160" parent="Environment" unique_id=1512510205 instance=ExtResource("3_pkg7o")]
+[node name="Tree160" parent="Environment/Trees" unique_id=1512510205 instance=ExtResource("3_pkg7o")]
 position = Vector2(-5211, 5724)
 
-[node name="Tree161" parent="Environment" unique_id=503597475 instance=ExtResource("3_pkg7o")]
+[node name="Tree161" parent="Environment/Trees" unique_id=503597475 instance=ExtResource("3_pkg7o")]
 position = Vector2(-5052, 5378)
 
-[node name="Tree162" parent="Environment" unique_id=358562788 instance=ExtResource("3_pkg7o")]
+[node name="Tree162" parent="Environment/Trees" unique_id=358562788 instance=ExtResource("3_pkg7o")]
 position = Vector2(-4919, 5629)
 
-[node name="Tree163" parent="Environment" unique_id=504200832 instance=ExtResource("3_pkg7o")]
+[node name="Tree163" parent="Environment/Trees" unique_id=504200832 instance=ExtResource("3_pkg7o")]
 position = Vector2(-4616, 5946)
 
-[node name="Tree164" parent="Environment" unique_id=545569062 instance=ExtResource("3_pkg7o")]
+[node name="Tree164" parent="Environment/Trees" unique_id=545569062 instance=ExtResource("3_pkg7o")]
 position = Vector2(-4457, 5600)
 
-[node name="Tree165" parent="Environment" unique_id=2049983808 instance=ExtResource("3_pkg7o")]
+[node name="Tree165" parent="Environment/Trees" unique_id=2049983808 instance=ExtResource("3_pkg7o")]
 position = Vector2(-6003, 5746)
 
-[node name="Tree166" parent="Environment" unique_id=8426760 instance=ExtResource("3_pkg7o")]
+[node name="Tree166" parent="Environment/Trees" unique_id=8426760 instance=ExtResource("3_pkg7o")]
 position = Vector2(-5700, 6063)
 
-[node name="Tree167" parent="Environment" unique_id=2096153264 instance=ExtResource("3_pkg7o")]
+[node name="Tree167" parent="Environment/Trees" unique_id=2096153264 instance=ExtResource("3_pkg7o")]
 position = Vector2(-5541, 5717)
 
-[node name="Tree168" parent="Environment" unique_id=1258745079 instance=ExtResource("3_pkg7o")]
+[node name="Tree168" parent="Environment/Trees" unique_id=1258745079 instance=ExtResource("3_pkg7o")]
 position = Vector2(-5696, 2595)
 
-[node name="Tree169" parent="Environment" unique_id=1252329069 instance=ExtResource("3_pkg7o")]
+[node name="Tree169" parent="Environment/Trees" unique_id=1252329069 instance=ExtResource("3_pkg7o")]
 position = Vector2(-4274, 2997)
 
-[node name="Tree170" parent="Environment" unique_id=67139621 instance=ExtResource("3_pkg7o")]
+[node name="Tree170" parent="Environment/Trees" unique_id=67139621 instance=ExtResource("3_pkg7o")]
 position = Vector2(-6005, -960)
 
-[node name="Tree171" parent="Environment" unique_id=1128111361 instance=ExtResource("3_pkg7o")]
+[node name="Tree171" parent="Environment/Trees" unique_id=1128111361 instance=ExtResource("3_pkg7o")]
 position = Vector2(-5449, 493)
 
-[node name="Tree172" parent="Environment" unique_id=706929519 instance=ExtResource("3_pkg7o")]
+[node name="Tree172" parent="Environment/Trees" unique_id=706929519 instance=ExtResource("3_pkg7o")]
 position = Vector2(-3594, -2753)
 
-[node name="Tree173" parent="Environment" unique_id=33107141 instance=ExtResource("3_pkg7o")]
+[node name="Tree173" parent="Environment/Trees" unique_id=33107141 instance=ExtResource("3_pkg7o")]
 position = Vector2(-4954, -3402)
 
-[node name="Tree174" parent="Environment" unique_id=619484214 instance=ExtResource("3_pkg7o")]
+[node name="Tree174" parent="Environment/Trees" unique_id=619484214 instance=ExtResource("3_pkg7o")]
 position = Vector2(-6252, -5257)
 
-[node name="Tree175" parent="Environment" unique_id=1038463586 instance=ExtResource("3_pkg7o")]
+[node name="Tree175" parent="Environment/Trees" unique_id=1038463586 instance=ExtResource("3_pkg7o")]
 position = Vector2(-3037, -4237)
 
-[node name="Tree176" parent="Environment" unique_id=1705703995 instance=ExtResource("3_pkg7o")]
+[node name="Tree176" parent="Environment/Trees" unique_id=1705703995 instance=ExtResource("3_pkg7o")]
 position = Vector2(-1151, -2877)
 
-[node name="Tree177" parent="Environment" unique_id=430358785 instance=ExtResource("3_pkg7o")]
+[node name="Tree177" parent="Environment/Trees" unique_id=430358785 instance=ExtResource("3_pkg7o")]
 position = Vector2(-1151, -5968)
 
-[node name="Tree178" parent="Environment" unique_id=253353413 instance=ExtResource("3_pkg7o")]
+[node name="Tree178" parent="Environment/Trees" unique_id=253353413 instance=ExtResource("3_pkg7o")]
 position = Vector2(-193, -4391)
 
-[node name="Tree179" parent="Environment" unique_id=646149185 instance=ExtResource("3_pkg7o")]
+[node name="Tree179" parent="Environment/Trees" unique_id=646149185 instance=ExtResource("3_pkg7o")]
 position = Vector2(2527, -5287)
 
-[node name="Tree180" parent="Environment" unique_id=687433291 instance=ExtResource("3_pkg7o")]
+[node name="Tree180" parent="Environment/Trees" unique_id=687433291 instance=ExtResource("3_pkg7o")]
 position = Vector2(646, -2688)
 
-[node name="Tree181" parent="Environment" unique_id=1444674427 instance=ExtResource("3_pkg7o")]
+[node name="Tree181" parent="Environment/Trees" unique_id=1444674427 instance=ExtResource("3_pkg7o")]
 position = Vector2(2192, -2348)
 
-[node name="Tree182" parent="Environment" unique_id=1929600562 instance=ExtResource("3_pkg7o")]
+[node name="Tree182" parent="Environment/Trees" unique_id=1929600562 instance=ExtResource("3_pkg7o")]
 position = Vector2(3150, -3986)
 
-[node name="Tree183" parent="Environment" unique_id=156736587 instance=ExtResource("3_pkg7o")]
+[node name="Tree183" parent="Environment/Trees" unique_id=156736587 instance=ExtResource("3_pkg7o")]
 position = Vector2(4077, -2502)
 
-[node name="Tree184" parent="Environment" unique_id=1363178019 instance=ExtResource("3_pkg7o")]
+[node name="Tree184" parent="Environment/Trees" unique_id=1363178019 instance=ExtResource("3_pkg7o")]
 position = Vector2(5190, -4079)
 
-[node name="Tree185" parent="Environment" unique_id=1523811444 instance=ExtResource("3_pkg7o")]
+[node name="Tree185" parent="Environment/Trees" unique_id=1523811444 instance=ExtResource("3_pkg7o")]
 position = Vector2(7078, -3623)
 
-[node name="Tree186" parent="Environment" unique_id=2076965378 instance=ExtResource("3_pkg7o")]
+[node name="Tree186" parent="Environment/Trees" unique_id=2076965378 instance=ExtResource("3_pkg7o")]
 position = Vector2(4883, -934)
 
-[node name="Tree187" parent="Environment" unique_id=1831839440 instance=ExtResource("3_pkg7o")]
+[node name="Tree187" parent="Environment/Trees" unique_id=1831839440 instance=ExtResource("3_pkg7o")]
 position = Vector2(7047, 117)
 
-[node name="Tree188" parent="Environment" unique_id=872637787 instance=ExtResource("3_pkg7o")]
+[node name="Tree188" parent="Environment/Trees" unique_id=872637787 instance=ExtResource("3_pkg7o")]
 position = Vector2(7943, -718)
 
-[node name="Tree189" parent="Environment" unique_id=489202927 instance=ExtResource("3_pkg7o")]
+[node name="Tree189" parent="Environment/Trees" unique_id=489202927 instance=ExtResource("3_pkg7o")]
 position = Vector2(8718, 1164)
 
-[node name="Tree190" parent="Environment" unique_id=991847615 instance=ExtResource("3_pkg7o")]
+[node name="Tree190" parent="Environment/Trees" unique_id=991847615 instance=ExtResource("3_pkg7o")]
 position = Vector2(4267, 2246)
 
-[node name="Tree191" parent="Environment" unique_id=96179833 instance=ExtResource("3_pkg7o")]
+[node name="Tree191" parent="Environment/Trees" unique_id=96179833 instance=ExtResource("3_pkg7o")]
 position = Vector2(2938, 3235)
 
-[node name="Tree192" parent="Environment" unique_id=300197690 instance=ExtResource("3_pkg7o")]
+[node name="Tree192" parent="Environment/Trees" unique_id=300197690 instance=ExtResource("3_pkg7o")]
 position = Vector2(5190, 3562)
 
-[node name="Tree193" parent="Environment" unique_id=1595431977 instance=ExtResource("3_pkg7o")]
+[node name="Tree193" parent="Environment/Trees" unique_id=1595431977 instance=ExtResource("3_pkg7o")]
 position = Vector2(6537, 4585)
 
-[node name="Tree194" parent="Environment" unique_id=421744986 instance=ExtResource("3_pkg7o")]
+[node name="Tree194" parent="Environment/Trees" unique_id=421744986 instance=ExtResource("3_pkg7o")]
 position = Vector2(4960, 5822)
 
-[node name="Tree195" parent="Environment" unique_id=995476391 instance=ExtResource("3_pkg7o")]
+[node name="Tree195" parent="Environment/Trees" unique_id=995476391 instance=ExtResource("3_pkg7o")]
 position = Vector2(1889, 5973)
 
-[node name="Tree196" parent="Environment" unique_id=504160326 instance=ExtResource("3_pkg7o")]
+[node name="Tree196" parent="Environment/Trees" unique_id=504160326 instance=ExtResource("3_pkg7o")]
 position = Vector2(2971, 7179)
 
-[node name="Tree197" parent="Environment" unique_id=567685119 instance=ExtResource("3_pkg7o")]
+[node name="Tree197" parent="Environment/Trees" unique_id=567685119 instance=ExtResource("3_pkg7o")]
 position = Vector2(-5654, 6932)
 
-[node name="Tree198" parent="Environment" unique_id=1568959165 instance=ExtResource("3_pkg7o")]
+[node name="Tree198" parent="Environment/Trees" unique_id=1568959165 instance=ExtResource("3_pkg7o")]
 position = Vector2(-3583, 5201)
 
-[node name="Tree199" parent="Environment" unique_id=721457956 instance=ExtResource("3_pkg7o")]
+[node name="Tree199" parent="Environment/Trees" unique_id=721457956 instance=ExtResource("3_pkg7o")]
 position = Vector2(-3583, 6901)
 
-[node name="Tree200" parent="Environment" unique_id=921042842 instance=ExtResource("3_pkg7o")]
+[node name="Tree200" parent="Environment/Trees" unique_id=921042842 instance=ExtResource("3_pkg7o")]
 position = Vector2(-1450, 7148)
 
-[node name="Tree201" parent="Environment" unique_id=1524299596 instance=ExtResource("3_pkg7o")]
+[node name="Tree201" parent="Environment/Trees" unique_id=1524299596 instance=ExtResource("3_pkg7o")]
 position = Vector2(-2408, 1027)
 
-[node name="Tree202" parent="Environment" unique_id=2032108653 instance=ExtResource("3_pkg7o")]
+[node name="Tree202" parent="Environment/Trees" unique_id=2032108653 instance=ExtResource("3_pkg7o")]
 position = Vector2(-2439, -1261)
 
-[node name="Tree203" parent="Environment" unique_id=1070181360 instance=ExtResource("3_pkg7o")]
+[node name="Tree203" parent="Environment/Trees" unique_id=1070181360 instance=ExtResource("3_pkg7o")]
 position = Vector2(-8560, -797)
 
-[node name="Tree204" parent="Environment" unique_id=1745162396 instance=ExtResource("3_pkg7o")]
+[node name="Tree204" parent="Environment/Trees" unique_id=1745162396 instance=ExtResource("3_pkg7o")]
 position = Vector2(-8591, -2868)
 
-[node name="Tree205" parent="Environment" unique_id=1527004539 instance=ExtResource("3_pkg7o")]
+[node name="Tree205" parent="Environment/Trees" unique_id=1527004539 instance=ExtResource("3_pkg7o")]
 position = Vector2(-9549, 1738)
 
-[node name="Tree206" parent="Environment" unique_id=1934991764 instance=ExtResource("3_pkg7o")]
+[node name="Tree206" parent="Environment/Trees" unique_id=1934991764 instance=ExtResource("3_pkg7o")]
 position = Vector2(-3330, 1815)
 
-[node name="Tree207" parent="Environment" unique_id=1935463330 instance=ExtResource("3_pkg7o")]
+[node name="Tree207" parent="Environment/Trees" unique_id=1935463330 instance=ExtResource("3_pkg7o")]
 position = Vector2(-4002, 2468)
 
-[node name="Tree208" parent="Environment" unique_id=2075845079 instance=ExtResource("3_pkg7o")]
+[node name="Tree208" parent="Environment/Trees" unique_id=2075845079 instance=ExtResource("3_pkg7o")]
 position = Vector2(-4808, 3063)
 
-[node name="Tree209" parent="Environment" unique_id=1957253801 instance=ExtResource("3_pkg7o")]
+[node name="Tree209" parent="Environment/Trees" unique_id=1957253801 instance=ExtResource("3_pkg7o")]
 position = Vector2(-5518, 3735)
 
-[node name="Tree210" parent="Environment" unique_id=14971047 instance=ExtResource("3_pkg7o")]
+[node name="Tree210" parent="Environment/Trees" unique_id=14971047 instance=ExtResource("3_pkg7o")]
 position = Vector2(-4808, 2353)
 
-[node name="Tree211" parent="Environment" unique_id=1939472469 instance=ExtResource("3_pkg7o")]
+[node name="Tree211" parent="Environment/Trees" unique_id=1939472469 instance=ExtResource("3_pkg7o")]
 position = Vector2(-4558, 3543)
 
-[node name="Tree212" parent="Environment" unique_id=1775321038 instance=ExtResource("3_pkg7o")]
+[node name="Tree212" parent="Environment/Trees" unique_id=1775321038 instance=ExtResource("3_pkg7o")]
 position = Vector2(-4961, 3888)
 
-[node name="Tree213" parent="Environment" unique_id=167566569 instance=ExtResource("3_pkg7o")]
+[node name="Tree213" parent="Environment/Trees" unique_id=167566569 instance=ExtResource("3_pkg7o")]
 position = Vector2(-5351, 3238)
 
-[node name="Tree214" parent="Environment" unique_id=1476631642 instance=ExtResource("3_pkg7o")]
+[node name="Tree214" parent="Environment/Trees" unique_id=1476631642 instance=ExtResource("3_pkg7o")]
 position = Vector2(-695, 3865)
 
-[node name="Tree215" parent="Environment" unique_id=1311235007 instance=ExtResource("3_pkg7o")]
+[node name="Tree215" parent="Environment/Trees" unique_id=1311235007 instance=ExtResource("3_pkg7o")]
 position = Vector2(-59, 3910)
 
-[node name="Tree216" parent="Environment" unique_id=1029909281 instance=ExtResource("3_pkg7o")]
+[node name="Tree216" parent="Environment/Trees" unique_id=1029909281 instance=ExtResource("3_pkg7o")]
 position = Vector2(1374, 4564)
 
-[node name="Tree217" parent="Environment" unique_id=1097134256 instance=ExtResource("3_pkg7o")]
+[node name="Tree217" parent="Environment/Trees" unique_id=1097134256 instance=ExtResource("3_pkg7o")]
 position = Vector2(-1285, 5701)
 
-[node name="Tree218" parent="Environment" unique_id=565927970 instance=ExtResource("3_pkg7o")]
+[node name="Tree218" parent="Environment/Trees" unique_id=565927970 instance=ExtResource("3_pkg7o")]
 position = Vector2(-1840, 4761)
 
-[node name="Tree219" parent="Environment" unique_id=674772277 instance=ExtResource("3_pkg7o")]
+[node name="Tree219" parent="Environment/Trees" unique_id=674772277 instance=ExtResource("3_pkg7o")]
 position = Vector2(-2010, 6104)
 
-[node name="Tree220" parent="Environment" unique_id=875475699 instance=ExtResource("3_pkg7o")]
+[node name="Tree220" parent="Environment/Trees" unique_id=875475699 instance=ExtResource("3_pkg7o")]
 position = Vector2(-234, 6373)
 
-[node name="Tree221" parent="Environment" unique_id=475239527 instance=ExtResource("3_pkg7o")]
+[node name="Tree221" parent="Environment/Trees" unique_id=475239527 instance=ExtResource("3_pkg7o")]
 position = Vector2(940, 6722)
 
-[node name="Tree222" parent="Environment" unique_id=2057989946 instance=ExtResource("3_pkg7o")]
+[node name="Tree222" parent="Environment/Trees" unique_id=2057989946 instance=ExtResource("3_pkg7o")]
 position = Vector2(-623, -222)
 
-[node name="Tree223" parent="Environment" unique_id=1855440906 instance=ExtResource("3_pkg7o")]
+[node name="Tree223" parent="Environment/Trees" unique_id=1855440906 instance=ExtResource("3_pkg7o")]
 position = Vector2(526, -364)
 
-[node name="Tree224" parent="Environment" unique_id=690934613 instance=ExtResource("3_pkg7o")]
+[node name="Tree224" parent="Environment/Trees" unique_id=690934613 instance=ExtResource("3_pkg7o")]
 position = Vector2(881, 434)
 
-[node name="Tree225" parent="Environment" unique_id=618774936 instance=ExtResource("3_pkg7o")]
+[node name="Tree225" parent="Environment/Trees" unique_id=618774936 instance=ExtResource("3_pkg7o")]
 position = Vector2(-472, 885)
 
-[node name="Tree226" parent="Environment" unique_id=344420832 instance=ExtResource("3_pkg7o")]
+[node name="Tree226" parent="Environment/Trees" unique_id=344420832 instance=ExtResource("3_pkg7o")]
 position = Vector2(-1525, 572)
 
-[node name="Tree227" parent="Environment" unique_id=446758729 instance=ExtResource("3_pkg7o")]
+[node name="Tree227" parent="Environment/Trees" unique_id=446758729 instance=ExtResource("3_pkg7o")]
 position = Vector2(-237, 1549)
 
-[node name="Tree228" parent="Environment" unique_id=1834950837 instance=ExtResource("3_pkg7o")]
+[node name="Tree228" parent="Environment/Trees" unique_id=1834950837 instance=ExtResource("3_pkg7o")]
 position = Vector2(-4627, 7453)
 
-[node name="Tree229" parent="Environment" unique_id=325290607 instance=ExtResource("3_pkg7o")]
+[node name="Tree229" parent="Environment/Trees" unique_id=325290607 instance=ExtResource("3_pkg7o")]
 position = Vector2(-2896, 8257)
 
-[node name="Tree230" parent="Environment" unique_id=1487683109 instance=ExtResource("3_pkg7o")]
+[node name="Tree230" parent="Environment/Trees" unique_id=1487683109 instance=ExtResource("3_pkg7o")]
 position = Vector2(-1969, 7515)
 
-[node name="Tree231" parent="Environment" unique_id=235439846 instance=ExtResource("3_pkg7o")]
+[node name="Tree231" parent="Environment/Trees" unique_id=235439846 instance=ExtResource("3_pkg7o")]
 position = Vector2(-794, 8906)
 
-[node name="Tree232" parent="Environment" unique_id=2004898164 instance=ExtResource("3_pkg7o")]
+[node name="Tree232" parent="Environment/Trees" unique_id=2004898164 instance=ExtResource("3_pkg7o")]
 position = Vector2(381, 7268)
 
-[node name="Tree233" parent="Environment" unique_id=1219465758 instance=ExtResource("3_pkg7o")]
+[node name="Tree233" parent="Environment/Trees" unique_id=1219465758 instance=ExtResource("3_pkg7o")]
 position = Vector2(1061, 8535)
 
-[node name="Tree234" parent="Environment" unique_id=265205026 instance=ExtResource("3_pkg7o")]
+[node name="Tree234" parent="Environment/Trees" unique_id=265205026 instance=ExtResource("3_pkg7o")]
 position = Vector2(2298, 7577)
 
-[node name="Tree235" parent="Environment" unique_id=163749031 instance=ExtResource("3_pkg7o")]
+[node name="Tree235" parent="Environment/Trees" unique_id=163749031 instance=ExtResource("3_pkg7o")]
 position = Vector2(4122, 7515)
 
-[node name="Tree236" parent="Environment" unique_id=1476122512 instance=ExtResource("3_pkg7o")]
+[node name="Tree236" parent="Environment/Trees" unique_id=1476122512 instance=ExtResource("3_pkg7o")]
 position = Vector2(6193, 6928)
 
-[node name="Tree237" parent="Environment" unique_id=360892648 instance=ExtResource("3_pkg7o")]
+[node name="Tree237" parent="Environment/Trees" unique_id=360892648 instance=ExtResource("3_pkg7o")]
 position = Vector2(7368, 5846)
 
-[node name="Tree238" parent="Environment" unique_id=1583400749 instance=ExtResource("3_pkg7o")]
+[node name="Tree238" parent="Environment/Trees" unique_id=1583400749 instance=ExtResource("3_pkg7o")]
 position = Vector2(7864, 4486)
 
-[node name="Tree239" parent="Environment" unique_id=1567769210 instance=ExtResource("3_pkg7o")]
+[node name="Tree239" parent="Environment/Trees" unique_id=1567769210 instance=ExtResource("3_pkg7o")]
 position = Vector2(5824, 5073)
 
-[node name="Tree240" parent="Environment" unique_id=823160505 instance=ExtResource("3_pkg7o")]
+[node name="Tree240" parent="Environment/Trees" unique_id=823160505 instance=ExtResource("3_pkg7o")]
 position = Vector2(9747, 3645)
 
-[node name="Tree241" parent="Environment" unique_id=480887527 instance=ExtResource("3_pkg7o")]
+[node name="Tree241" parent="Environment/Trees" unique_id=480887527 instance=ExtResource("3_pkg7o")]
 position = Vector2(8943, 2687)
 
-[node name="Tree242" parent="Environment" unique_id=1763394179 instance=ExtResource("3_pkg7o")]
+[node name="Tree242" parent="Environment/Trees" unique_id=1763394179 instance=ExtResource("3_pkg7o")]
 position = Vector2(9716, -33)
 
-[node name="Tree243" parent="Environment" unique_id=991768054 instance=ExtResource("3_pkg7o")]
+[node name="Tree243" parent="Environment/Trees" unique_id=991768054 instance=ExtResource("3_pkg7o")]
 position = Vector2(8943, -1177)
 
-[node name="Tree244" parent="Environment" unique_id=1341232414 instance=ExtResource("3_pkg7o")]
+[node name="Tree244" parent="Environment/Trees" unique_id=1341232414 instance=ExtResource("3_pkg7o")]
 position = Vector2(9314, -2661)
 
-[node name="Tree245" parent="Environment" unique_id=247646985 instance=ExtResource("3_pkg7o")]
+[node name="Tree245" parent="Environment/Trees" unique_id=247646985 instance=ExtResource("3_pkg7o")]
 position = Vector2(9098, -4145)
 
-[node name="Tree246" parent="Environment" unique_id=1674794903 instance=ExtResource("3_pkg7o")]
+[node name="Tree246" parent="Environment/Trees" unique_id=1674794903 instance=ExtResource("3_pkg7o")]
 position = Vector2(8016, -3960)
 
-[node name="Tree247" parent="Environment" unique_id=1697379769 instance=ExtResource("3_pkg7o")]
+[node name="Tree247" parent="Environment/Trees" unique_id=1697379769 instance=ExtResource("3_pkg7o")]
 position = Vector2(6192, -4455)
 
-[node name="Tree248" parent="Environment" unique_id=1272566521 instance=ExtResource("3_pkg7o")]
+[node name="Tree248" parent="Environment/Trees" unique_id=1272566521 instance=ExtResource("3_pkg7o")]
 position = Vector2(6872, -5630)
 
-[node name="Tree249" parent="Environment" unique_id=1406863604 instance=ExtResource("3_pkg7o")]
+[node name="Tree249" parent="Environment/Trees" unique_id=1406863604 instance=ExtResource("3_pkg7o")]
 position = Vector2(6748, -7268)
 
-[node name="Tree250" parent="Environment" unique_id=129324082 instance=ExtResource("3_pkg7o")]
+[node name="Tree250" parent="Environment/Trees" unique_id=129324082 instance=ExtResource("3_pkg7o")]
 position = Vector2(5913, -6866)
 
-[node name="Tree251" parent="Environment" unique_id=1644130774 instance=ExtResource("3_pkg7o")]
+[node name="Tree251" parent="Environment/Trees" unique_id=1644130774 instance=ExtResource("3_pkg7o")]
 position = Vector2(4306, -7546)
 
-[node name="Tree252" parent="Environment" unique_id=2115978375 instance=ExtResource("3_pkg7o")]
+[node name="Tree252" parent="Environment/Trees" unique_id=2115978375 instance=ExtResource("3_pkg7o")]
 position = Vector2(3471, -7206)
 
-[node name="Tree253" parent="Environment" unique_id=306792825 instance=ExtResource("3_pkg7o")]
+[node name="Tree253" parent="Environment/Trees" unique_id=306792825 instance=ExtResource("3_pkg7o")]
 position = Vector2(3656, -8783)
 
-[node name="Tree254" parent="Environment" unique_id=522733801 instance=ExtResource("3_pkg7o")]
+[node name="Tree254" parent="Environment/Trees" unique_id=522733801 instance=ExtResource("3_pkg7o")]
 position = Vector2(2512, -8567)
 
-[node name="Tree255" parent="Environment" unique_id=1140120824 instance=ExtResource("3_pkg7o")]
+[node name="Tree255" parent="Environment/Trees" unique_id=1140120824 instance=ExtResource("3_pkg7o")]
 position = Vector2(1368, -8598)
 
-[node name="Tree256" parent="Environment" unique_id=624993225 instance=ExtResource("3_pkg7o")]
+[node name="Tree256" parent="Environment/Trees" unique_id=624993225 instance=ExtResource("3_pkg7o")]
 position = Vector2(-54, -7949)
 
-[node name="Tree257" parent="Environment" unique_id=1002608610 instance=ExtResource("3_pkg7o")]
+[node name="Tree257" parent="Environment/Trees" unique_id=1002608610 instance=ExtResource("3_pkg7o")]
 position = Vector2(-270, -9031)
 
-[node name="Tree258" parent="Environment" unique_id=487898218 instance=ExtResource("3_pkg7o")]
+[node name="Tree258" parent="Environment/Trees" unique_id=487898218 instance=ExtResource("3_pkg7o")]
 position = Vector2(-1877, -9124)
 
-[node name="Tree259" parent="Environment" unique_id=1904057135 instance=ExtResource("3_pkg7o")]
+[node name="Tree259" parent="Environment/Trees" unique_id=1904057135 instance=ExtResource("3_pkg7o")]
 position = Vector2(-2001, -7980)
 
-[node name="Tree260" parent="Environment" unique_id=1987012057 instance=ExtResource("3_pkg7o")]
+[node name="Tree260" parent="Environment/Trees" unique_id=1987012057 instance=ExtResource("3_pkg7o")]
 position = Vector2(-4443, -8227)
 
-[node name="Tree261" parent="Environment" unique_id=658732689 instance=ExtResource("3_pkg7o")]
+[node name="Tree261" parent="Environment/Trees" unique_id=658732689 instance=ExtResource("3_pkg7o")]
 position = Vector2(-4787, -7185)
 
-[node name="Tree262" parent="Environment" unique_id=401698014 instance=ExtResource("3_pkg7o")]
+[node name="Tree262" parent="Environment/Trees" unique_id=401698014 instance=ExtResource("3_pkg7o")]
 position = Vector2(-5560, -7618)
 
-[node name="Tree263" parent="Environment" unique_id=1906490172 instance=ExtResource("3_pkg7o")]
+[node name="Tree263" parent="Environment/Trees" unique_id=1906490172 instance=ExtResource("3_pkg7o")]
 position = Vector2(-7415, -6351)
 
-[node name="Tree264" parent="Environment" unique_id=728434635 instance=ExtResource("3_pkg7o")]
+[node name="Tree264" parent="Environment/Trees" unique_id=728434635 instance=ExtResource("3_pkg7o")]
 position = Vector2(-6863, -5396)
 
-[node name="Tree265" parent="Environment" unique_id=1432227213 instance=ExtResource("3_pkg7o")]
+[node name="Tree265" parent="Environment/Trees" unique_id=1432227213 instance=ExtResource("3_pkg7o")]
 position = Vector2(-7389, -4036)
 
-[node name="Tree266" parent="Environment" unique_id=1259332373 instance=ExtResource("3_pkg7o")]
+[node name="Tree266" parent="Environment/Trees" unique_id=1259332373 instance=ExtResource("3_pkg7o")]
 position = Vector2(-6431, -4191)
 
-[node name="Tree267" parent="Environment" unique_id=693261995 instance=ExtResource("3_pkg7o")]
+[node name="Tree267" parent="Environment/Trees" unique_id=693261995 instance=ExtResource("3_pkg7o")]
 position = Vector2(-9800, -605)
 
-[node name="Tree268" parent="Environment" unique_id=2014573559 instance=ExtResource("3_pkg7o")]
+[node name="Tree268" parent="Environment/Trees" unique_id=2014573559 instance=ExtResource("3_pkg7o")]
 position = Vector2(-9394, 141)
 
-[node name="Tree269" parent="Environment" unique_id=709949317 instance=ExtResource("3_pkg7o")]
+[node name="Tree269" parent="Environment/Trees" unique_id=709949317 instance=ExtResource("3_pkg7o")]
 position = Vector2(-10225, 2355)
 
-[node name="Tree270" parent="Environment" unique_id=1943304874 instance=ExtResource("3_pkg7o")]
+[node name="Tree270" parent="Environment/Trees" unique_id=1943304874 instance=ExtResource("3_pkg7o")]
 position = Vector2(-8710, 6559)
 
-[node name="Tree271" parent="Environment" unique_id=44016291 instance=ExtResource("3_pkg7o")]
+[node name="Tree271" parent="Environment/Trees" unique_id=44016291 instance=ExtResource("3_pkg7o")]
 position = Vector2(-6546, 7332)
 
-[node name="Tree272" parent="Environment" unique_id=999330252 instance=ExtResource("3_pkg7o")]
+[node name="Tree272" parent="Environment/Trees" unique_id=999330252 instance=ExtResource("3_pkg7o")]
 position = Vector2(-5124, 8228)
 
-[node name="Tree273" parent="Environment" unique_id=2075663199 instance=ExtResource("3_pkg7o")]
+[node name="Tree273" parent="Environment/Trees" unique_id=2075663199 instance=ExtResource("3_pkg7o")]
 position = Vector2(-5692, 1430)
+
+[node name="Tree274" parent="Environment/Trees" unique_id=220890540 instance=ExtResource("3_pkg7o")]
+position = Vector2(432, 251)
+
+[node name="Tree275" parent="Environment/Trees" unique_id=1685863906 instance=ExtResource("3_pkg7o")]
+position = Vector2(-405, 149)
+
+[node name="Tree276" parent="Environment/Trees" unique_id=1201070161 instance=ExtResource("3_pkg7o")]
+position = Vector2(65, -482)
+
+[node name="Victims" type="Node2D" parent="Environment" unique_id=1041365398]
+y_sort_enabled = true
+
+[node name="Victim" parent="Environment/Victims" unique_id=1355565438 instance=ExtResource("27_2tavo")]
+position = Vector2(-167, 3471)
+
+[node name="Victim2" parent="Environment/Victims" unique_id=802221474 instance=ExtResource("27_2tavo")]
+position = Vector2(-21, 3416)
+
+[node name="Victim3" parent="Environment/Victims" unique_id=1696481255 instance=ExtResource("27_2tavo")]
+position = Vector2(-41, 3565)
+
+[node name="Victim4" parent="Environment/Victims" unique_id=2042662156 instance=ExtResource("27_2tavo")]
+position = Vector2(-1910, 2644)
+
+[node name="Victim5" parent="Environment/Victims" unique_id=1839979012 instance=ExtResource("27_2tavo")]
+position = Vector2(-1764, 2591)
+
+[node name="Victim6" parent="Environment/Victims" unique_id=295035678 instance=ExtResource("27_2tavo")]
+position = Vector2(-1784, 2740)
+
+[node name="Victim7" parent="Environment/Victims" unique_id=1641036209 instance=ExtResource("27_2tavo")]
+position = Vector2(-2605, -2475)
+
+[node name="Victim8" parent="Environment/Victims" unique_id=1827907416 instance=ExtResource("27_2tavo")]
+position = Vector2(-2459, -2528)
+
+[node name="Victim9" parent="Environment/Victims" unique_id=1869898980 instance=ExtResource("27_2tavo")]
+position = Vector2(-2479, -2379)
+
+[node name="Victim10" parent="Environment/Victims" unique_id=585827191 instance=ExtResource("27_2tavo")]
+position = Vector2(911, -2914)
+
+[node name="Victim11" parent="Environment/Victims" unique_id=1649398932 instance=ExtResource("27_2tavo")]
+position = Vector2(1057, -2967)
+
+[node name="Victim12" parent="Environment/Victims" unique_id=118798623 instance=ExtResource("27_2tavo")]
+position = Vector2(1037, -2818)
+
+[node name="Victim13" parent="Environment/Victims" unique_id=238810784 instance=ExtResource("27_2tavo")]
+position = Vector2(-194, -5845)
+
+[node name="Victim14" parent="Environment/Victims" unique_id=2030666175 instance=ExtResource("27_2tavo")]
+position = Vector2(-48, -5898)
+
+[node name="Victim15" parent="Environment/Victims" unique_id=73349665 instance=ExtResource("27_2tavo")]
+position = Vector2(-68, -5749)
+
+[node name="Victim16" parent="Environment/Victims" unique_id=1607187382 instance=ExtResource("27_2tavo")]
+position = Vector2(948, -5258)
+
+[node name="Victim17" parent="Environment/Victims" unique_id=654130507 instance=ExtResource("27_2tavo")]
+position = Vector2(1094, -5311)
+
+[node name="Victim18" parent="Environment/Victims" unique_id=800420576 instance=ExtResource("27_2tavo")]
+position = Vector2(1074, -5162)
+
+[node name="Victim19" parent="Environment/Victims" unique_id=1890258781 instance=ExtResource("27_2tavo")]
+position = Vector2(3105, -5020)
+
+[node name="Victim20" parent="Environment/Victims" unique_id=53930812 instance=ExtResource("27_2tavo")]
+position = Vector2(3251, -5073)
+
+[node name="Victim21" parent="Environment/Victims" unique_id=959508749 instance=ExtResource("27_2tavo")]
+position = Vector2(3231, -4924)
+
+[node name="Victim22" parent="Environment/Victims" unique_id=785778518 instance=ExtResource("27_2tavo")]
+position = Vector2(4755, -3323)
+
+[node name="Victim23" parent="Environment/Victims" unique_id=2063742437 instance=ExtResource("27_2tavo")]
+position = Vector2(4901, -3376)
+
+[node name="Victim24" parent="Environment/Victims" unique_id=728502514 instance=ExtResource("27_2tavo")]
+position = Vector2(4881, -3227)
+
+[node name="Victim25" parent="Environment/Victims" unique_id=1638993753 instance=ExtResource("27_2tavo")]
+position = Vector2(4216, -1419)
+
+[node name="Victim26" parent="Environment/Victims" unique_id=412608918 instance=ExtResource("27_2tavo")]
+position = Vector2(4362, -1472)
+
+[node name="Victim27" parent="Environment/Victims" unique_id=2069231587 instance=ExtResource("27_2tavo")]
+position = Vector2(4342, -1323)
+
+[node name="Victim28" parent="Environment/Victims" unique_id=2055458121 instance=ExtResource("27_2tavo")]
+position = Vector2(4722, 448)
+
+[node name="Victim29" parent="Environment/Victims" unique_id=1894348333 instance=ExtResource("27_2tavo")]
+position = Vector2(4868, 395)
+
+[node name="Victim30" parent="Environment/Victims" unique_id=728196443 instance=ExtResource("27_2tavo")]
+position = Vector2(4848, 544)
+
+[node name="Victim31" parent="Environment/Victims" unique_id=1486971366 instance=ExtResource("27_2tavo")]
+position = Vector2(3239, 2228)
+
+[node name="Victim32" parent="Environment/Victims" unique_id=867813795 instance=ExtResource("27_2tavo")]
+position = Vector2(3385, 2175)
+
+[node name="Victim33" parent="Environment/Victims" unique_id=1882789337 instance=ExtResource("27_2tavo")]
+position = Vector2(3365, 2324)
+
+[node name="Victim34" parent="Environment/Victims" unique_id=1380228640 instance=ExtResource("27_2tavo")]
+position = Vector2(4042, 4025)
+
+[node name="Victim35" parent="Environment/Victims" unique_id=1405297253 instance=ExtResource("27_2tavo")]
+position = Vector2(4188, 3972)
+
+[node name="Victim36" parent="Environment/Victims" unique_id=412511525 instance=ExtResource("27_2tavo")]
+position = Vector2(4168, 4121)
+
+[node name="Victim37" parent="Environment/Victims" unique_id=1043435459 instance=ExtResource("27_2tavo")]
+position = Vector2(1390, 3746)
+
+[node name="Victim38" parent="Environment/Victims" unique_id=1402722969 instance=ExtResource("27_2tavo")]
+position = Vector2(1536, 3693)
+
+[node name="Victim39" parent="Environment/Victims" unique_id=97963866 instance=ExtResource("27_2tavo")]
+position = Vector2(1516, 3842)
+
+[node name="Victim40" parent="Environment/Victims" unique_id=867795638 instance=ExtResource("27_2tavo")]
+position = Vector2(483, 5805)
+
+[node name="Victim41" parent="Environment/Victims" unique_id=935841858 instance=ExtResource("27_2tavo")]
+position = Vector2(629, 5752)
+
+[node name="Victim42" parent="Environment/Victims" unique_id=68662473 instance=ExtResource("27_2tavo")]
+position = Vector2(609, 5901)
+
+[node name="Victim43" parent="Environment/Victims" unique_id=1263925787 instance=ExtResource("27_2tavo")]
+position = Vector2(-1611, 4357)
+
+[node name="Victim44" parent="Environment/Victims" unique_id=1819987079 instance=ExtResource("27_2tavo")]
+position = Vector2(-1465, 4304)
+
+[node name="Victim45" parent="Environment/Victims" unique_id=1730392776 instance=ExtResource("27_2tavo")]
+position = Vector2(-1485, 4453)
+
+[node name="Victim46" parent="Environment/Victims" unique_id=2072149 instance=ExtResource("27_2tavo")]
+position = Vector2(-3476, 5933)
+
+[node name="Victim47" parent="Environment/Victims" unique_id=1755827084 instance=ExtResource("27_2tavo")]
+position = Vector2(-3330, 5880)
+
+[node name="Victim48" parent="Environment/Victims" unique_id=444073328 instance=ExtResource("27_2tavo")]
+position = Vector2(-3350, 6029)
+
+[node name="Victim49" parent="Environment/Victims" unique_id=132767295 instance=ExtResource("27_2tavo")]
+position = Vector2(-4122, 3595)
+
+[node name="Victim50" parent="Environment/Victims" unique_id=1831856994 instance=ExtResource("27_2tavo")]
+position = Vector2(-3976, 3542)
+
+[node name="Victim51" parent="Environment/Victims" unique_id=1537362245 instance=ExtResource("27_2tavo")]
+position = Vector2(-3996, 3691)
+
+[node name="Victim52" parent="Environment/Victims" unique_id=244992122 instance=ExtResource("27_2tavo")]
+position = Vector2(-6687, 2094)
+
+[node name="Victim53" parent="Environment/Victims" unique_id=656606854 instance=ExtResource("27_2tavo")]
+position = Vector2(-6541, 2041)
+
+[node name="Victim54" parent="Environment/Victims" unique_id=767928626 instance=ExtResource("27_2tavo")]
+position = Vector2(-6561, 2190)
+
+[node name="Victim55" parent="Environment/Victims" unique_id=1632588809 instance=ExtResource("27_2tavo")]
+position = Vector2(-6006, -174)
+
+[node name="Victim56" parent="Environment/Victims" unique_id=1695942609 instance=ExtResource("27_2tavo")]
+position = Vector2(-5860, -227)
+
+[node name="Victim57" parent="Environment/Victims" unique_id=1669484846 instance=ExtResource("27_2tavo")]
+position = Vector2(-5880, -78)
+
+[node name="Victim58" parent="Environment/Victims" unique_id=275166759 instance=ExtResource("27_2tavo")]
+position = Vector2(-4575, -1308)
+
+[node name="Victim59" parent="Environment/Victims" unique_id=1321538639 instance=ExtResource("27_2tavo")]
+position = Vector2(-4429, -1361)
+
+[node name="Victim60" parent="Environment/Victims" unique_id=500553927 instance=ExtResource("27_2tavo")]
+position = Vector2(-4449, -1212)
+
+[node name="Victim61" parent="Environment/Victims" unique_id=1857556115 instance=ExtResource("27_2tavo")]
+position = Vector2(-5639, -3175)
+
+[node name="Victim62" parent="Environment/Victims" unique_id=1436920032 instance=ExtResource("27_2tavo")]
+position = Vector2(-5493, -3228)
+
+[node name="Victim63" parent="Environment/Victims" unique_id=1183002006 instance=ExtResource("27_2tavo")]
+position = Vector2(-5513, -3079)
+
+[node name="Victim64" parent="Environment/Victims" unique_id=1055947635 instance=ExtResource("27_2tavo")]
+position = Vector2(-4836, -5600)
+
+[node name="Victim65" parent="Environment/Victims" unique_id=662403861 instance=ExtResource("27_2tavo")]
+position = Vector2(-4690, -5653)
+
+[node name="Victim66" parent="Environment/Victims" unique_id=641133682 instance=ExtResource("27_2tavo")]
+position = Vector2(-4710, -5504)
+
+[node name="Victim67" parent="Environment/Victims" unique_id=2091168663 instance=ExtResource("27_2tavo")]
+position = Vector2(-3580, -4396)
+
+[node name="Victim68" parent="Environment/Victims" unique_id=1080505847 instance=ExtResource("27_2tavo")]
+position = Vector2(-3434, -4449)
+
+[node name="Victim69" parent="Environment/Victims" unique_id=838293396 instance=ExtResource("27_2tavo")]
+position = Vector2(-3454, -4300)
+
+[node name="Victim70" parent="Environment/Victims" unique_id=204255923 instance=ExtResource("27_2tavo")]
+position = Vector2(-1207, -7519)
+
+[node name="Victim71" parent="Environment/Victims" unique_id=1817056875 instance=ExtResource("27_2tavo")]
+position = Vector2(-1061, -7572)
+
+[node name="Victim72" parent="Environment/Victims" unique_id=710774902 instance=ExtResource("27_2tavo")]
+position = Vector2(-1081, -7423)
+
+[node name="Victim73" parent="Environment/Victims" unique_id=807707210 instance=ExtResource("27_2tavo")]
+position = Vector2(-3637, 730)
+
+[node name="Victim74" parent="Environment/Victims" unique_id=1717431516 instance=ExtResource("27_2tavo")]
+position = Vector2(-3491, 677)
+
+[node name="Victim75" parent="Environment/Victims" unique_id=2094479262 instance=ExtResource("27_2tavo")]
+position = Vector2(-3511, 826)
+
+[node name="Victim76" parent="Environment/Victims" unique_id=116515157 instance=ExtResource("27_2tavo")]
+position = Vector2(3269, -201)
+
+[node name="Victim77" parent="Environment/Victims" unique_id=713867643 instance=ExtResource("27_2tavo")]
+position = Vector2(3415, -254)
+
+[node name="Victim78" parent="Environment/Victims" unique_id=922918159 instance=ExtResource("27_2tavo")]
+position = Vector2(3395, -105)
+
+[node name="Victim79" parent="Environment/Victims" unique_id=5418848 instance=ExtResource("27_2tavo")]
+position = Vector2(6336, 2670)
+
+[node name="Victim80" parent="Environment/Victims" unique_id=566017652 instance=ExtResource("27_2tavo")]
+position = Vector2(6482, 2617)
+
+[node name="Victim81" parent="Environment/Victims" unique_id=779446634 instance=ExtResource("27_2tavo")]
+position = Vector2(6462, 2766)
+
+[node name="Victim82" parent="Environment/Victims" unique_id=831404777 instance=ExtResource("27_2tavo")]
+position = Vector2(7865, 2194)
+
+[node name="Victim83" parent="Environment/Victims" unique_id=1159271102 instance=ExtResource("27_2tavo")]
+position = Vector2(8011, 2141)
+
+[node name="Victim84" parent="Environment/Victims" unique_id=1954408161 instance=ExtResource("27_2tavo")]
+position = Vector2(7991, 2290)
+
+[node name="Victim85" parent="Environment/Victims" unique_id=144081409 instance=ExtResource("27_2tavo")]
+position = Vector2(7562, 3232)
+
+[node name="Victim86" parent="Environment/Victims" unique_id=2079697928 instance=ExtResource("27_2tavo")]
+position = Vector2(7708, 3179)
+
+[node name="Victim87" parent="Environment/Victims" unique_id=1580971378 instance=ExtResource("27_2tavo")]
+position = Vector2(7688, 3328)
+
+[node name="Victim88" parent="Environment/Victims" unique_id=447268086 instance=ExtResource("27_2tavo")]
+position = Vector2(7864, -2992)
+
+[node name="Victim89" parent="Environment/Victims" unique_id=1723503629 instance=ExtResource("27_2tavo")]
+position = Vector2(8010, -3045)
+
+[node name="Victim90" parent="Environment/Victims" unique_id=1044834616 instance=ExtResource("27_2tavo")]
+position = Vector2(7990, -2896)
+
+[node name="Victim91" parent="Environment/Victims" unique_id=1177760619 instance=ExtResource("27_2tavo")]
+position = Vector2(5058, -6427)
+
+[node name="Victim92" parent="Environment/Victims" unique_id=900570451 instance=ExtResource("27_2tavo")]
+position = Vector2(5204, -6480)
+
+[node name="Victim93" parent="Environment/Victims" unique_id=1704487139 instance=ExtResource("27_2tavo")]
+position = Vector2(5184, -6331)
+
+[node name="Victim94" parent="Environment/Victims" unique_id=1362771941 instance=ExtResource("27_2tavo")]
+position = Vector2(3142, -6557)
+
+[node name="Victim95" parent="Environment/Victims" unique_id=1749507813 instance=ExtResource("27_2tavo")]
+position = Vector2(3288, -6610)
+
+[node name="Victim96" parent="Environment/Victims" unique_id=1012817481 instance=ExtResource("27_2tavo")]
+position = Vector2(3268, -6461)
+
+[node name="Victim97" parent="Environment/Victims" unique_id=645603109 instance=ExtResource("27_2tavo")]
+position = Vector2(2172, -7868)
+
+[node name="Victim98" parent="Environment/Victims" unique_id=67549694 instance=ExtResource("27_2tavo")]
+position = Vector2(2318, -7921)
+
+[node name="Victim99" parent="Environment/Victims" unique_id=1698277968 instance=ExtResource("27_2tavo")]
+position = Vector2(2298, -7772)
+
+[node name="Victim100" parent="Environment/Victims" unique_id=924352024 instance=ExtResource("27_2tavo")]
+position = Vector2(-3360, -7226)
+
+[node name="Victim101" parent="Environment/Victims" unique_id=221891816 instance=ExtResource("27_2tavo")]
+position = Vector2(-3214, -7279)
+
+[node name="Victim102" parent="Environment/Victims" unique_id=1951645193 instance=ExtResource("27_2tavo")]
+position = Vector2(-3234, -7130)
+
+[node name="Victim103" parent="Environment/Victims" unique_id=1308683253 instance=ExtResource("27_2tavo")]
+position = Vector2(-8683, 443)
+
+[node name="Victim104" parent="Environment/Victims" unique_id=903886807 instance=ExtResource("27_2tavo")]
+position = Vector2(-8537, 390)
+
+[node name="Victim105" parent="Environment/Victims" unique_id=1513060153 instance=ExtResource("27_2tavo")]
+position = Vector2(-8557, 539)
+
+[node name="Victim106" parent="Environment/Victims" unique_id=497875482 instance=ExtResource("27_2tavo")]
+position = Vector2(-1217, -4021)
+
+[node name="Victim107" parent="Environment/Victims" unique_id=650282026 instance=ExtResource("27_2tavo")]
+position = Vector2(-1071, -4074)
+
+[node name="Victim108" parent="Environment/Victims" unique_id=2001442501 instance=ExtResource("27_2tavo")]
+position = Vector2(-1091, -3925)
 
 [node name="TowardsPoint" type="Polygon2D" parent="." unique_id=2096268932]
 visible = false
@@ -1421,7 +1795,7 @@ monitorable = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MineCheck" unique_id=1033313126]
 shape = SubResource("CircleShape2D_0pnie")
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1544898292 node_paths=PackedStringArray("selector", "towards_point", "away_point", "music", "ambient")]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1544898292 node_paths=PackedStringArray("selector", "towards_point", "away_point", "music", "ambient", "clouds")]
 zoom = Vector2(0.5, 0.5)
 script = ExtResource("2_tlwt5")
 selector = NodePath("Selector")
@@ -1429,6 +1803,7 @@ towards_point = NodePath("../TowardsPoint")
 away_point = NodePath("../AwayPoint")
 music = NodePath("../Music")
 ambient = NodePath("../Wind")
+clouds = NodePath("../Environment/Clouds")
 
 [node name="Selector" type="Area2D" parent="Camera2D" unique_id=1232840017]
 collision_mask = 2
@@ -1447,330 +1822,6 @@ polygon = PackedVector2Array(-24, -44, -6, -48, 12, -46, 22, -45, 31, -40, 41, -
 uv = PackedVector2Array(0.100958705, -0.2299056, 0.39977893, -0.2963096, 0.6985989, -0.26310736, 0.86461014, -0.24650657, 1.0140197, -0.16350067, 1.1800313, -0.030691803, 1.2464359, 0.13531941, 1.2796378, 0.40093717, 1.2796378, 0.66655487, 1.1800313, 0.8823691, 0.99741894, 1.0483809, 0.83140796, 1.1977905, 0.51598656, 1.3305993, 0.1839644, 1.3305993, -0.06505221, 1.2309926, -0.19786125, 1.0151784, -0.26426572, 0.74956036, -0.29746795, 0.5337459, -0.2310636, 0.2515269, -0.11485559, 0.06891489, 0.017953217, -0.11369765)
 
 [node name="Pit" parent="." unique_id=1506307296 instance=ExtResource("24_llyeo")]
-
-[node name="Victim" parent="." unique_id=1355565438 instance=ExtResource("27_2tavo")]
-position = Vector2(-167, 3471)
-
-[node name="Victim2" parent="." unique_id=802221474 instance=ExtResource("27_2tavo")]
-position = Vector2(-21, 3416)
-
-[node name="Victim3" parent="." unique_id=1696481255 instance=ExtResource("27_2tavo")]
-position = Vector2(-41, 3565)
-
-[node name="Victim4" parent="." unique_id=2042662156 instance=ExtResource("27_2tavo")]
-position = Vector2(-1910, 2644)
-
-[node name="Victim5" parent="." unique_id=1839979012 instance=ExtResource("27_2tavo")]
-position = Vector2(-1764, 2591)
-
-[node name="Victim6" parent="." unique_id=295035678 instance=ExtResource("27_2tavo")]
-position = Vector2(-1784, 2740)
-
-[node name="Victim7" parent="." unique_id=1641036209 instance=ExtResource("27_2tavo")]
-position = Vector2(-2605, -2475)
-
-[node name="Victim8" parent="." unique_id=1827907416 instance=ExtResource("27_2tavo")]
-position = Vector2(-2459, -2528)
-
-[node name="Victim9" parent="." unique_id=1869898980 instance=ExtResource("27_2tavo")]
-position = Vector2(-2479, -2379)
-
-[node name="Victim10" parent="." unique_id=585827191 instance=ExtResource("27_2tavo")]
-position = Vector2(911, -2914)
-
-[node name="Victim11" parent="." unique_id=1649398932 instance=ExtResource("27_2tavo")]
-position = Vector2(1057, -2967)
-
-[node name="Victim12" parent="." unique_id=118798623 instance=ExtResource("27_2tavo")]
-position = Vector2(1037, -2818)
-
-[node name="Victim13" parent="." unique_id=238810784 instance=ExtResource("27_2tavo")]
-position = Vector2(-194, -5845)
-
-[node name="Victim14" parent="." unique_id=2030666175 instance=ExtResource("27_2tavo")]
-position = Vector2(-48, -5898)
-
-[node name="Victim15" parent="." unique_id=73349665 instance=ExtResource("27_2tavo")]
-position = Vector2(-68, -5749)
-
-[node name="Victim16" parent="." unique_id=1607187382 instance=ExtResource("27_2tavo")]
-position = Vector2(948, -5258)
-
-[node name="Victim17" parent="." unique_id=654130507 instance=ExtResource("27_2tavo")]
-position = Vector2(1094, -5311)
-
-[node name="Victim18" parent="." unique_id=800420576 instance=ExtResource("27_2tavo")]
-position = Vector2(1074, -5162)
-
-[node name="Victim19" parent="." unique_id=1890258781 instance=ExtResource("27_2tavo")]
-position = Vector2(3105, -5020)
-
-[node name="Victim20" parent="." unique_id=53930812 instance=ExtResource("27_2tavo")]
-position = Vector2(3251, -5073)
-
-[node name="Victim21" parent="." unique_id=959508749 instance=ExtResource("27_2tavo")]
-position = Vector2(3231, -4924)
-
-[node name="Victim22" parent="." unique_id=785778518 instance=ExtResource("27_2tavo")]
-position = Vector2(4755, -3323)
-
-[node name="Victim23" parent="." unique_id=2063742437 instance=ExtResource("27_2tavo")]
-position = Vector2(4901, -3376)
-
-[node name="Victim24" parent="." unique_id=728502514 instance=ExtResource("27_2tavo")]
-position = Vector2(4881, -3227)
-
-[node name="Victim25" parent="." unique_id=1638993753 instance=ExtResource("27_2tavo")]
-position = Vector2(4216, -1419)
-
-[node name="Victim26" parent="." unique_id=412608918 instance=ExtResource("27_2tavo")]
-position = Vector2(4362, -1472)
-
-[node name="Victim27" parent="." unique_id=2069231587 instance=ExtResource("27_2tavo")]
-position = Vector2(4342, -1323)
-
-[node name="Victim28" parent="." unique_id=2055458121 instance=ExtResource("27_2tavo")]
-position = Vector2(4722, 448)
-
-[node name="Victim29" parent="." unique_id=1894348333 instance=ExtResource("27_2tavo")]
-position = Vector2(4868, 395)
-
-[node name="Victim30" parent="." unique_id=728196443 instance=ExtResource("27_2tavo")]
-position = Vector2(4848, 544)
-
-[node name="Victim31" parent="." unique_id=1486971366 instance=ExtResource("27_2tavo")]
-position = Vector2(3239, 2228)
-
-[node name="Victim32" parent="." unique_id=867813795 instance=ExtResource("27_2tavo")]
-position = Vector2(3385, 2175)
-
-[node name="Victim33" parent="." unique_id=1882789337 instance=ExtResource("27_2tavo")]
-position = Vector2(3365, 2324)
-
-[node name="Victim34" parent="." unique_id=1380228640 instance=ExtResource("27_2tavo")]
-position = Vector2(4042, 4025)
-
-[node name="Victim35" parent="." unique_id=1405297253 instance=ExtResource("27_2tavo")]
-position = Vector2(4188, 3972)
-
-[node name="Victim36" parent="." unique_id=412511525 instance=ExtResource("27_2tavo")]
-position = Vector2(4168, 4121)
-
-[node name="Victim37" parent="." unique_id=1043435459 instance=ExtResource("27_2tavo")]
-position = Vector2(1390, 3746)
-
-[node name="Victim38" parent="." unique_id=1402722969 instance=ExtResource("27_2tavo")]
-position = Vector2(1536, 3693)
-
-[node name="Victim39" parent="." unique_id=97963866 instance=ExtResource("27_2tavo")]
-position = Vector2(1516, 3842)
-
-[node name="Victim40" parent="." unique_id=867795638 instance=ExtResource("27_2tavo")]
-position = Vector2(483, 5805)
-
-[node name="Victim41" parent="." unique_id=935841858 instance=ExtResource("27_2tavo")]
-position = Vector2(629, 5752)
-
-[node name="Victim42" parent="." unique_id=68662473 instance=ExtResource("27_2tavo")]
-position = Vector2(609, 5901)
-
-[node name="Victim43" parent="." unique_id=1263925787 instance=ExtResource("27_2tavo")]
-position = Vector2(-1611, 4357)
-
-[node name="Victim44" parent="." unique_id=1819987079 instance=ExtResource("27_2tavo")]
-position = Vector2(-1465, 4304)
-
-[node name="Victim45" parent="." unique_id=1730392776 instance=ExtResource("27_2tavo")]
-position = Vector2(-1485, 4453)
-
-[node name="Victim46" parent="." unique_id=2072149 instance=ExtResource("27_2tavo")]
-position = Vector2(-3476, 5933)
-
-[node name="Victim47" parent="." unique_id=1755827084 instance=ExtResource("27_2tavo")]
-position = Vector2(-3330, 5880)
-
-[node name="Victim48" parent="." unique_id=444073328 instance=ExtResource("27_2tavo")]
-position = Vector2(-3350, 6029)
-
-[node name="Victim49" parent="." unique_id=132767295 instance=ExtResource("27_2tavo")]
-position = Vector2(-4122, 3595)
-
-[node name="Victim50" parent="." unique_id=1831856994 instance=ExtResource("27_2tavo")]
-position = Vector2(-3976, 3542)
-
-[node name="Victim51" parent="." unique_id=1537362245 instance=ExtResource("27_2tavo")]
-position = Vector2(-3996, 3691)
-
-[node name="Victim52" parent="." unique_id=244992122 instance=ExtResource("27_2tavo")]
-position = Vector2(-6687, 2094)
-
-[node name="Victim53" parent="." unique_id=656606854 instance=ExtResource("27_2tavo")]
-position = Vector2(-6541, 2041)
-
-[node name="Victim54" parent="." unique_id=767928626 instance=ExtResource("27_2tavo")]
-position = Vector2(-6561, 2190)
-
-[node name="Victim55" parent="." unique_id=1632588809 instance=ExtResource("27_2tavo")]
-position = Vector2(-6006, -174)
-
-[node name="Victim56" parent="." unique_id=1695942609 instance=ExtResource("27_2tavo")]
-position = Vector2(-5860, -227)
-
-[node name="Victim57" parent="." unique_id=1669484846 instance=ExtResource("27_2tavo")]
-position = Vector2(-5880, -78)
-
-[node name="Victim58" parent="." unique_id=275166759 instance=ExtResource("27_2tavo")]
-position = Vector2(-4575, -1308)
-
-[node name="Victim59" parent="." unique_id=1321538639 instance=ExtResource("27_2tavo")]
-position = Vector2(-4429, -1361)
-
-[node name="Victim60" parent="." unique_id=500553927 instance=ExtResource("27_2tavo")]
-position = Vector2(-4449, -1212)
-
-[node name="Victim61" parent="." unique_id=1857556115 instance=ExtResource("27_2tavo")]
-position = Vector2(-5639, -3175)
-
-[node name="Victim62" parent="." unique_id=1436920032 instance=ExtResource("27_2tavo")]
-position = Vector2(-5493, -3228)
-
-[node name="Victim63" parent="." unique_id=1183002006 instance=ExtResource("27_2tavo")]
-position = Vector2(-5513, -3079)
-
-[node name="Victim64" parent="." unique_id=1055947635 instance=ExtResource("27_2tavo")]
-position = Vector2(-4836, -5600)
-
-[node name="Victim65" parent="." unique_id=662403861 instance=ExtResource("27_2tavo")]
-position = Vector2(-4690, -5653)
-
-[node name="Victim66" parent="." unique_id=641133682 instance=ExtResource("27_2tavo")]
-position = Vector2(-4710, -5504)
-
-[node name="Victim67" parent="." unique_id=2091168663 instance=ExtResource("27_2tavo")]
-position = Vector2(-3580, -4396)
-
-[node name="Victim68" parent="." unique_id=1080505847 instance=ExtResource("27_2tavo")]
-position = Vector2(-3434, -4449)
-
-[node name="Victim69" parent="." unique_id=838293396 instance=ExtResource("27_2tavo")]
-position = Vector2(-3454, -4300)
-
-[node name="Victim70" parent="." unique_id=204255923 instance=ExtResource("27_2tavo")]
-position = Vector2(-1207, -7519)
-
-[node name="Victim71" parent="." unique_id=1817056875 instance=ExtResource("27_2tavo")]
-position = Vector2(-1061, -7572)
-
-[node name="Victim72" parent="." unique_id=710774902 instance=ExtResource("27_2tavo")]
-position = Vector2(-1081, -7423)
-
-[node name="Victim73" parent="." unique_id=807707210 instance=ExtResource("27_2tavo")]
-position = Vector2(-3637, 730)
-
-[node name="Victim74" parent="." unique_id=1717431516 instance=ExtResource("27_2tavo")]
-position = Vector2(-3491, 677)
-
-[node name="Victim75" parent="." unique_id=2094479262 instance=ExtResource("27_2tavo")]
-position = Vector2(-3511, 826)
-
-[node name="Victim76" parent="." unique_id=116515157 instance=ExtResource("27_2tavo")]
-position = Vector2(3269, -201)
-
-[node name="Victim77" parent="." unique_id=713867643 instance=ExtResource("27_2tavo")]
-position = Vector2(3415, -254)
-
-[node name="Victim78" parent="." unique_id=922918159 instance=ExtResource("27_2tavo")]
-position = Vector2(3395, -105)
-
-[node name="Victim79" parent="." unique_id=5418848 instance=ExtResource("27_2tavo")]
-position = Vector2(6336, 2670)
-
-[node name="Victim80" parent="." unique_id=566017652 instance=ExtResource("27_2tavo")]
-position = Vector2(6482, 2617)
-
-[node name="Victim81" parent="." unique_id=779446634 instance=ExtResource("27_2tavo")]
-position = Vector2(6462, 2766)
-
-[node name="Victim82" parent="." unique_id=831404777 instance=ExtResource("27_2tavo")]
-position = Vector2(7865, 2194)
-
-[node name="Victim83" parent="." unique_id=1159271102 instance=ExtResource("27_2tavo")]
-position = Vector2(8011, 2141)
-
-[node name="Victim84" parent="." unique_id=1954408161 instance=ExtResource("27_2tavo")]
-position = Vector2(7991, 2290)
-
-[node name="Victim85" parent="." unique_id=144081409 instance=ExtResource("27_2tavo")]
-position = Vector2(7562, 3232)
-
-[node name="Victim86" parent="." unique_id=2079697928 instance=ExtResource("27_2tavo")]
-position = Vector2(7708, 3179)
-
-[node name="Victim87" parent="." unique_id=1580971378 instance=ExtResource("27_2tavo")]
-position = Vector2(7688, 3328)
-
-[node name="Victim88" parent="." unique_id=447268086 instance=ExtResource("27_2tavo")]
-position = Vector2(7864, -2992)
-
-[node name="Victim89" parent="." unique_id=1723503629 instance=ExtResource("27_2tavo")]
-position = Vector2(8010, -3045)
-
-[node name="Victim90" parent="." unique_id=1044834616 instance=ExtResource("27_2tavo")]
-position = Vector2(7990, -2896)
-
-[node name="Victim91" parent="." unique_id=1177760619 instance=ExtResource("27_2tavo")]
-position = Vector2(5058, -6427)
-
-[node name="Victim92" parent="." unique_id=900570451 instance=ExtResource("27_2tavo")]
-position = Vector2(5204, -6480)
-
-[node name="Victim93" parent="." unique_id=1704487139 instance=ExtResource("27_2tavo")]
-position = Vector2(5184, -6331)
-
-[node name="Victim94" parent="." unique_id=1362771941 instance=ExtResource("27_2tavo")]
-position = Vector2(3142, -6557)
-
-[node name="Victim95" parent="." unique_id=1749507813 instance=ExtResource("27_2tavo")]
-position = Vector2(3288, -6610)
-
-[node name="Victim96" parent="." unique_id=1012817481 instance=ExtResource("27_2tavo")]
-position = Vector2(3268, -6461)
-
-[node name="Victim97" parent="." unique_id=645603109 instance=ExtResource("27_2tavo")]
-position = Vector2(2172, -7868)
-
-[node name="Victim98" parent="." unique_id=67549694 instance=ExtResource("27_2tavo")]
-position = Vector2(2318, -7921)
-
-[node name="Victim99" parent="." unique_id=1698277968 instance=ExtResource("27_2tavo")]
-position = Vector2(2298, -7772)
-
-[node name="Victim100" parent="." unique_id=924352024 instance=ExtResource("27_2tavo")]
-position = Vector2(-3360, -7226)
-
-[node name="Victim101" parent="." unique_id=221891816 instance=ExtResource("27_2tavo")]
-position = Vector2(-3214, -7279)
-
-[node name="Victim102" parent="." unique_id=1951645193 instance=ExtResource("27_2tavo")]
-position = Vector2(-3234, -7130)
-
-[node name="Victim103" parent="." unique_id=1308683253 instance=ExtResource("27_2tavo")]
-position = Vector2(-8683, 443)
-
-[node name="Victim104" parent="." unique_id=903886807 instance=ExtResource("27_2tavo")]
-position = Vector2(-8537, 390)
-
-[node name="Victim105" parent="." unique_id=1513060153 instance=ExtResource("27_2tavo")]
-position = Vector2(-8557, 539)
-
-[node name="Victim106" parent="." unique_id=497875482 instance=ExtResource("27_2tavo")]
-position = Vector2(-1217, -4021)
-
-[node name="Victim107" parent="." unique_id=650282026 instance=ExtResource("27_2tavo")]
-position = Vector2(-1071, -4074)
-
-[node name="Victim108" parent="." unique_id=2001442501 instance=ExtResource("27_2tavo")]
-position = Vector2(-1091, -3925)
 
 [connection signal="finished" from="Stinger" to="Pit" method="_on_stinger_finished"]
 [connection signal="mouse_entered" from="UI/ClickCheck" to="UI" method="_on_click_check_mouse_entered"]

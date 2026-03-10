@@ -9,8 +9,10 @@ signal done(type: Unit.ITEM, who: Interactable)
 @export var item: Unit.ITEM = Unit.ITEM.NONE
 @export var is_resource := false
 @export var push_force := 2.0
+@export var animator: AnimationPlayer
 
 var can_be_selected := true
+var dead := false
 
 @onready var health := max_health
 
@@ -23,8 +25,8 @@ func _process(_delta: float) -> void:
 	can_be_selected = true
 
 
-func interact(_origin: Unit, _strength := 1) -> void:
-	pass
+func interact(_origin: Unit, _strength := 1) -> bool:
+	return true
 
 
 func deposit(origin: Unit, type: Unit.ITEM, strength := 1) -> void:
@@ -61,6 +63,14 @@ func finished(_origin: Unit) -> void:
 
 func die(_origin: Enemy) -> void:
 	queue_free()
+
+
+func spawn_particles(scene: PackedScene, radians: float, where := global_position) -> void:
+	var new: CPUParticles2D = scene.instantiate()
+	new.global_position = where
+	new.rotation = radians
+	get_tree().current_scene.add_child(new)
+	new.emitting = true
 
 
 func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:

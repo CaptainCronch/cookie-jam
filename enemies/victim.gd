@@ -46,6 +46,7 @@ var health := max_health:
 		health = value
 var health_tween: Tween
 var units_to_run_from: Array[Unit] = []
+var dead := false
 
 @onready var separate_shape: CircleShape2D = separate_collider.shape
 @onready var shader: ShaderMaterial = sprite.material
@@ -139,6 +140,8 @@ func hurt(origin: Unit, strength := 1) -> void:
 
 
 func die() -> void:
+	if dead: return
+	dead = true
 	var body := BODY.instantiate()
 	body.global_position = global_position
 	get_tree().current_scene.add_child(body)

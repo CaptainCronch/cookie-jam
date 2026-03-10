@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://cgpyq2axecbgx"]
+
+[ext_resource type="Script" uid="uid://bn0gnkhxm077s" path="res://world/intro.gd" id="1_7me5w"]
+[ext_resource type="AudioStream" uid="uid://c3lhclywlxcg0" path="res://world/ambiance-looped.tres" id="2_70c0f"]
+
+[node name="Intro" type="Control" unique_id=2143692584 node_paths=PackedStringArray("slide")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7me5w")
+slide = NodePath("TextureRect")
+
+[node name="Wind" type="AudioStreamPlayer" parent="." unique_id=363833028]
+stream = ExtResource("2_70c0f")
+autoplay = true
+bus = &"Ambient"
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=592404476]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bldwnwc8e611l"]
 
-[ext_resource type="Script" uid="uid://df3m4mxqgmoi7" path="res://resources/tree.gd" id="1_frbi7"]
+[ext_resource type="Script" uid="uid://bioyuxfhihmj5" path="res://resources/body.gd" id="1_frbi7"]
 [ext_resource type="Texture2D" uid="uid://cyml3ru48kylb" path="res://buildings/body.png" id="2_frbi7"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_aqk2v"]
@@ -12,7 +12,6 @@ script = ExtResource("1_frbi7")
 max_health = 1
 item = 3
 is_resource = true
-push_force = 1.0
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=439858846]

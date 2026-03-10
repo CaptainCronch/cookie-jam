@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://lag4ufv54ot8" path="res://units/unit-interact-1.png" id="6_j0e0d"]
 [ext_resource type="Texture2D" uid="uid://cyml3ru48kylb" path="res://buildings/body.png" id="6_qdbvd"]
 [ext_resource type="Texture2D" uid="uid://cnfp44xmn21os" path="res://units/unit-interact-2.png" id="7_5dfwp"]
-[ext_resource type="Texture2D" uid="uid://csajxojqkdeb5" path="res://resources/clay-gray.png" id="7_ju87d"]
+[ext_resource type="Texture2D" uid="uid://bw046gslbhc46" path="res://resources/ash.png" id="7_ju87d"]
 [ext_resource type="Texture2D" uid="uid://dd3ud3jr860o4" path="res://units/unit-run-1.png" id="8_eras8"]
 [ext_resource type="Texture2D" uid="uid://dwst2ow13bakw" path="res://units/unit-run-2.png" id="9_syn0d"]
 [ext_resource type="Texture2D" uid="uid://cimitvlvjv5ki" path="res://units/unit-carry-1.png" id="10_1quw1"]
@@ -330,9 +330,7 @@ offset = Vector2(-44, -51)
 
 [node name="Ash" type="Sprite2D" parent="Resources" unique_id=1652177950]
 visible = false
-self_modulate = Color(0.36, 0.36, 0.36, 1)
 position = Vector2(0, -8.685)
-scale = Vector2(1, 0.71)
 texture = ExtResource("7_ju87d")
 offset = Vector2(-44, -51)
 

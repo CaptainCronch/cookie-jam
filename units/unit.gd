@@ -5,14 +5,14 @@ signal freed(unit: Unit)
 
 enum ITEM {NONE, WOOD, CLAY, BODY, ASH, GLASSY_CLAY}
 
-@export var default_speed := 600.0
-@export var carrying_speed := 500.0
+@export var default_speed := 700.0
+@export var carrying_speed := 600.0
 @export var smooth_buffer := 100.0
 @export var close_buffer := 50.0
 @export var acceleration := 10.0
 @export var away_multiplier := 2.0
 @export var damage := 1
-@export var interact_time := 1.0
+@export var interact_time := 0.8
 @export var max_health := 10
 @export var regen_time := 5.0
 @export var health_change_boost := 50.0
@@ -204,11 +204,13 @@ func check_interaction() -> void:
 				interacting = true
 				animator.play("interact")
 			elif area == current_goal and current_item == ITEM.NONE and area.is_resource:
-				(area as Interactable).interact(self, damage)
-				interact_timer = interact_time
-				check_deposit()
-				interacting = true
-				animator.play("interact")
+				if (area as Interactable).interact(self, damage) == true:
+					interact_timer = interact_time
+					check_deposit()
+					interacting = true
+					animator.play("interact")
+				else:
+					check_resource()
 
 
 func move_to(pos: Vector2) -> void:

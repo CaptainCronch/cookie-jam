@@ -2,14 +2,14 @@ extends Node
 
 signal earned_soul
 
-const WAVE_TIME := 60.0
+const WAVE_TIME := 120.0
 
 var camera: God
 var ui: UI
 var fog: Fog
 
 var max_units := 5
-var bonus_units := 0
+var bonus_units := 1
 var units := 0
 var wood := 0
 var clay := 0
@@ -28,7 +28,7 @@ func _ready():
 	#get_window().mode = Window.MODE_FULLSCREEN
 	add_child(timer)
 	timer.timeout.connect(spawn_wave)
-	timer.start(WAVE_TIME * 5)
+	#timer.start(WAVE_TIME * 5)
 
 
 func _process(_delta):
