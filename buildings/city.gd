@@ -3,12 +3,15 @@ class_name City
 
 const ENEMY = preload("uid://np7lmt4qtbuk")
 const VICTIM = preload("uid://bgi6kgxyt0l8h")
+const ARSON = preload("uid://bi5ij45ygio8m")
 
 
 func interact(origin: Unit, strength := 1) -> bool:
 	if dead: return false
 	if not origin.current_item == Unit.ITEM.NONE: return false
-	if randi_range(0, 4) == 4:
+	animator.stop()
+	animator.play("interact")
+	if randi_range(0, 3) == 3:
 		if randi_range(0, 1) == 1:
 			spawn_enemy()
 		else:
@@ -25,9 +28,10 @@ func finished(_origin: Unit) -> void:
 	# spawn particles
 	# play sound here
 	remove_from_group("Cities")
+	animator.play("finished")
+	spawn_particles(ARSON, rotation)
 	dead = true
 	done.emit(item, self)
-	queue_free()
 
 
 func spawn_enemy() -> void:

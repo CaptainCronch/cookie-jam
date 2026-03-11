@@ -2,7 +2,7 @@ extends Bank
 class_name Pit
 
 const UNIT := preload("uid://c772u1gct8vp4")
-const LEVEL_REQUIREMENTS := [10, 20, 50, 100, 150, 200]
+@onready var level_requirements := [10, 20, 50, 100, 150, 200] if not Global.CHEATS else [1, 2, 3, 4, 5, 6]
 
 @export var level_sprites: Array[CompressedTexture2D]
 @export var idol: Sprite2D
@@ -21,6 +21,38 @@ func _ready() -> void:
 	call_deferred("spawn")
 
 
+func deposit(origin: Unit, type: Unit.ITEM, strength := 1) -> void:
+	match type:
+		Unit.ITEM.NONE:
+			return
+		Unit.ITEM.WOOD:
+			Global.wood += strength
+			Global.refresh_ui()
+			animator.play("interact")
+		Unit.ITEM.CLAY:
+			Global.clay += strength
+			Global.refresh_ui()
+			animator.play("interact")
+		Unit.ITEM.BODY:
+			Global.souls += 1
+			Global.refresh_ui()
+		Unit.ITEM.ASH:
+			Global.ash += strength
+			Global.refresh_ui()
+			animator.play("interact")
+		Unit.ITEM.GLASSY_CLAY:
+			Global.glassy_clay += strength
+			Global.refresh_ui()
+			animator.play("interact")
+	origin.current_item = Unit.ITEM.NONE
+
+
+func animate() -> void:
+	if not animator.current_animation == "interact_level_up" and not animator.current_animation == "interact_flesh":
+		animator.stop()
+		animator.play("interact")
+
+
 func spawn() -> void:
 	if not is_instance_valid(unit):
 		if Global.units < Global.max_units:
@@ -32,7 +64,7 @@ func spawn() -> void:
 
 func level_up() -> void:
 	$Shadow.show()
-	idol.texture = level_sprites[level]
+	idol.texture = level_sprites[min(level, 4)]
 	level += 1
 	match level:
 		1:
@@ -58,8 +90,14 @@ func _on_timer_timeout() -> void:
 
 func _on_earned_soul() -> void:
 	lifetime_souls += 1
-	if lifetime_souls >= LEVEL_REQUIREMENTS[level]:
+	if lifetime_souls >= level_requirements[level]:
+		animator.stop()
+		animator.play("interact_level_up")
 		level_up()
+	else:
+		if not animator.current_animation == "interact_level_up":
+			animator.stop()
+			animator.play("interact_flesh")
 
 
 func _on_stinger_finished() -> void:

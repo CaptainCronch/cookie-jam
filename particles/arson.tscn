@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://bi5ij45ygio8m"]
+
+[ext_resource type="Texture2D" uid="uid://cy2atioe4urte" path="res://particles/fire.png" id="1_2ndov"]
+[ext_resource type="Script" uid="uid://dgmf4drf5gfkp" path="res://particles/self_destruct_particles.gd" id="2_fybi0"]
+
+[sub_resource type="Curve" id="Curve_bpsee"]
+_data = [Vector2(0, 0), 0.0, 11.346993, 0, 0, Vector2(0.22413793, 1), 0.105322585, 0.0, 0, 0, Vector2(0.7025862, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -9.905618, 0.0, 0, 0]
+point_count = 4
+
+[node name="Arson" type="CPUParticles2D" unique_id=1552947772]
+emitting = false
+amount = 20
+texture = ExtResource("1_2ndov")
+one_shot = true
+explosiveness = 0.5
+lifetime_randomness = 0.2
+emission_shape = 2
+emission_sphere_radius = 32.0
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 800.0
+initial_velocity_max = 1200.0
+damping_min = 1500.0
+damping_max = 2000.0
+scale_amount_curve = SubResource("Curve_bpsee")
+script = ExtResource("2_fybi0")

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://l3h6oextc6qc"]
 
 [ext_resource type="Texture2D" uid="uid://cqgjawrododui" path="res://particles/woodchips.png" id="1_1hiua"]
-[ext_resource type="Script" uid="uid://dgmf4drf5gfkp" path="res://self_destruct_particles.gd" id="2_s88el"]
+[ext_resource type="Script" uid="uid://dgmf4drf5gfkp" path="res://particles/self_destruct_particles.gd" id="2_s88el"]
 
 [sub_resource type="Curve" id="Curve_bpsee"]
 _data = [Vector2(0, 0), 0.0, 11.346993, 0, 0, Vector2(0.09051724, 1), 0.105322585, 0.0, 0, 0, Vector2(0.8491379, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -18.768538, 0.0, 0, 0]

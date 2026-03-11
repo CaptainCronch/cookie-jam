@@ -3,10 +3,11 @@ class_name Enemy
 
 const BODY = preload("uid://bldwnwc8e611l")
 const PUDDLE = preload("uid://du2lw4k1vgxy4")
+const BLOOD_SPLATTER = preload("uid://dfeij4sr7verl")
 
 @export var default_speed := 300.0
 @export var smooth_buffer := 100.0
-@export var close_buffer := 30.0
+@export var close_buffer := 50.0
 @export var acceleration := 10.0
 @export var away_multiplier := 2.0
 @export var damage := 1
@@ -47,6 +48,7 @@ var health := max_health:
 var health_tween: Tween
 var units_to_hit: Array[Unit] = []
 var interacting := false
+var dead := false
 
 @onready var separate_shape: CircleShape2D = separate_collider.shape
 @onready var shader: ShaderMaterial = sprite.material
@@ -81,7 +83,7 @@ func _physics_process(delta: float) -> void:
 		sprite.flip_h = false
 	
 	if not interacting:
-		if distance < close_buffer:
+		if velocity.length() < speed/3.0:
 			if not animator.current_animation == "idle": animator.play("idle")
 		else:
 			if not animator.current_animation == "run": animator.play("run")
@@ -163,19 +165,26 @@ func check_interaction() -> void:
 
 
 func hurt(origin: Unit, strength := 1) -> void:
+	if dead: return
 	health -= strength
 	boost = origin.global_position.direction_to(global_position) * knockback_force
 	if health <= 0:
-		die()
+		die(origin)
 
 
-func die() -> void:
+func die(origin: Unit) -> void:
+	dead = true
 	var body := BODY.instantiate()
 	body.global_position = global_position
 	get_tree().current_scene.add_child(body)
 	var puddle := PUDDLE.instantiate()
 	puddle.global_position = global_position
 	get_tree().current_scene.add_child(puddle)
+	var splatter := BLOOD_SPLATTER.instantiate()
+	splatter.global_position = global_position
+	splatter.rotation = origin.global_position.direction_to(global_position).angle()
+	get_tree().current_scene.add_child(splatter)
+	splatter.emitting = true
 	queue_free()
 
 
@@ -236,3 +245,7 @@ func _on_aggro_area_entered(area: Area2D) -> void:
 func _on_aggro_area_exited(area: Area2D) -> void:
 	if area.get_parent() is Unit:
 		units_to_hit.erase(area.get_parent())
+
+
+func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+	if anim_name == "interact": interacting = false

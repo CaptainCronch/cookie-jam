@@ -1,12 +1,14 @@
 extends CharacterBody2D
 class_name Unit
 
+const SMOKE_SPLATTER = preload("uid://u27o3bdt6maj")
+
 signal freed(unit: Unit)
 
 enum ITEM {NONE, WOOD, CLAY, BODY, ASH, GLASSY_CLAY}
 
-@export var default_speed := 700.0
-@export var carrying_speed := 600.0
+@export var default_speed := 600.0
+@export var carrying_speed := 500.0
 @export var smooth_buffer := 100.0
 @export var close_buffer := 50.0
 @export var acceleration := 10.0
@@ -63,6 +65,7 @@ var regen_timer := regen_time
 var health_tween: Tween
 var enemies_to_hit: Array[CharacterBody2D] = []
 var interacting := false
+var dead := false
 
 @onready var separate_shape: CircleShape2D = separate_collider.shape
 @onready var shader: ShaderMaterial = sprite.material
@@ -249,7 +252,7 @@ func hurt(origin: Enemy, strength := 1) -> void:
 	boost = origin.global_position.direction_to(global_position) * knockback_force
 	
 	if health <= 0:
-		die()
+		die(origin)
 
 
 func warn(enemy: CharacterBody2D):
@@ -261,7 +264,14 @@ func warn(enemy: CharacterBody2D):
 					(parent as Unit).warn(enemy)
 
 
-func die() -> void:
+func die(origin: Enemy) -> void:
+	if dead: return
+	dead = true
+	var splatter := SMOKE_SPLATTER.instantiate()
+	splatter.global_position = global_position
+	splatter.rotation = origin.global_position.direction_to(global_position).angle()
+	get_tree().current_scene.add_child(splatter)
+	splatter.emitting = true
 	Global.units -= 1
 	Global.refresh_ui()
 	freed.emit(self)

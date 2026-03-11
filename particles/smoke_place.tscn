@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://b5l13itqbkklo"]
+
+[ext_resource type="Texture2D" uid="uid://cfj4im0d7uhw7" path="res://particles/smoke.png" id="1_21i8g"]
+[ext_resource type="Script" uid="uid://dgmf4drf5gfkp" path="res://particles/self_destruct_particles.gd" id="2_3mm12"]
+
+[sub_resource type="Curve" id="Curve_bpsee"]
+_data = [Vector2(0, 0), 0.0, 11.346993, 0, 0, Vector2(0.04310344, 1), 0.105322585, 0.0, 0, 0, Vector2(0.9655173, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -18.768538, 0.0, 0, 0]
+point_count = 4
+
+[node name="SmokePlace" type="CPUParticles2D" unique_id=1552947772]
+emitting = false
+amount = 20
+texture = ExtResource("1_21i8g")
+lifetime = 3.0
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 0.2
+emission_shape = 2
+emission_sphere_radius = 32.0
+spread = 180.0
+gravity = Vector2(0, -490)
+initial_velocity_min = 200.0
+initial_velocity_max = 400.0
+damping_min = 200.0
+damping_max = 400.0
+angle_max = 360.0
+scale_amount_curve = SubResource("Curve_bpsee")
+script = ExtResource("2_3mm12")

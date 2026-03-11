@@ -41,4 +41,4 @@ func revive() -> void:
 	dead = false
 	add_to_group("Resource")
 	add_to_group("Deposits")
-	health = 60
+	health = 100

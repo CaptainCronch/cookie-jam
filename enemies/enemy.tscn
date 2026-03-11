@@ -308,3 +308,4 @@ autoplay = &"idle"
 
 [connection signal="area_entered" from="Aggro" to="." method="_on_aggro_area_entered"]
 [connection signal="area_exited" from="Aggro" to="." method="_on_aggro_area_exited"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

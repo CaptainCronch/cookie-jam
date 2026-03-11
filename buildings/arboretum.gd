@@ -2,6 +2,7 @@ extends Interactable
 class_name Arboretum
 
 const TREE := preload("uid://bc0n2usldvntm")
+const SMOKE_PLACE = preload("uid://b5l13itqbkklo")
 
 @export var max_range := 512.0
 @export var min_range := 128.0
@@ -10,6 +11,14 @@ const TREE := preload("uid://bc0n2usldvntm")
 @export var timer: Timer
 
 var trees: Array[WoodTree] = []
+
+
+func _ready() -> void:
+	super()
+	var smoke := SMOKE_PLACE.instantiate()
+	smoke.global_position = global_position
+	get_tree().current_scene.add_child(smoke)
+	smoke.emitting = true
 
 
 func _on_timer_timeout() -> void:

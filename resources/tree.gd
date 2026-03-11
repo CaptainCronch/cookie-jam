@@ -6,7 +6,8 @@ const WOOD_CHIPS = preload("uid://l3h6oextc6qc")
 
 func _ready() -> void:
 	super()
-	scale = Vector2(randfn(1.0, 0.1), randfn(1.0, 0.1))
+	$Sprite2D.scale = Vector2(randfn(1.0, 0.1), 1.0)
+	$Sprite2D.flip_h = randi_range(0, 1) == 1
 
 
 func interact(origin: Unit, strength := 1) -> bool:

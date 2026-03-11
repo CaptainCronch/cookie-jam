@@ -1,7 +1,8 @@
 extends Camera2D
 class_name God
 
-@export var drag_sensitivity := 0.5
+@export var move_sensitivity := 2000.0
+@export var drag_sensitivity := 0.7
 @export var drag_smooth := 10.0
 @export var zoom_sensitivity := 0.1
 @export var zoom_max := Vector2(2.0, 2.0)
@@ -73,7 +74,7 @@ func selection() -> void:
 	
 	if not can_select: return
 	
-	if Input.is_action_pressed("a"):
+	if Input.is_action_pressed("a") and Input.is_action_pressed("shift"):
 		for unit in get_tree().get_nodes_in_group("Units"):
 			if unit is Unit and not selected_units.has(unit):
 				selected_anything = true
@@ -129,6 +130,16 @@ func commanding() -> void:
 
    
 func camera_move(delta: float) -> void:
+	
+	#Input.get_vector("a", "d", "w", "s")
+	var move_dir := Vector2()
+	if Input.is_action_pressed("a") and not Input.is_action_pressed("shift"): move_dir.x -= 1.0
+	if Input.is_action_pressed("d"): move_dir.x += 1.0
+	if Input.is_action_pressed("w"): move_dir.y -= 1.0
+	if Input.is_action_pressed("s"): move_dir.y += 1.0
+	
+	drag_desired += move_dir * move_sensitivity * delta
+	
 	var zoom_dir := 0
 	if Input.is_action_just_released("wheel_up"): zoom_dir += 2
 	elif Input.is_action_just_released("wheel_down"): zoom_dir -= 1
@@ -145,7 +156,7 @@ func camera_move(delta: float) -> void:
 	
 	music.volume_linear = clamp(inverse_lerp(0.1, 0.5, zoom.x), 0.0, 1.0)
 	ambient.volume_linear = clamp((inverse_lerp(zoom_min.x, 0.2, zoom.x) * -1.0 ) + 0.8, 0.0, 1.0)
-	clouds.change_clouds(clamp((inverse_lerp(zoom_min.x, 0.15, zoom.x) * -1.0) + 1.0, 0.0, 1.0))
+	clouds.change_clouds(clamp((inverse_lerp(zoom_min.x, 0.06, zoom.x) * -1.0) + 1.0, 0.0, 1.0))
 
 
 func select_interactable(object: Interactable) -> void:

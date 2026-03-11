@@ -3,6 +3,7 @@ class_name Victim
 
 const BODY = preload("uid://bldwnwc8e611l")
 const PUDDLE = preload("uid://du2lw4k1vgxy4")
+const BLOOD_SPLATTER = preload("uid://dfeij4sr7verl")
 
 @export var default_speed := 100.0
 @export var smooth_buffer := 100.0
@@ -136,10 +137,10 @@ func hurt(origin: Unit, strength := 1) -> void:
 	health -= strength
 	boost = origin.global_position.direction_to(global_position) * knockback_force
 	if health <= 0:
-		die()
+		die(origin)
 
 
-func die() -> void:
+func die(origin: Unit) -> void:
 	if dead: return
 	dead = true
 	var body := BODY.instantiate()
@@ -148,6 +149,11 @@ func die() -> void:
 	var puddle := PUDDLE.instantiate()
 	puddle.global_position = global_position
 	get_tree().current_scene.add_child(puddle)
+	var splatter := BLOOD_SPLATTER.instantiate()
+	splatter.global_position = global_position
+	splatter.rotation = origin.global_position.direction_to(global_position).angle()
+	get_tree().current_scene.add_child(splatter)
+	splatter.emitting = true
 	queue_free()
 
 

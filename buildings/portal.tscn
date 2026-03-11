@@ -6,7 +6,7 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_036b0"]
 radius = 100.0
 
-[node name="Portal" type="Area2D" unique_id=1247282839]
+[node name="Portal" type="Area2D" unique_id=1247282839 groups=["Buildings"]]
 script = ExtResource("1_3r2wf")
 metadata/_edit_group_ = true
 

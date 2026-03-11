@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://dx4j6inx5xshv"]
+
+[ext_resource type="Script" uid="uid://bck4vbpdl2c0g" path="res://buildings/leyline.gd" id="1_gbm5q"]
+
+[sub_resource type="Curve" id="Curve_twdhf"]
+_data = [Vector2(0.024590164, 0), 0.0, 0.0, 0, 0, Vector2(0.5040984, 1), 5.6544905, -5.6544957, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_5hbhv"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 1, 1, 0, 0.98803645, 0.74125385, 0, 0.1, 1, 1, 1, 0)
+
+[node name="Leyline" type="Line2D" unique_id=1666865316]
+width = 8.0
+width_curve = SubResource("Curve_twdhf")
+gradient = SubResource("Gradient_5hbhv")
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+antialiased = true
+script = ExtResource("1_gbm5q")

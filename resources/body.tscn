@@ -12,6 +12,7 @@ script = ExtResource("1_frbi7")
 max_health = 1
 item = 3
 is_resource = true
+push_force = 1.0
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=439858846]

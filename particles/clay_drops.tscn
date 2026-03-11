@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cypx0xe27be6w"]
 
 [ext_resource type="Texture2D" uid="uid://dkrmufmnvbrv4" path="res://particles/clay-crumbs.png" id="1_fo83v"]
-[ext_resource type="Script" uid="uid://dgmf4drf5gfkp" path="res://self_destruct_particles.gd" id="2_ykkt8"]
+[ext_resource type="Script" uid="uid://dgmf4drf5gfkp" path="res://particles/self_destruct_particles.gd" id="2_ykkt8"]
 
 [sub_resource type="Curve" id="Curve_bpsee"]
 _data = [Vector2(0, 0), 0.0, 11.346993, 0, 0, Vector2(0.08189654, 1), 0.105322585, 0.0, 0, 0, Vector2(0.83189654, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -18.768538, 0.0, 0, 0]

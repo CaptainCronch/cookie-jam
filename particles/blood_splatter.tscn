@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://dfeij4sr7verl"]
+
+[ext_resource type="Texture2D" uid="uid://cjabriud4b7aa" path="res://particles/blood.png" id="1_a3tnx"]
+[ext_resource type="Script" uid="uid://dgmf4drf5gfkp" path="res://particles/self_destruct_particles.gd" id="2_q5gp4"]
+
+[sub_resource type="Curve" id="Curve_bpsee"]
+_data = [Vector2(0, 0), 0.0, 11.346993, 0, 0, Vector2(0.04310344, 1), 0.105322585, 0.0, 0, 0, Vector2(0.9655173, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -18.768538, 0.0, 0, 0]
+point_count = 4
+
+[node name="BloodSplatter" type="CPUParticles2D" unique_id=1552947772]
+emitting = false
+amount = 5
+texture = ExtResource("1_a3tnx")
+lifetime = 10.0
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 0.2
+emission_shape = 2
+emission_sphere_radius = 32.0
+spread = 30.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 1400.0
+initial_velocity_max = 1600.0
+damping_min = 3000.0
+damping_max = 4000.0
+angle_max = 360.0
+scale_amount_curve = SubResource("Curve_bpsee")
+script = ExtResource("2_q5gp4")

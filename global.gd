@@ -1,8 +1,10 @@
 extends Node
 
 signal earned_soul
+signal updated_fog
 
 const WAVE_TIME := 120.0
+const CHEATS := false
 
 var camera: God
 var ui: UI

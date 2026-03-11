@@ -13,7 +13,7 @@ const BUILDING_SCENES: Array[PackedScene] = [
 ]
 const BUILDING_COSTS: Array[Dictionary] = [
 	{"wood": 10, "clay": 0, "souls": 0, "ash": 0, "glassy_clay": 0},
-	{"wood": 30, "clay": 0, "souls": 0, "ash": 0, "glassy_clay": 0},
+	{"wood": 20, "clay": 0, "souls": 0, "ash": 0, "glassy_clay": 0},
 	{"wood": 30, "clay": 10, "souls": 0, "ash": 0, "glassy_clay": 0},
 	{"wood": 10, "clay": 20, "souls": 5, "ash": 0, "glassy_clay": 0},
 	{"wood": 50, "clay": 10, "souls": 0, "ash": 10, "glassy_clay": 0},
@@ -37,7 +37,8 @@ const BUILDING_COSTS: Array[Dictionary] = [
 
 var can_cancel_build := false
 var current_building: BUILDINGS = BUILDINGS.NONE
-var unlocked_buildings: Array[bool] = [true, true, false, false, false, false]
+
+@onready var unlocked_buildings := [true, true, false, false, false, false] if not Global.CHEATS else [true, true, true, true, true, true]
 
 
 func _ready() -> void:
@@ -93,6 +94,7 @@ func build() -> void:
 
 
 func check_cost(building: BUILDINGS) -> bool:
+	if Global.CHEATS: return true
 	var costs := BUILDING_COSTS[building]
 	if costs.wood > Global.wood or costs.clay > Global.clay or costs.souls > Global.souls or costs.ash > Global.ash or costs.glassy_clay > Global.glassy_clay:
 		return false
@@ -112,6 +114,8 @@ func _on_build_menu_slot_selected(slot: Control, index: int) -> void:
 	if index > -1 and unlocked_buildings[index]:
 		build_preview.show()
 		build_preview.texture = slot.texture
+		if index == 1: build_preview.scale = Vector2(2.0, 2.0)
+		else: build_preview.scale = Vector2(1.0, 1.0)
 		current_building = index as BUILDINGS
 	else:
 		build_preview.hide()
@@ -127,11 +131,11 @@ func _on_click_check_mouse_exited() -> void: can_cancel_build = false
 func _on_build_menu_selection_changed(new_selection: int) -> void:
 	match new_selection:
 		-1:
-			info_label.text = "Cancel selection"
+			info_label.text = "Cancel selection."
 		0:
 			info_label.text = "Minor Gateway. Spawns demons. Requires 10 wood."
 		1:
-			info_label.text = "Vision Beacon. Grants sight over an area. Requires 30 wood."
+			info_label.text = "Vision Beacon. Grants sight over an area. Requires 20 wood."
 		2:
 			info_label.text = "Collector. Allows collection anywhere. Requires 30 wood and 10 clay."
 		3:

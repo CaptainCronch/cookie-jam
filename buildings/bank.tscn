@@ -8,11 +8,50 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_036b0"]
 radius = 150.0
 
-[node name="Bank" type="Area2D" unique_id=1247282839 groups=["Banks", "Buildings"]]
+[sub_resource type="Animation" id="Animation_2mdyo"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_avis4"]
+resource_name = "interact"
+length = 0.3
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.29999998),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.9, 1.1), Vector2(1.1, 0.9), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_eogdr"]
+_data = {
+&"RESET": SubResource("Animation_2mdyo"),
+&"interact": SubResource("Animation_avis4")
+}
+
+[node name="Bank" type="Area2D" unique_id=1247282839 node_paths=PackedStringArray("animator") groups=["Banks", "Buildings"]]
 script = ExtResource("1_v0kt3")
 alt = ExtResource("2_7nteg")
 alt2 = ExtResource("3_2mdyo")
 max_health = 50
+animator = NodePath("AnimationPlayer")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1514454512]
 shape = SubResource("CircleShape2D_036b0")
@@ -24,7 +63,10 @@ color = Color(0.015686275, 0, 0.050980393, 0.30588236)
 polygon = PackedVector2Array(-46, -2, -46, 3, -43.08176, 9.119496, -38.36478, 12.264151, -34.27673, 14.779874, -26, 18, -11, 19, 1, 19, 17, 17, 23, 16, 29, 12, 33, 7, 34, 2, 34, -3, 32, -6, 29, -10, 22, -12, 10, -14, -4, -14, -15, -14, -25, -14, -35, -12, -40, -10, -44, -7, -46, -5)
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=250771454]
-position = Vector2(0, -68)
 texture = ExtResource("2_4swai")
+offset = Vector2(0, -71.38)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1451210548]
+libraries/ = SubResource("AnimationLibrary_eogdr")
 
 [connection signal="input_event" from="." to="." method="_on_input_event"]
