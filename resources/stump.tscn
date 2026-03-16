@@ -1,0 +1,127 @@
+[gd_scene format=3 uid="uid://iqth75a24dm"]
+
+[ext_resource type="Script" uid="uid://behlflty4v76k" path="res://resources/stump.gd" id="1_61x3b"]
+[ext_resource type="Texture2D" uid="uid://dhromudbd626c" path="res://resources/tree.png" id="1_knfv6"]
+[ext_resource type="AudioStream" uid="uid://ch6e2o88ml5wr" path="res://sounds/tree-finish.mp3" id="3_88v68"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_61x3b"]
+radius = 64.0
+
+[sub_resource type="Animation" id="Animation_88v68"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D2:skew")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:skew")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_7lu24"]
+resource_name = "spawn"
+length = 0.5
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D2:skew")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.569051]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D2")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"hide"
+}]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:skew")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.099999994, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [-0.17453292519943295, 0.10471975511965978, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_d8fx8"]
+_data = {
+&"RESET": SubResource("Animation_88v68"),
+&"spawn": SubResource("Animation_7lu24")
+}
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_7lu24"]
+random_pitch = 1.0594631
+random_volume_offset_db = 2.0
+streams_count = 1
+stream_0/stream = ExtResource("3_88v68")
+
+[node name="Stump" type="Area2D" unique_id=748090589 node_paths=PackedStringArray("stump_sprite", "log_sprite")]
+monitoring = false
+script = ExtResource("1_61x3b")
+stump_sprite = NodePath("Sprite2D")
+log_sprite = NodePath("Sprite2D2")
+
+[node name="Shadow" type="Polygon2D" parent="." unique_id=1401383929]
+position = Vector2(17.999998, 6)
+scale = Vector2(2.517447, 2.809168)
+color = Color(0.015686275, 0, 0.050980393, 0.30588236)
+polygon = PackedVector2Array(-46, -2, -46, 3, -41, 9, -37, 12, -35, 13, -26, 18, -11, 19, 1, 19, 17, 17, 23, 16, 29, 12, 33, 7, 34, 2, 34, -3, 32, -6, 29, -10, 22, -12, 10, -14, -4, -14, -15, -14, -25, -14, -35, -12, -40, -10, -44, -7, -46, -5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=722678802]
+shape = SubResource("CircleShape2D_61x3b")
+
+[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=1821500361]
+texture = ExtResource("1_knfv6")
+offset = Vector2(15.295, -358.215)
+region_enabled = true
+region_rect = Rect2(0, 0, 700, 567)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=489181903]
+texture = ExtResource("1_knfv6")
+offset = Vector2(15.295, -8.35)
+region_enabled = true
+region_rect = Rect2(0, 567, 700, 133)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1423457406]
+libraries/ = SubResource("AnimationLibrary_d8fx8")
+autoplay = &"spawn"
+
+[node name="Spawn" type="AudioStreamPlayer2D" parent="." unique_id=1126330378]
+stream = SubResource("AudioStreamRandomizer_7lu24")
+autoplay = true
+max_distance = 4096.0
+bus = &"SFX"

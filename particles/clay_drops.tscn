@@ -4,15 +4,16 @@
 [ext_resource type="Script" uid="uid://dgmf4drf5gfkp" path="res://particles/self_destruct_particles.gd" id="2_ykkt8"]
 
 [sub_resource type="Curve" id="Curve_bpsee"]
-_data = [Vector2(0, 0), 0.0, 11.346993, 0, 0, Vector2(0.08189654, 1), 0.105322585, 0.0, 0, 0, Vector2(0.83189654, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -18.768538, 0.0, 0, 0]
+_data = [Vector2(0, 0), 0.0, 11.346993, 0, 0, Vector2(0.012931034, 1), 0.105322585, 0.0, 0, 0, Vector2(0.83189654, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -18.768538, 0.0, 0, 0]
 point_count = 4
 
 [node name="ClayCrumbs" type="CPUParticles2D" unique_id=1552947772]
 emitting = false
 amount = 20
 texture = ExtResource("1_fo83v")
+lifetime = 5.0
 one_shot = true
-explosiveness = 0.9
+explosiveness = 0.95
 lifetime_randomness = 0.2
 emission_shape = 2
 emission_sphere_radius = 128.0

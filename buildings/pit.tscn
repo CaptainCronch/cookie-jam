@@ -7,6 +7,9 @@
 [ext_resource type="Texture2D" uid="uid://dqrcoj2xfl6g4" path="res://resources/idol-3.png" id="4_85bvx"]
 [ext_resource type="Texture2D" uid="uid://bc757euedbdlp" path="res://resources/idol-4.png" id="5_5lluo"]
 [ext_resource type="Texture2D" uid="uid://dbtg6icie0qoe" path="res://resources/idol-5.png" id="6_b4l0q"]
+[ext_resource type="AudioStream" uid="uid://cjc13hike8wlp" path="res://sounds/pit-deposit.wav" id="8_b4l0q"]
+[ext_resource type="AudioStream" uid="uid://3aphmacokqds" path="res://sounds/pit-flesh.mp3" id="9_m43ju"]
+[ext_resource type="AudioStream" uid="uid://di4h5gtwm8nxj" path="res://sounds/idol-level-up.wav" id="10_drp58"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_036b0"]
 radius = 200.0
@@ -193,10 +196,25 @@ _data = {
 &"interact_level_up": SubResource("Animation_b4l0q")
 }
 
-[node name="Pit" type="Area2D" unique_id=98455971 node_paths=PackedStringArray("idol", "animator") groups=["Banks", "Pit", "Vision"]]
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_qshe3"]
+random_pitch = 1.122462
+random_volume_offset_db = 2.0
+streams_count = 1
+stream_0/stream = ExtResource("8_b4l0q")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_cuai8"]
+random_pitch = 1.0594631
+random_volume_offset_db = 2.0
+streams_count = 1
+stream_0/stream = ExtResource("9_m43ju")
+
+[node name="Pit" type="Area2D" unique_id=98455971 node_paths=PackedStringArray("idol", "deposit_audio", "deposit_flesh_audio", "level_up_audio", "animator") groups=["Banks", "Pit", "Vision"]]
 script = ExtResource("1_i46k3")
 level_sprites = Array[CompressedTexture2D]([ExtResource("3_ysupm"), ExtResource("3_505hl"), ExtResource("4_85bvx"), ExtResource("5_5lluo"), ExtResource("6_b4l0q")])
 idol = NodePath("Idol")
+deposit_audio = NodePath("Deposit")
+deposit_flesh_audio = NodePath("DepositFlesh")
+level_up_audio = NodePath("IdolLevelUp")
 animator = NodePath("AnimationPlayer")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2039452464]
@@ -224,6 +242,23 @@ position = Vector2(5, -713)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2082696041]
 libraries/ = SubResource("AnimationLibrary_85bvx")
+
+[node name="Deposit" type="AudioStreamPlayer2D" parent="." unique_id=506677085]
+stream = SubResource("AudioStreamRandomizer_qshe3")
+volume_db = 2.0
+max_distance = 4096.0
+max_polyphony = 50
+bus = &"SFX"
+
+[node name="DepositFlesh" type="AudioStreamPlayer2D" parent="." unique_id=1960396682]
+stream = SubResource("AudioStreamRandomizer_cuai8")
+max_distance = 4096.0
+max_polyphony = 50
+bus = &"SFX"
+
+[node name="IdolLevelUp" type="AudioStreamPlayer" parent="." unique_id=1453433772]
+stream = ExtResource("10_drp58")
+max_polyphony = 5
 
 [connection signal="input_event" from="." to="." method="_on_input_event"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

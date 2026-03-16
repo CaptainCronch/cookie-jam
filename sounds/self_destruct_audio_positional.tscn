@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://cl3nvgh1e7s7v"]
+
+[ext_resource type="Script" uid="uid://dc24mu53m7xvv" path="res://sounds/self_destruct_audio_positional.gd" id="1_x4mc2"]
+
+[node name="SelfDestructAudioPositional" type="AudioStreamPlayer2D" unique_id=863159451]
+autoplay = true
+max_distance = 4096.0
+bus = &"SFX"
+script = ExtResource("1_x4mc2")
+
+[connection signal="finished" from="." to="." method="_on_finished"]

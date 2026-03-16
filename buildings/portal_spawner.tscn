@@ -2,12 +2,20 @@
 
 [ext_resource type="Script" uid="uid://heeo5a56wai7" path="res://buildings/portal_spawner.gd" id="1_usvwl"]
 [ext_resource type="Texture2D" uid="uid://onv0dv3orj2f" path="res://buildings/portal-small.png" id="2_rsg5d"]
+[ext_resource type="AudioStream" uid="uid://cykcah1hihywb" path="res://sounds/building-place.mp3" id="3_rsg5d"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_036b0"]
 radius = 72.0
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_w4utq"]
+random_pitch = 1.0594631
+random_volume_offset_db = 2.0
+streams_count = 1
+stream_0/stream = ExtResource("3_rsg5d")
+
 [node name="PortalSpawner" type="Area2D" unique_id=1247282839]
 script = ExtResource("1_usvwl")
+push_force = 1.0
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1514454512]
@@ -26,5 +34,12 @@ texture = ExtResource("2_rsg5d")
 [node name="Timer" type="Timer" parent="." unique_id=531656637]
 wait_time = 2.0
 autostart = true
+
+[node name="Spawn" type="AudioStreamPlayer2D" parent="." unique_id=1406513185]
+stream = SubResource("AudioStreamRandomizer_w4utq")
+volume_db = 2.0
+autoplay = true
+max_distance = 4096.0
+bus = &"SFX"
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

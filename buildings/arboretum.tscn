@@ -2,15 +2,39 @@
 
 [ext_resource type="Script" uid="uid://cmysuavaekpii" path="res://buildings/arboretum.gd" id="1_fh4i0"]
 [ext_resource type="Texture2D" uid="uid://bkskqchcre8ax" path="res://buildings/arboretum.png" id="2_fh4i0"]
+[ext_resource type="AudioStream" uid="uid://cykcah1hihywb" path="res://sounds/building-place.mp3" id="3_bvm8y"]
+[ext_resource type="AudioStream" uid="uid://hncw520gobm4" path="res://sounds/building-hit.mp3" id="4_xugen"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_aqk2v"]
 radius = 85.0
 
-[node name="Arboretum" type="Area2D" unique_id=655526278 node_paths=PackedStringArray("timer") groups=["Arboretum", "Buildings"]]
+[sub_resource type="Animation" id="Animation_fh4i0"]
+resource_name = "hurt"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bvm8y"]
+_data = {
+&"hurt": SubResource("Animation_fh4i0")
+}
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_xugen"]
+random_pitch = 1.0594631
+random_volume_offset_db = 2.0
+streams_count = 1
+stream_0/stream = ExtResource("3_bvm8y")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_m5t77"]
+random_pitch = 1.122462
+random_volume_offset_db = 2.0
+streams_count = 1
+stream_0/stream = ExtResource("4_xugen")
+
+[node name="Arboretum" type="Area2D" unique_id=655526278 node_paths=PackedStringArray("timer", "animator", "hit_audio") groups=["Arboretum", "Buildings"]]
 monitoring = false
 script = ExtResource("1_fh4i0")
 timer = NodePath("Timer")
 max_health = 50
+animator = NodePath("AnimationPlayer")
+hit_audio = NodePath("Hit")
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=439858846]
@@ -30,5 +54,21 @@ region_rect = Rect2(-0.5408325, 11.114441, 700.5721, 304.38647)
 [node name="Timer" type="Timer" parent="." unique_id=1264115990]
 wait_time = 5.0
 autostart = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=952115406]
+libraries/ = SubResource("AnimationLibrary_bvm8y")
+
+[node name="Spawn" type="AudioStreamPlayer2D" parent="." unique_id=1634011027]
+stream = SubResource("AudioStreamRandomizer_xugen")
+volume_db = 2.0
+autoplay = true
+max_distance = 4096.0
+bus = &"SFX"
+
+[node name="Hit" type="AudioStreamPlayer2D" parent="." unique_id=1593581853]
+stream = SubResource("AudioStreamRandomizer_m5t77")
+max_distance = 4096.0
+max_polyphony = 50
+bus = &"SFX"
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

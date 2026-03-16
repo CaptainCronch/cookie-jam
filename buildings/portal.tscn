@@ -2,12 +2,67 @@
 
 [ext_resource type="Script" uid="uid://cm246fvu44q52" path="res://buildings/portal.gd" id="1_3r2wf"]
 [ext_resource type="Texture2D" uid="uid://cl2lkt7yqy4cu" path="res://buildings/portal-large.png" id="2_3r2wf"]
+[ext_resource type="AudioStream" uid="uid://cykcah1hihywb" path="res://sounds/building-place.mp3" id="3_ocudq"]
+[ext_resource type="AudioStream" uid="uid://hncw520gobm4" path="res://sounds/building-hit.mp3" id="4_d20yf"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_036b0"]
 radius = 100.0
 
-[node name="Portal" type="Area2D" unique_id=1247282839 groups=["Buildings"]]
+[sub_resource type="Animation" id="Animation_3r2wf"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:skew")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_ocudq"]
+resource_name = "hurt"
+length = 0.3
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:skew")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.099999994, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.17453292519943295, -0.13962634, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_d20yf"]
+_data = {
+&"RESET": SubResource("Animation_3r2wf"),
+&"hurt": SubResource("Animation_ocudq")
+}
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_d20yf"]
+random_pitch = 1.0594631
+random_volume_offset_db = 2.0
+streams_count = 1
+stream_0/stream = ExtResource("3_ocudq")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_tya11"]
+random_pitch = 1.122462
+random_volume_offset_db = 2.0
+streams_count = 1
+stream_0/stream = ExtResource("4_d20yf")
+
+[node name="Portal" type="Area2D" unique_id=1247282839 node_paths=PackedStringArray("animator", "hit_audio") groups=["Buildings"]]
 script = ExtResource("1_3r2wf")
+max_health = 50
+animator = NodePath("AnimationPlayer")
+hit_audio = NodePath("Hit")
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1514454512]
@@ -20,5 +75,22 @@ color = Color(0.015686275, 0, 0.050980393, 0.30588236)
 polygon = PackedVector2Array(-46, -2, -46, 3, -43.08176, 9.119496, -38.36478, 12.264151, -34.27673, 14.779874, -26, 18, -11, 19, 1, 19, 17, 17, 23, 16, 29, 12, 33, 7, 34, 2, 34, -3, 32, -6, 29, -10, 22, -12, 10, -14, -4, -14, -15, -14, -25, -14, -35, -12, -40, -10, -44, -7, -46, -5)
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2117377725]
-position = Vector2(5, -92)
+position = Vector2(5, 15.095)
 texture = ExtResource("2_3r2wf")
+offset = Vector2(0, -104.445)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1260022979]
+libraries/ = SubResource("AnimationLibrary_d20yf")
+
+[node name="Spawn" type="AudioStreamPlayer2D" parent="." unique_id=1692400645]
+stream = SubResource("AudioStreamRandomizer_d20yf")
+volume_db = 2.0
+autoplay = true
+max_distance = 4096.0
+bus = &"SFX"
+
+[node name="Hit" type="AudioStreamPlayer2D" parent="." unique_id=1160496658]
+stream = SubResource("AudioStreamRandomizer_tya11")
+max_distance = 4096.0
+max_polyphony = 50
+bus = &"SFX"

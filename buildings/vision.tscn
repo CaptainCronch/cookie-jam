@@ -2,9 +2,15 @@
 
 [ext_resource type="Script" uid="uid://ctm8oqnuoxanm" path="res://buildings/vision.gd" id="1_7fojq"]
 [ext_resource type="Texture2D" uid="uid://bvc3ur0d50ihi" path="res://buildings/vision.png" id="2_fd0r6"]
+[ext_resource type="AudioStream" uid="uid://cd8p18ca42fac" path="res://sounds/vision-place.mp3" id="3_a0na2"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_036b0"]
 radius = 150.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_a0na2"]
+random_pitch = 1.0594631
+streams_count = 1
+stream_0/stream = ExtResource("3_a0na2")
 
 [node name="Vision" type="Area2D" unique_id=1247282839 node_paths=PackedStringArray("marker") groups=["Vision"]]
 monitoring = false
@@ -28,3 +34,10 @@ texture = ExtResource("2_fd0r6")
 
 [node name="Marker2D" type="Marker2D" parent="." unique_id=1091777992]
 position = Vector2(0, -389)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1135809391]
+stream = SubResource("AudioStreamRandomizer_a0na2")
+volume_db = 2.0
+autoplay = true
+max_distance = 4096.0
+bus = &"SFX"

@@ -12,7 +12,7 @@ const BLOOD_SPLATTER = preload("uid://dfeij4sr7verl")
 @export var away_multiplier := 2.0
 @export var damage := 1
 @export var interact_time := 0.5
-@export var seek_time := 1.0
+@export var seek_time := 10.0
 @export var max_health := 5
 @export var health_change_boost := 50.0
 @export var health_change_boost_time := 0.5
@@ -23,6 +23,8 @@ const BLOOD_SPLATTER = preload("uid://dfeij4sr7verl")
 @export var aggro_area: Area2D
 @export var sprite: Sprite2D
 @export var animator: AnimationPlayer
+@export var attack_audio: AudioStreamPlayer2D
+@export var notice_audio: AudioStreamPlayer2D
 
 var speed := default_speed
 var direction := Vector2()
@@ -135,8 +137,9 @@ func separate() -> Vector2:
 func check_aggro() -> void:
 	var any_valid := false
 	for unit in units_to_hit:
-		if is_instance_valid(unit):
+		if is_instance_valid(unit) and not targeted_unit == unit:
 			any_valid = true
+			if not is_instance_valid(targeted_unit): notice_audio.play()
 			targeted_unit = unit
 			desired_position = targeted_unit.global_position
 			break
@@ -152,6 +155,7 @@ func check_interaction() -> void:
 		var parent := area.get_parent()
 		if parent is Unit and parent == targeted_unit and interact_timer <= 0.0:
 			(parent as Unit).hurt(self, damage)
+			attack_audio.play()
 			interact_timer = interact_time
 			interacting = true
 			animator.play("interact")

@@ -28,6 +28,7 @@ func _on_timer_timeout() -> void:
 	var distance := randf_range(min_range, max_range)
 	var direction := Vector2.RIGHT.rotated(randf_range(0, TAU))
 	tree.global_position = global_position + (direction * distance)
+	tree.spawned = true
 	get_tree().current_scene.add_child(tree)
 	trees.append(tree)
 	tree.done.connect(_on_tree_done)

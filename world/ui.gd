@@ -34,6 +34,7 @@ const BUILDING_COSTS: Array[Dictionary] = [
 @export var info_label: Label
 @export var victory_text: MarginContainer
 @export var controls: MarginContainer
+@export var negatory: AudioStreamPlayer
 
 var can_cancel_build := false
 var current_building: BUILDINGS = BUILDINGS.NONE
@@ -58,7 +59,7 @@ func _process(_delta: float) -> void:
 			if unlocked_buildings[i - 1]:
 				children[i].modulate = Color.WHITE
 			else:
-				children[i].modulate = Color(0.6, 0.6, 0.6, 0.6)
+				children[i].modulate = Color(0.5, 0.5, 0.5, 0.5)
 		build_menu.show()
 		info_box.show()
 		controls.hide()
@@ -77,6 +78,8 @@ func _process(_delta: float) -> void:
 					if thing.dead:
 						if check_cost(current_building) and unlocked_buildings[current_building]:
 							thing.revive()
+						else:
+							negatory.play()
 			build_preview.hide()
 			current_building = BUILDINGS.NONE
 			return
@@ -89,6 +92,8 @@ func build() -> void:
 		var scene := BUILDING_SCENES[current_building].instantiate()
 		scene.global_position = camera.get_global_mouse_position()
 		get_tree().current_scene.add_child(scene)
+	else:
+		negatory.play()
 	build_preview.hide()
 	current_building = BUILDINGS.NONE
 
@@ -120,6 +125,7 @@ func _on_build_menu_slot_selected(slot: Control, index: int) -> void:
 	else:
 		build_preview.hide()
 		current_building = BUILDINGS.NONE
+		negatory.play()
 
 
 func _on_click_check_mouse_entered() -> void: can_cancel_build = true

@@ -23,6 +23,7 @@ const BLOOD_SPLATTER = preload("uid://dfeij4sr7verl")
 @export var aggro_area: Area2D
 @export var sprite: Sprite2D
 @export var animator: AnimationPlayer
+@export var notice_audio: AudioStreamPlayer2D
 
 var speed := default_speed
 var direction := Vector2()
@@ -124,8 +125,9 @@ func separate() -> Vector2:
 func check_aggro() -> void:
 	var any_valid := false
 	for unit in units_to_run_from:
-		if is_instance_valid(unit):
+		if is_instance_valid(unit) and not targeted_unit == unit:
 			any_valid = true
+			if not is_instance_valid(targeted_unit): notice_audio.play()
 			targeted_unit = unit
 			desired_position = targeted_unit.global_position
 			break

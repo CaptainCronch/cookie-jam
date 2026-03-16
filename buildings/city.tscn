@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://3ywj3otasm5s" path="res://buildings/city.gd" id="1_pa3nq"]
 [ext_resource type="Texture2D" uid="uid://udl3ybaivvh" path="res://buildings/city.png" id="2_i7am7"]
+[ext_resource type="AudioStream" uid="uid://c0lg3qere1vc1" path="res://sounds/enemy-spawn.mp3" id="3_i7am7"]
+[ext_resource type="AudioStream" uid="uid://2hbxnsdcs8un" path="res://sounds/city-harvest.mp3" id="3_muk0h"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_036b0"]
 radius = 171.18703
@@ -70,7 +72,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45000002, 0.5, 0.55, 0.6, 0.65000004, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [-0.17453292519943295, 0.16580628, -0.15707963267948966, 0.14835298, -0.13962634015954636, 0.1308997, -0.12217304763960307, 0.1134464, -0.10471975511965978, 0.09599311, -0.08726646259971647, 0.07853982, -0.06981317007977318, 0.061086524, -0.05235987755982989, 0.04363323, -0.03490658503988659, 0.02617994, -0.017453292519943295, 0.008726646, 0.0]
+"values": [-0.17453292519943295, 0.16580628, -0.15707963267948966, 0.14835298, -0.13962634015954636, 0.1308997, -0.12217304763960309, 0.1134464, -0.10471975511965978, 0.09599311, -0.08726646259971647, 0.07853982, -0.06981317007977318, 0.061086524, -0.05235987755982989, 0.04363323, -0.03490658503988659, 0.02617994, -0.01745329251994329, 0.008726646, 0.0]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -147,8 +149,22 @@ _data = {
 &"interact": SubResource("Animation_muk0h")
 }
 
-[node name="City" type="Area2D" unique_id=98455971 node_paths=PackedStringArray("animator") groups=["Cities"]]
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_evqmk"]
+random_pitch = 1.122462
+random_volume_offset_db = 2.0
+streams_count = 1
+stream_0/stream = ExtResource("3_muk0h")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_muk0h"]
+random_pitch = 1.122462
+random_volume_offset_db = 2.0
+streams_count = 1
+stream_0/stream = ExtResource("3_i7am7")
+
+[node name="City" type="Area2D" unique_id=98455971 node_paths=PackedStringArray("harvest_sound", "spawn_sound", "animator") groups=["Cities"]]
 script = ExtResource("1_pa3nq")
+harvest_sound = NodePath("Harvest")
+spawn_sound = NodePath("Spawn")
 max_health = 50
 item = 4
 is_resource = true
@@ -163,3 +179,17 @@ offset = Vector2(4.975, -153.785)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=634467003]
 libraries/ = SubResource("AnimationLibrary_evqmk")
+
+[node name="Harvest" type="AudioStreamPlayer2D" parent="." unique_id=1273166935]
+stream = SubResource("AudioStreamRandomizer_evqmk")
+volume_db = 2.0
+max_distance = 4096.0
+max_polyphony = 50
+bus = &"SFX"
+
+[node name="Spawn" type="AudioStreamPlayer2D" parent="." unique_id=794928732]
+stream = SubResource("AudioStreamRandomizer_muk0h")
+volume_db = 2.0
+max_distance = 4096.0
+max_polyphony = 50
+bus = &"SFX"

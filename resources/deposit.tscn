@@ -4,6 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://bmwtsvnt37c0i" path="res://resources/deposit.png" id="2_hq6ly"]
 [ext_resource type="Texture2D" uid="uid://xasknfidk6xx" path="res://resources/deposit-depleted.png" id="3_abqoh"]
 [ext_resource type="Texture2D" uid="uid://cfwnvu10h7qxx" path="res://resources/deposit-mine.png" id="4_7hfw0"]
+[ext_resource type="AudioStream" uid="uid://bubt7kksgdl22" path="res://sounds/clay-harvest.wav" id="5_abqoh"]
+[ext_resource type="AudioStream" uid="uid://be3e1wtom7r8a" path="res://sounds/clay-finish.mp3" id="6_7hfw0"]
+[ext_resource type="AudioStream" uid="uid://cykcah1hihywb" path="res://sounds/building-place.mp3" id="7_ohn4i"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_aqk2v"]
 radius = 128.0
@@ -262,10 +265,31 @@ _data = {
 &"interact": SubResource("Animation_7hfw0")
 }
 
-[node name="Deposit" type="Area2D" unique_id=655526278 node_paths=PackedStringArray("animator") groups=["Deposits", "Resource"]]
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_7hfw0"]
+random_pitch = 1.0594631
+random_volume_offset_db = 2.0
+streams_count = 1
+stream_0/stream = ExtResource("5_abqoh")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_ohn4i"]
+random_pitch = 1.0594631
+random_volume_offset_db = 2.0
+streams_count = 1
+stream_0/stream = ExtResource("6_7hfw0")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_k51di"]
+random_pitch = 1.0594631
+random_volume_offset_db = 2.0
+streams_count = 1
+stream_0/stream = ExtResource("7_ohn4i")
+
+[node name="Deposit" type="Area2D" unique_id=655526278 node_paths=PackedStringArray("harvest_audio", "finish_audio", "spawn_audio", "animator") groups=["Deposits", "Resource"]]
 monitoring = false
 script = ExtResource("1_gp5bx")
-max_health = 20
+harvest_audio = NodePath("Harvest")
+finish_audio = NodePath("Finish")
+spawn_audio = NodePath("Spawn")
+max_health = 30
 item = 2
 is_resource = true
 animator = NodePath("AnimationPlayer")
@@ -300,3 +324,21 @@ region_rect = Rect2(-0.5408325, 11.114441, 700.5721, 304.38647)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1795976145]
 libraries/ = SubResource("AnimationLibrary_ohn4i")
+
+[node name="Harvest" type="AudioStreamPlayer2D" parent="." unique_id=2133926853]
+stream = SubResource("AudioStreamRandomizer_7hfw0")
+max_distance = 4096.0
+max_polyphony = 32
+bus = &"SFX"
+
+[node name="Finish" type="AudioStreamPlayer2D" parent="." unique_id=589295432]
+stream = SubResource("AudioStreamRandomizer_ohn4i")
+volume_db = 2.0
+max_distance = 4096.0
+bus = &"SFX"
+
+[node name="Spawn" type="AudioStreamPlayer2D" parent="." unique_id=1704856456]
+stream = SubResource("AudioStreamRandomizer_k51di")
+volume_db = 2.0
+max_distance = 4096.0
+bus = &"SFX"

@@ -5,6 +5,7 @@ const SMOKE_PLACE := preload("uid://b5l13itqbkklo")
 
 @export var alt: CompressedTexture2D
 @export var alt2: CompressedTexture2D
+@export var deposit_sound: AudioStreamPlayer2D
 
 
 func _ready() -> void:
@@ -24,6 +25,17 @@ func deposit(origin: Unit, type: Unit.ITEM, strength := 1) -> void:
 	super(origin, type, strength)
 	animator.stop()
 	animator.play("interact")
+	deposit_sound.play()
+
+
+func damage(origin: Enemy, strength := 1) -> void:
+	if dead: return
+	animator.stop()
+	animator.play("hurt")
+	health -= strength
+	hit_audio.play()
+	if health <= 0:
+		die(origin)
 
 
 func die(_origin: Enemy) -> void:
@@ -31,6 +43,11 @@ func die(_origin: Enemy) -> void:
 	smoke.global_position = global_position
 	get_tree().current_scene.add_child(smoke)
 	smoke.emitting = true
+	var audio: AudioStreamPlayer2D = SELF_DESTRUCT_AUDIO_POSITIONAL.instantiate()
+	audio.stream = BUILDING_FINISH
+	audio.bus = "SFX"
+	audio.global_position = global_position
+	get_tree().current_scene.add_child(audio)
 	queue_free()
 
 

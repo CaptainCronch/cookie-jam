@@ -1,9 +1,13 @@
 extends Interactable
 class_name City
 
+const CITY_FINISH = preload("uid://qmjdo43f4poh")
 const ENEMY = preload("uid://np7lmt4qtbuk")
 const VICTIM = preload("uid://bgi6kgxyt0l8h")
 const ARSON = preload("uid://bi5ij45ygio8m")
+
+@export var harvest_sound: AudioStreamPlayer2D
+@export var spawn_sound: AudioStreamPlayer2D
 
 
 func interact(origin: Unit, strength := 1) -> bool:
@@ -16,6 +20,9 @@ func interact(origin: Unit, strength := 1) -> bool:
 			spawn_enemy()
 		else:
 			spawn_victim()
+		spawn_sound.play()
+	else:
+		harvest_sound.play()
 	health -= strength
 	origin.give(item)
 	if health <= 0:
@@ -32,6 +39,11 @@ func finished(_origin: Unit) -> void:
 	spawn_particles(ARSON, rotation)
 	dead = true
 	done.emit(item, self)
+	var audio: AudioStreamPlayer2D = SELF_DESTRUCT_AUDIO_POSITIONAL.instantiate()
+	audio.stream = CITY_FINISH
+	audio.bus = "SFX"
+	audio.global_position = global_position
+	get_tree().current_scene.add_child(audio)
 
 
 func spawn_enemy() -> void:

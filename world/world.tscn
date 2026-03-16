@@ -30,11 +30,16 @@
 [ext_resource type="Texture2D" uid="uid://cl2lkt7yqy4cu" path="res://buildings/portal-large.png" id="14_inp7a"]
 [ext_resource type="Shader" uid="uid://cfnr1xeyiulul" path="res://shaders/checkerboard.gdshader" id="17_avd5l"]
 [ext_resource type="Shader" uid="uid://bmvfbfgv0bdep" path="res://shaders/checkerboard-blur.gdshader" id="20_0pnie"]
+[ext_resource type="AudioStream" uid="uid://t7kq15p8bic8" path="res://sounds/cant-build.mp3" id="21_hnpqp"]
 [ext_resource type="PackedScene" uid="uid://bdq2u6jukn06x" path="res://buildings/pit.tscn" id="24_llyeo"]
 [ext_resource type="Shader" uid="uid://bntp4pcxqbmjt" path="res://shaders/clouds.gdshader" id="25_jgi7c"]
 [ext_resource type="Script" uid="uid://w61fkfnnxxap" path="res://world/clouds.gd" id="25_ll3gq"]
 [ext_resource type="PackedScene" uid="uid://bgi6kgxyt0l8h" path="res://enemies/victim.tscn" id="27_2tavo"]
 [ext_resource type="PackedScene" uid="uid://crepqum2d1tg8" path="res://buildings/city.tscn" id="32_lwhbe"]
+[ext_resource type="AudioStream" uid="uid://ct6f01qoq3s6f" path="res://sounds/camera-pan.mp3" id="35_jgi7c"]
+[ext_resource type="AudioStream" uid="uid://cih07swafemnl" path="res://sounds/go-command-1.mp3" id="36_q3kex"]
+[ext_resource type="AudioStream" uid="uid://dcep2yn10r3bp" path="res://sounds/go-command-2.mp3" id="37_hm5b2"]
+[ext_resource type="AudioStream" uid="uid://dj75twlwyt7np" path="res://sounds/away-command.mp3" id="38_hm5b2"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_dwbse"]
 font_size = 22
@@ -171,6 +176,11 @@ colors = PackedColorArray(1, 1, 1, 1)
 gradient = SubResource("Gradient_0pnie")
 width = 1
 
+[sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_ll3gq"]
+polyphony = 16
+
+[sub_resource type="AudioStreamPolyphonic" id="AudioStreamPolyphonic_jgi7c"]
+
 [node name="World" type="Node2D" unique_id=370314774]
 y_sort_enabled = true
 
@@ -189,7 +199,7 @@ bus = &"Ambient"
 stream = ExtResource("3_avd5l")
 bus = &"Music"
 
-[node name="UI" type="CanvasLayer" parent="." unique_id=661678817 node_paths=PackedStringArray("unit_label", "wood_label", "clay_label", "souls_label", "ash_label", "glassy_clay_label", "build_menu", "camera", "build_preview", "mine_check", "info_box", "info_label", "victory_text", "controls")]
+[node name="UI" type="CanvasLayer" parent="." unique_id=661678817 node_paths=PackedStringArray("unit_label", "wood_label", "clay_label", "souls_label", "ash_label", "glassy_clay_label", "build_menu", "camera", "build_preview", "mine_check", "info_box", "info_label", "victory_text", "controls", "negatory")]
 script = ExtResource("1_pkg7o")
 unit_label = NodePath("Resources/HBoxContainer/Unit")
 wood_label = NodePath("Resources/HBoxContainer/Wood")
@@ -205,6 +215,7 @@ info_box = NodePath("InfoBox")
 info_label = NodePath("InfoBox/MarginContainer/Label")
 victory_text = NodePath("Victory")
 controls = NodePath("Controls")
+negatory = NodePath("Negatory")
 
 [node name="Resources" type="MarginContainer" parent="UI" unique_id=1650681504]
 anchors_preset = 3
@@ -362,22 +373,22 @@ expand_mode = 2
 
 [node name="TextureRect2" type="TextureRect" parent="UI/BuildMenu" unique_id=1360258267]
 layout_mode = 0
-offset_left = 133.5
-offset_top = 352.0641
-offset_right = 218.5
-offset_bottom = 437.0641
-pivot_offset = Vector2(42.5, 42.5)
+offset_left = 53.5
+offset_top = 213.50002
+offset_right = 138.5
+offset_bottom = 298.5
+pivot_offset = Vector2(42.5, 42.499992)
 texture = ExtResource("8_p2iis")
 expand_mode = 2
 
 [node name="TextureRect7" type="TextureRect" parent="UI/BuildMenu" unique_id=1767814568]
 layout_mode = 0
-offset_left = 53.5
-offset_top = 213.50002
-offset_right = 138.5
-offset_bottom = 298.5
+offset_left = 133.50002
+offset_top = 352.0641
+offset_right = 218.50002
+offset_bottom = 437.0641
 scale = Vector2(1.425, 1.425)
-pivot_offset = Vector2(42.5, 42.499992)
+pivot_offset = Vector2(42.5, 42.5)
 texture = ExtResource("14_inp7a")
 expand_mode = 2
 
@@ -472,6 +483,10 @@ text = "CONGRATULATIONS! This mortal plane is now ready to host Baal's birthday 
 label_settings = SubResource("LabelSettings_lwhbe")
 horizontal_alignment = 1
 autowrap_mode = 3
+
+[node name="Negatory" type="AudioStreamPlayer" parent="UI" unique_id=211028607]
+stream = ExtResource("21_hnpqp")
+max_polyphony = 16
 
 [node name="Environment" type="Node2D" parent="." unique_id=1131195652]
 y_sort_enabled = true
@@ -652,6 +667,78 @@ position = Vector2(5245, -3575)
 
 [node name="Deposit46" parent="Environment" unique_id=701330768 instance=ExtResource("12_j34ew")]
 position = Vector2(-5272, 5143)
+
+[node name="Deposit47" parent="Environment" unique_id=1359739167 instance=ExtResource("12_j34ew")]
+position = Vector2(-5708, 973)
+
+[node name="Deposit48" parent="Environment" unique_id=496731479 instance=ExtResource("12_j34ew")]
+position = Vector2(-2231, -3055)
+
+[node name="Deposit49" parent="Environment" unique_id=1016044610 instance=ExtResource("12_j34ew")]
+position = Vector2(-1941, -1834)
+
+[node name="Deposit50" parent="Environment" unique_id=1989999810 instance=ExtResource("12_j34ew")]
+position = Vector2(635, -3744)
+
+[node name="Deposit51" parent="Environment" unique_id=1180648306 instance=ExtResource("12_j34ew")]
+position = Vector2(8227, -240)
+
+[node name="Deposit52" parent="Environment" unique_id=452322528 instance=ExtResource("12_j34ew")]
+position = Vector2(8525, -97)
+
+[node name="Deposit53" parent="Environment" unique_id=1946764830 instance=ExtResource("12_j34ew")]
+position = Vector2(8239, 82)
+
+[node name="Deposit54" parent="Environment" unique_id=702044520 instance=ExtResource("12_j34ew")]
+position = Vector2(4012, 3049)
+
+[node name="Deposit55" parent="Environment" unique_id=577743196 instance=ExtResource("12_j34ew")]
+position = Vector2(804, 2524)
+
+[node name="Deposit56" parent="Environment" unique_id=1899608738 instance=ExtResource("12_j34ew")]
+position = Vector2(-6533, 6962)
+
+[node name="Deposit57" parent="Environment" unique_id=1384972271 instance=ExtResource("12_j34ew")]
+position = Vector2(-4567, 1365)
+
+[node name="Deposit58" parent="Environment" unique_id=1469613983 instance=ExtResource("12_j34ew")]
+position = Vector2(-6938, -3345)
+
+[node name="Deposit59" parent="Environment" unique_id=758366856 instance=ExtResource("12_j34ew")]
+position = Vector2(3971, -6205)
+
+[node name="Deposit60" parent="Environment" unique_id=976565826 instance=ExtResource("12_j34ew")]
+position = Vector2(6294, -2912)
+
+[node name="Deposit61" parent="Environment" unique_id=636713761 instance=ExtResource("12_j34ew")]
+position = Vector2(8362, -2147)
+
+[node name="Deposit62" parent="Environment" unique_id=988693441 instance=ExtResource("12_j34ew")]
+position = Vector2(8036, -4931)
+
+[node name="Deposit63" parent="Environment" unique_id=1024256682 instance=ExtResource("12_j34ew")]
+position = Vector2(5431, -7479)
+
+[node name="Deposit64" parent="Environment" unique_id=1413728822 instance=ExtResource("12_j34ew")]
+position = Vector2(-1382, -8635)
+
+[node name="Deposit65" parent="Environment" unique_id=497586074 instance=ExtResource("12_j34ew")]
+position = Vector2(-8402, -2473)
+
+[node name="Deposit66" parent="Environment" unique_id=1140601381 instance=ExtResource("12_j34ew")]
+position = Vector2(-7193, 5923)
+
+[node name="Deposit67" parent="Environment" unique_id=1216201948 instance=ExtResource("12_j34ew")]
+position = Vector2(-5128, 7834)
+
+[node name="Deposit68" parent="Environment" unique_id=2130004861 instance=ExtResource("12_j34ew")]
+position = Vector2(-782, 8487)
+
+[node name="Deposit69" parent="Environment" unique_id=955889041 instance=ExtResource("12_j34ew")]
+position = Vector2(-425, 8326)
+
+[node name="Deposit70" parent="Environment" unique_id=1649329833 instance=ExtResource("12_j34ew")]
+position = Vector2(7845, 5135)
 
 [node name="City" parent="Environment" unique_id=98455971 instance=ExtResource("32_lwhbe")]
 position = Vector2(-4199, 8456)
@@ -2036,15 +2123,22 @@ monitorable = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MineCheck" unique_id=1033313126]
 shape = SubResource("CircleShape2D_0pnie")
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1544898292 node_paths=PackedStringArray("selector", "towards_point", "away_point", "music", "ambient", "clouds")]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1544898292 node_paths=PackedStringArray("selector", "towards_point", "away_point", "music", "ambient", "clouds", "zoom_audio", "pan_audio", "unit_audio", "go_audio_1", "go_audio_2", "away_audio")]
 zoom = Vector2(0.5, 0.5)
 script = ExtResource("2_tlwt5")
+selector_radius = 48.0
 selector = NodePath("Selector")
 towards_point = NodePath("../TowardsPoint")
 away_point = NodePath("../AwayPoint")
 music = NodePath("../Music")
 ambient = NodePath("../Wind")
 clouds = NodePath("../Environment/Clouds")
+zoom_audio = NodePath("ZoomSounds")
+pan_audio = NodePath("PanSound")
+unit_audio = NodePath("UnitSounds")
+go_audio_1 = NodePath("GoSound1")
+go_audio_2 = NodePath("GoSound2")
+away_audio = NodePath("AwaySound")
 
 [node name="Selector" type="Area2D" parent="Camera2D" unique_id=1232840017]
 collision_mask = 2
@@ -2061,6 +2155,39 @@ color = Color(0, 1, 0, 0.3882353)
 texture = SubResource("GradientTexture1D_llyeo")
 polygon = PackedVector2Array(-24, -44, -6, -48, 12, -46, 22, -45, 31, -40, 41, -32, 45, -22, 47, -6, 47, 10, 41, 23, 30, 33, 20, 42, 1, 50, -19, 50, -34, 44, -42, 31, -46, 15, -48, 2, -44, -15, -37, -26, -29, -37)
 uv = PackedVector2Array(0.100958705, -0.2299056, 0.39977893, -0.2963096, 0.6985989, -0.26310736, 0.86461014, -0.24650657, 1.0140197, -0.16350067, 1.1800313, -0.030691803, 1.2464359, 0.13531941, 1.2796378, 0.40093717, 1.2796378, 0.66655487, 1.1800313, 0.8823691, 0.99741894, 1.0483809, 0.83140796, 1.1977905, 0.51598656, 1.3305993, 0.1839644, 1.3305993, -0.06505221, 1.2309926, -0.19786125, 1.0151784, -0.26426572, 0.74956036, -0.29746795, 0.5337459, -0.2310636, 0.2515269, -0.11485559, 0.06891489, 0.017953217, -0.11369765)
+
+[node name="ZoomSounds" type="AudioStreamPlayer" parent="Camera2D" unique_id=1417145413]
+stream = SubResource("AudioStreamPolyphonic_ll3gq")
+autoplay = true
+max_polyphony = 32
+bus = &"SFX"
+
+[node name="PanSound" type="AudioStreamPlayer" parent="Camera2D" unique_id=2058321092]
+stream = ExtResource("35_jgi7c")
+volume_db = -2.0
+bus = &"SFX"
+
+[node name="UnitSounds" type="AudioStreamPlayer" parent="Camera2D" unique_id=629265527]
+stream = SubResource("AudioStreamPolyphonic_jgi7c")
+volume_db = -5.0
+autoplay = true
+max_polyphony = 32
+bus = &"SFX"
+
+[node name="GoSound1" type="AudioStreamPlayer" parent="Camera2D" unique_id=562767806]
+stream = ExtResource("36_q3kex")
+volume_db = 1.0
+bus = &"SFX"
+
+[node name="GoSound2" type="AudioStreamPlayer" parent="Camera2D" unique_id=1349245185]
+stream = ExtResource("37_hm5b2")
+volume_db = 1.0
+bus = &"SFX"
+
+[node name="AwaySound" type="AudioStreamPlayer" parent="Camera2D" unique_id=962450573]
+stream = ExtResource("38_hm5b2")
+volume_db = -6.0
+bus = &"SFX"
 
 [node name="Pit" parent="." unique_id=1506307296 node_paths=PackedStringArray("music", "wind", "stinger") instance=ExtResource("24_llyeo")]
 music = NodePath("../Music")

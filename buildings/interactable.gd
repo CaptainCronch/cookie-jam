@@ -1,6 +1,10 @@
 extends Area2D
 class_name Interactable
 
+const SELF_DESTRUCT_AUDIO_POSITIONAL := preload("uid://cl3nvgh1e7s7v")
+const BUILDING_HIT := preload("uid://hncw520gobm4")
+const BUILDING_FINISH := preload("uid://klhgoetryh7o")
+
 #signal give(type: TYPE)
 #signal deposited()
 signal done(type: Unit.ITEM, who: Interactable)
@@ -10,6 +14,7 @@ signal done(type: Unit.ITEM, who: Interactable)
 @export var is_resource := false
 @export var push_force := 2.0
 @export var animator: AnimationPlayer
+@export var hit_audio: AudioStreamPlayer2D
 
 var can_be_selected := true
 var dead := false
@@ -52,7 +57,9 @@ func deposit(origin: Unit, type: Unit.ITEM, strength := 1) -> void:
 
 
 func damage(origin: Enemy, strength := 1) -> void:
+	if dead: return
 	health -= strength
+	hit_audio.play()
 	if health <= 0:
 		die(origin)
 
@@ -62,6 +69,12 @@ func finished(_origin: Unit) -> void:
 
 
 func die(_origin: Enemy) -> void:
+	dead = true
+	var audio: AudioStreamPlayer2D = SELF_DESTRUCT_AUDIO_POSITIONAL.instantiate()
+	audio.stream = BUILDING_FINISH
+	audio.bus = "SFX"
+	audio.global_position = global_position
+	get_tree().current_scene.add_child(audio)
 	queue_free()
 
 

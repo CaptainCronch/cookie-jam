@@ -1,7 +1,10 @@
 extends CharacterBody2D
 class_name Unit
 
+const SELF_DESTRUCT_AUDIO_POSITIONAL = preload("uid://cl3nvgh1e7s7v")
+const UNIT_DIE = preload("uid://dddukldwa6i33")
 const SMOKE_SPLATTER = preload("uid://u27o3bdt6maj")
+const SMOKE_APPEAR = preload("uid://ytyoua1fyh0b")
 
 signal freed(unit: Unit)
 
@@ -29,6 +32,7 @@ enum ITEM {NONE, WOOD, CLAY, BODY, ASH, GLASSY_CLAY}
 @export var item_sprites: Array[Sprite2D] = []
 @export var resources: Node2D
 @export var animator: AnimationPlayer
+@export var attack_audio: AudioStreamPlayer2D
 
 var speed := default_speed
 var direction := Vector2()
@@ -76,6 +80,10 @@ func _ready() -> void:
 	desired_position = global_position
 	Global.units += 1
 	Global.refresh_ui()
+	var appear := SMOKE_APPEAR.instantiate()
+	appear.global_position = global_position
+	get_tree().current_scene.call_deferred("add_child", appear)
+	appear.emitting = true
 
 
 func _process(delta: float) -> void:
@@ -181,6 +189,8 @@ func check_aggro() -> void:
 		targeted_enemy = null
 		if is_instance_valid(warned_enemy):
 			desired_position = warned_enemy.global_position
+		elif is_instance_valid(current_goal):
+			desired_position = current_goal.global_position
 
 
 func check_interaction() -> void:
@@ -190,6 +200,7 @@ func check_interaction() -> void:
 			parent.hurt(self, damage)
 			interact_timer = interact_time
 			interacting = true
+			attack_audio.play()
 			animator.play("interact")
 		elif area is Interactable and interact_timer <= 0.0:
 			if area is Bank and not current_item == ITEM.NONE and not current_item == ITEM.BODY:
@@ -250,7 +261,6 @@ func hurt(origin: Enemy, strength := 1) -> void:
 	health -= strength
 	regen_timer = regen_time
 	boost = origin.global_position.direction_to(global_position) * knockback_force
-	
 	if health <= 0:
 		die(origin)
 
@@ -275,6 +285,11 @@ func die(origin: Enemy) -> void:
 	Global.units -= 1
 	Global.refresh_ui()
 	freed.emit(self)
+	var audio: AudioStreamPlayer2D = SELF_DESTRUCT_AUDIO_POSITIONAL.instantiate()
+	audio.stream = UNIT_DIE
+	audio.bus = "SFX"
+	audio.global_position = global_position
+	get_tree().current_scene.add_child(audio)
 	queue_free()
 
 

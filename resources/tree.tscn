@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://df3m4mxqgmoi7" path="res://resources/tree.gd" id="1_nnvrw"]
 [ext_resource type="Texture2D" uid="uid://dhromudbd626c" path="res://resources/tree.png" id="2_clxd3"]
+[ext_resource type="AudioStream" uid="uid://dystxcwl7sjfv" path="res://sounds/tree-harvest.wav" id="3_vmlxi"]
+[ext_resource type="AudioStream" uid="uid://bk6j6csoj7irj" path="res://sounds/tree-spawn.mp3" id="4_p7mrx"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_aqk2v"]
 radius = 128.0
@@ -31,18 +33,6 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [0.0]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D:scale")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_vmlxi"]
@@ -99,10 +89,10 @@ tracks/0/path = NodePath("Sprite2D:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.04, 0.12, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(15.295, -291.895), Vector2(38, -291.895), Vector2(7.86, -291.895), Vector2(15.295, -291.895)]
+"values": [Vector2(38, -291.895), Vector2(7.86, -291.895), Vector2(15.295, -291.895)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -111,22 +101,10 @@ tracks/1/path = NodePath("Sprite2D:skew")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.04, 0.12, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [0.0, 0.08726646, -0.034906585, 0.0]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D:scale")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1, 1)]
+"values": [0.08726646, -0.034906585, 0.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vmlxi"]
@@ -136,9 +114,16 @@ _data = {
 &"interact": SubResource("Animation_pls2w")
 }
 
-[node name="Tree" type="Area2D" unique_id=655526278 node_paths=PackedStringArray("animator") groups=["Resource", "Trees"]]
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_qbfqk"]
+random_pitch = 1.0594631
+streams_count = 1
+stream_0/stream = ExtResource("3_vmlxi")
+
+[node name="Tree" type="Area2D" unique_id=655526278 node_paths=PackedStringArray("harvest_audio", "spawn_audio", "animator") groups=["Resource", "Trees"]]
 monitoring = false
 script = ExtResource("1_nnvrw")
+harvest_audio = NodePath("Harvest")
+spawn_audio = NodePath("Spawn")
 max_health = 15
 item = 1
 is_resource = true
@@ -160,3 +145,14 @@ texture = ExtResource("2_clxd3")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1862058542]
 libraries/ = SubResource("AnimationLibrary_vmlxi")
+
+[node name="Harvest" type="AudioStreamPlayer2D" parent="." unique_id=2008554965]
+stream = SubResource("AudioStreamRandomizer_qbfqk")
+max_distance = 4096.0
+max_polyphony = 16
+bus = &"SFX"
+
+[node name="Spawn" type="AudioStreamPlayer2D" parent="." unique_id=1228529866]
+stream = ExtResource("4_p7mrx")
+max_distance = 4096.0
+bus = &"SFX"

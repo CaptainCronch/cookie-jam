@@ -4,6 +4,7 @@
 [ext_resource type="Shader" uid="uid://bd32iv0tuwoe0" path="res://shaders/health-checkerboard.gdshader" id="2_6cvjm"]
 [ext_resource type="Texture2D" uid="uid://77wwxx3riyx5" path="res://enemies/victim-run-2.png" id="3_co730"]
 [ext_resource type="Texture2D" uid="uid://2nud7fnmuhmj" path="res://enemies/victim-run-1.png" id="4_e3s8g"]
+[ext_resource type="AudioStream" uid="uid://d3gcqcie0e8p" path="res://sounds/victim-notice.mp3" id="5_e3s8g"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ctwoc"]
 radius = 75.0
@@ -141,7 +142,13 @@ _data = {
 &"run": SubResource("Animation_uaqx3")
 }
 
-[node name="Victim" type="CharacterBody2D" unique_id=1355565438 node_paths=PackedStringArray("separate_area", "separate_collider", "aggro_area", "sprite", "animator") groups=["Enemies"]]
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_jlobd"]
+random_pitch = 1.0594631
+random_volume_offset_db = 1.0
+streams_count = 1
+stream_0/stream = ExtResource("5_e3s8g")
+
+[node name="Victim" type="CharacterBody2D" unique_id=1355565438 node_paths=PackedStringArray("separate_area", "separate_collider", "aggro_area", "sprite", "animator", "notice_audio") groups=["Enemies"]]
 z_as_relative = false
 collision_layer = 4
 motion_mode = 1
@@ -152,6 +159,7 @@ separate_collider = NodePath("Separate/CollisionShape2D")
 aggro_area = NodePath("Aggro")
 sprite = NodePath("Sprite2D")
 animator = NodePath("AnimationPlayer")
+notice_audio = NodePath("Notice")
 metadata/_edit_group_ = true
 
 [node name="Separate" type="Area2D" parent="." unique_id=2037624737]
@@ -186,6 +194,12 @@ shape = SubResource("CircleShape2D_4gyqm")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1999388084]
 libraries/ = SubResource("AnimationLibrary_7pijw")
 autoplay = &"idle"
+
+[node name="Notice" type="AudioStreamPlayer2D" parent="." unique_id=572761073]
+stream = SubResource("AudioStreamRandomizer_jlobd")
+max_distance = 4096.0
+max_polyphony = 5
+bus = &"SFX"
 
 [connection signal="area_entered" from="Aggro" to="." method="_on_aggro_area_entered"]
 [connection signal="area_exited" from="Aggro" to="." method="_on_aggro_area_exited"]

@@ -6,6 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://cki8vkfwkybkg" path="res://enemies/enemy-attack-2.png" id="4_epsnb"]
 [ext_resource type="Texture2D" uid="uid://vt7p7yke6ym3" path="res://enemies/enemy-run-1.png" id="5_4w5fm"]
 [ext_resource type="Texture2D" uid="uid://bayotlcfvcisn" path="res://enemies/enemy-run-2.png" id="6_uba7a"]
+[ext_resource type="AudioStream" uid="uid://cddvviq6arvhf" path="res://sounds/enemy-attack.mp3" id="7_epsnb"]
+[ext_resource type="AudioStream" uid="uid://bml8a1hmu844f" path="res://sounds/enemy-notice.mp3" id="8_4w5fm"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ctwoc"]
 radius = 75.0
@@ -258,7 +260,19 @@ _data = {
 &"run": SubResource("Animation_0h01o")
 }
 
-[node name="Enemy" type="CharacterBody2D" unique_id=1355565438 node_paths=PackedStringArray("separate_area", "separate_collider", "aggro_area", "sprite", "animator") groups=["Enemies"]]
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_4w5fm"]
+random_pitch = 1.0594631
+random_volume_offset_db = 1.0
+streams_count = 1
+stream_0/stream = ExtResource("7_epsnb")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_uba7a"]
+random_pitch = 1.0594631
+random_volume_offset_db = 1.0
+streams_count = 1
+stream_0/stream = ExtResource("8_4w5fm")
+
+[node name="Enemy" type="CharacterBody2D" unique_id=1355565438 node_paths=PackedStringArray("separate_area", "separate_collider", "aggro_area", "sprite", "animator", "attack_audio", "notice_audio") groups=["Enemies"]]
 z_as_relative = false
 collision_layer = 4
 motion_mode = 1
@@ -269,6 +283,8 @@ separate_collider = NodePath("Separate/CollisionShape2D")
 aggro_area = NodePath("Aggro")
 sprite = NodePath("Sprite2D")
 animator = NodePath("AnimationPlayer")
+attack_audio = NodePath("Attack")
+notice_audio = NodePath("Notice")
 metadata/_edit_group_ = true
 
 [node name="Separate" type="Area2D" parent="." unique_id=2037624737]
@@ -305,6 +321,19 @@ shape = SubResource("CircleShape2D_4gyqm")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1999388084]
 libraries/ = SubResource("AnimationLibrary_8cidi")
 autoplay = &"idle"
+
+[node name="Attack" type="AudioStreamPlayer2D" parent="." unique_id=955151488]
+stream = SubResource("AudioStreamRandomizer_4w5fm")
+volume_db = -3.0
+max_distance = 4096.0
+max_polyphony = 5
+bus = &"SFX"
+
+[node name="Notice" type="AudioStreamPlayer2D" parent="." unique_id=150303069]
+stream = SubResource("AudioStreamRandomizer_uba7a")
+max_distance = 4096.0
+max_polyphony = 5
+bus = &"SFX"
 
 [connection signal="area_entered" from="Aggro" to="." method="_on_aggro_area_entered"]
 [connection signal="area_exited" from="Aggro" to="." method="_on_aggro_area_exited"]

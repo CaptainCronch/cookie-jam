@@ -2,17 +2,21 @@ extends Bank
 class_name Pit
 
 const UNIT := preload("uid://c772u1gct8vp4")
-@onready var level_requirements := [10, 20, 50, 100, 150, 200] if not Global.CHEATS else [1, 2, 3, 4, 5, 6]
 
 @export var level_sprites: Array[CompressedTexture2D]
 @export var idol: Sprite2D
 @export var music: AudioStreamPlayer
 @export var wind: AudioStreamPlayer
 @export var stinger: AudioStreamPlayer
+@export var deposit_audio: AudioStreamPlayer2D
+@export var deposit_flesh_audio: AudioStreamPlayer2D
+@export var level_up_audio: AudioStreamPlayer
 
 var level := 0
 var lifetime_souls := 0
 var unit: Unit = null
+
+@onready var level_requirements := [10, 20, 50, 100, 150, 200] if not Global.CHEATS else [1, 2, 3, 4, 5, 6]
 
 
 func _ready() -> void:
@@ -28,22 +32,27 @@ func deposit(origin: Unit, type: Unit.ITEM, strength := 1) -> void:
 		Unit.ITEM.WOOD:
 			Global.wood += strength
 			Global.refresh_ui()
-			animator.play("interact")
+			animate()
+			deposit_audio.play()
 		Unit.ITEM.CLAY:
 			Global.clay += strength
 			Global.refresh_ui()
-			animator.play("interact")
+			animate()
+			deposit_audio.play()
 		Unit.ITEM.BODY:
 			Global.souls += 1
 			Global.refresh_ui()
+			deposit_flesh_audio.play()
 		Unit.ITEM.ASH:
 			Global.ash += strength
 			Global.refresh_ui()
-			animator.play("interact")
+			animate()
+			deposit_audio.play()
 		Unit.ITEM.GLASSY_CLAY:
 			Global.glassy_clay += strength
 			Global.refresh_ui()
-			animator.play("interact")
+			animate()
+			deposit_audio.play()
 	origin.current_item = Unit.ITEM.NONE
 
 
@@ -66,6 +75,7 @@ func level_up() -> void:
 	$Shadow.show()
 	idol.texture = level_sprites[min(level, 4)]
 	level += 1
+	level_up_audio.play()
 	match level:
 		1:
 			Global.ui.unlocked_buildings[2] = true

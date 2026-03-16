@@ -3,6 +3,10 @@ class_name ClayDeposit
 
 const CLAY_DROPS = preload("uid://cypx0xe27be6w")
 
+@export var harvest_audio: AudioStreamPlayer2D
+@export var finish_audio: AudioStreamPlayer2D
+@export var spawn_audio: AudioStreamPlayer2D
+
 
 func interact(origin: Unit, strength := 1) -> bool:
 	if dead: return false
@@ -11,6 +15,7 @@ func interact(origin: Unit, strength := 1) -> bool:
 	animator.play("interact")
 	health -= strength
 	origin.give(item)
+	harvest_audio.play()
 	if health <= 0:
 		finished(origin)
 	return true
@@ -21,6 +26,7 @@ func finished(_origin: Unit) -> void:
 	# spawn particles
 	# play sound here
 	dead = true
+	finish_audio.play()
 	remove_from_group("Resource")
 	remove_from_group("Deposits")
 	spawn_particles(CLAY_DROPS, rotation)
@@ -41,4 +47,5 @@ func revive() -> void:
 	dead = false
 	add_to_group("Resource")
 	add_to_group("Deposits")
-	health = 100
+	spawn_audio.play()
+	health = 120
