@@ -40,6 +40,7 @@
 [ext_resource type="AudioStream" uid="uid://cih07swafemnl" path="res://sounds/go-command-1.mp3" id="36_q3kex"]
 [ext_resource type="AudioStream" uid="uid://dcep2yn10r3bp" path="res://sounds/go-command-2.mp3" id="37_hm5b2"]
 [ext_resource type="AudioStream" uid="uid://dj75twlwyt7np" path="res://sounds/away-command.mp3" id="38_hm5b2"]
+[ext_resource type="PackedScene" uid="uid://bldwnwc8e611l" path="res://resources/body.tscn" id="41_33qpb"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_dwbse"]
 font_size = 22
@@ -199,7 +200,7 @@ bus = &"Ambient"
 stream = ExtResource("3_avd5l")
 bus = &"Music"
 
-[node name="UI" type="CanvasLayer" parent="." unique_id=661678817 node_paths=PackedStringArray("unit_label", "wood_label", "clay_label", "souls_label", "ash_label", "glassy_clay_label", "build_menu", "camera", "build_preview", "mine_check", "info_box", "info_label", "victory_text", "controls", "negatory")]
+[node name="UI" type="CanvasLayer" parent="." unique_id=661678817 node_paths=PackedStringArray("unit_label", "wood_label", "clay_label", "souls_label", "ash_label", "glassy_clay_label", "build_menu", "camera", "build_preview", "mine_check", "info_box", "info_label", "victory_text", "controls", "controls_label", "negatory")]
 script = ExtResource("1_pkg7o")
 unit_label = NodePath("Resources/HBoxContainer/Unit")
 wood_label = NodePath("Resources/HBoxContainer/Wood")
@@ -215,6 +216,7 @@ info_box = NodePath("InfoBox")
 info_label = NodePath("InfoBox/MarginContainer/Label")
 victory_text = NodePath("Victory")
 controls = NodePath("Controls")
+controls_label = NodePath("Controls/Label")
 negatory = NodePath("Negatory")
 
 [node name="Resources" type="MarginContainer" parent="UI" unique_id=1650681504]
@@ -425,7 +427,7 @@ theme_override_constants/margin_bottom = 16
 [node name="Label" type="Label" parent="UI/Controls" unique_id=1730743809]
 layout_mode = 2
 text = "Scroll wheel - Zoom
-Middle click drag / WASD - Pan
+Middle click drag / WASD / Arrow keys - Pan
 Space + Left click - Select units
 Space + Right click - Deselect units
 Shift + A - Select all units
@@ -2193,6 +2195,9 @@ bus = &"SFX"
 music = NodePath("../Music")
 wind = NodePath("../Wind")
 stinger = NodePath("../Stinger")
+
+[node name="Body" parent="." unique_id=945281621 instance=ExtResource("41_33qpb")]
+position = Vector2(64, 357)
 
 [connection signal="finished" from="Stinger" to="Pit" method="_on_stinger_finished"]
 [connection signal="mouse_entered" from="UI/ClickCheck" to="UI" method="_on_click_check_mouse_entered"]

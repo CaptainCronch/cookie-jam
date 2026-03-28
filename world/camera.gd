@@ -20,6 +20,7 @@ const UNIT_DESELECT = preload("uid://b0pcm8xx1dqew")
 @export var zoom_smooth := 5.0
 @export var selector_radius := 64.0
 @export var min_drag_sound := 1.0
+@export var baal_offset := Vector2(0, -256)
 
 @export var selector: Area2D
 @export var towards_point: Node2D
@@ -36,6 +37,7 @@ const UNIT_DESELECT = preload("uid://b0pcm8xx1dqew")
 
 var drag_desired := global_position
 var zoom_desired := zoom
+var zoom_dir := 0
 var selected_units: Array[Unit] = []
 var selected_anything := false
 var deselecting := false
@@ -43,6 +45,7 @@ var can_select := true
 var last_selected: Interactable
 var dragging := false
 var go_cycle := false
+var baal: Baal
 
 @onready var selector_shape: CircleShape2D = selector.get_node("CollisionShape2D").shape
 @onready var selector_visualizer: Polygon2D = selector.get_node("Polygon2D")
@@ -57,9 +60,11 @@ func _ready() -> void:
 	await get_tree().process_frame
 	if not OS.get_name() == "Web":
 		pan_audio.play()
+	Global.baal_spawned.connect(_on_baal_spawned)
 
 
 func _input(event: InputEvent) -> void:
+	if is_instance_valid(baal): return
 	if event is InputEventMouseMotion:
 		if Input.is_action_pressed("mouse3"):
 			var zoom_factor := maxf(inverse_lerp(zoom_min.length(), zoom_max.length(), zoom_desired.length()), 0.1)
@@ -71,6 +76,10 @@ func _input(event: InputEvent) -> void:
 
 
 func _process(delta: float) -> void:
+	camera_zoom(delta)
+	if is_instance_valid(baal):
+		global_position = Global.decay_towards_vec2(global_position, baal.global_position + baal_offset, drag_smooth, delta)
+		return
 	selection()
 	commanding()
 	camera_move(delta)
@@ -185,19 +194,6 @@ func camera_move(delta: float) -> void:
 	
 	drag_desired += move_dir.normalized() * move_sensitivity * delta
 	
-	var zoom_dir := 0
-	if Input.is_action_just_released("wheel_up"):
-		zoom_dir += 2
-		zoom_stream.play_stream(ZOOM_IN)
-	elif Input.is_action_just_released("wheel_down"):
-		zoom_dir -= 1
-		zoom_stream.play_stream(ZOOM_OUT)
-	
-	#var old_mouse_pos := get_global_mouse _position()
-	zoom_desired = (zoom_desired + (Vector2.ONE * zoom_sensitivity * zoom_dir * zoom.x)).clamp(zoom_min, zoom_max)
-	zoom = Global.decay_towards_vec2(zoom, zoom_desired, zoom_smooth, delta)
-	#global_position += old_mouse_pos - get_global_mouse_position()
-	
 	if zoom_desired.x < zoom_max.x and zoom_desired.x > zoom_min.x:
 		var bonus := 2.0 if zoom_dir < 0.0 else 1.0
 		drag_desired += mouse_delta * zoom_sensitivity * signi(zoom_dir) * bonus
@@ -212,6 +208,20 @@ func camera_move(delta: float) -> void:
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), sfx_volume)
 	ambient.volume_linear = clamp((inverse_lerp(zoom_min.x, 0.2, zoom.x) * -1.0 ) + 0.8, 0.0, 1.0)
 	clouds.change_clouds(clamp((inverse_lerp(zoom_min.x, 0.06, zoom.x) * -1.0) + 1.0, 0.0, 1.0))
+
+
+func camera_zoom(delta) -> void:
+	zoom_dir = 0
+	if Input.is_action_just_released("wheel_up"):
+		zoom_dir += 2
+		zoom_stream.play_stream(ZOOM_IN)
+	elif Input.is_action_just_released("wheel_down"):
+		zoom_dir -= 1
+		zoom_stream.play_stream(ZOOM_OUT)
+	
+	#var old_mouse_pos := get_global_mouse _position()
+	zoom_desired = (zoom_desired + (Vector2.ONE * zoom_sensitivity * zoom_dir * zoom.x)).clamp(zoom_min, zoom_max)
+	zoom = Global.decay_towards_vec2(zoom, zoom_desired, zoom_smooth, delta)
 
 
 func select_interactable(object: Interactable) -> void:
@@ -242,22 +252,13 @@ func generate_circle_polygon(radius: float, num_sides: int, bonus := Vector2()) 
 
 
 func _on_unit_freed(unit: Unit) -> void: selected_units.erase(unit)
-	#var units_to_remove: Array[Unit] = []
-	#for unit in selected_units:
-		#if not is_instance_valid(unit):
-			#units_to_remove.append(unit)
-	#for unit in units_to_remove:
-		#selected_units.erase(unit)
 
 
-#func _on_selector_body_entered(body: Node2D) -> void:
-	#if body is Unit:
-		#if deselecting:
-			#selected_units.erase(body)
-			#body.selected(false)
-			#print(selected_units)
-		#else:
-			#selected_units.append(body)
-			#body.selected(true)
-			#print(selected_units)
-		#selected_anything = true
+func _on_baal_spawned() -> void:
+	baal = Global.baal
+	selector.get_node("Polygon2D").visible = false
+	away_point.visible = false
+	towards_point.visible = false
+	for unit in selected_units:
+		unit.selected(false)
+	selected_units = []

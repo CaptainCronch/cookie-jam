@@ -21,6 +21,8 @@ func _ready() -> void:
 	
 	vision_image = vision.get_image()
 	vision_image.convert(Image.FORMAT_RGBAH)
+	
+	Global.baal_spawned.connect(_on_baal_spawned)
 
 
 func update(vision_position: Vector2i) -> void:
@@ -30,3 +32,11 @@ func update(vision_position: Vector2i) -> void:
 	var pos := (vision_position / fog_scale) + (resolution/2) - (vision_image.get_size()/2)
 	image.blend_rect(vision_image, vision_rect, pos)
 	texture = ImageTexture.create_from_image(image)
+
+
+func _on_baal_spawned() -> void:
+	vision.width = vision_size.x * 5
+	vision.height = vision_size.y * 5
+	vision_image = vision.get_image()
+	vision_image.convert(Image.FORMAT_RGBAH)
+	update(Vector2i(0, 0))

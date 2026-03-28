@@ -34,19 +34,23 @@ const BUILDING_COSTS: Array[Dictionary] = [
 @export var info_label: Label
 @export var victory_text: MarginContainer
 @export var controls: MarginContainer
+@export var controls_label: Label
 @export var negatory: AudioStreamPlayer
 
 var can_cancel_build := false
 var current_building: BUILDINGS = BUILDINGS.NONE
+var baal: Baal
 
 @onready var unlocked_buildings := [true, true, false, false, false, false] if not Global.CHEATS else [true, true, true, true, true, true]
 
 
 func _ready() -> void:
 	Global.ui = self
+	Global.baal_spawned.connect(_on_baal_spawned)
 
 
 func _process(_delta: float) -> void:
+	if is_instance_valid(baal): return
 	mine_check.global_position = camera.get_global_mouse_position()
 	build_preview.global_position = camera.get_global_mouse_position()
 	#build_menu.scale = Vector2(1/camera.zoom.x, 1/camera.zoom.y)
@@ -150,3 +154,13 @@ func _on_build_menu_selection_changed(new_selection: int) -> void:
 			info_label.text = "Mine. Place over depleted clay deposit. Requires 50 wood, 10 clay, and 10 ash."
 		5:
 			info_label.text = "Arboretum. Grows trees. Requires 10 wood, 50 clay, and 10 ash."
+
+
+func _on_baal_spawned() -> void:
+	build_menu.hide()
+	info_box.hide()
+	controls.show()
+	controls_label.text = "Scroll wheel - Zoom\nWASD / Arrow keys - Move\nLeft click - Incinerate"
+	build_menu.enabled = false
+	build_preview.hide()
+	baal = Global.baal

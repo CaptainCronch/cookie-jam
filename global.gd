@@ -2,13 +2,15 @@ extends Node
 
 signal earned_soul
 signal updated_fog
+signal baal_spawned
 
 const WAVE_TIME := 120.0
-const CHEATS := false
+const CHEATS := true
 
 var camera: God
 var ui: UI
 var fog: Fog
+var baal: Baal
 
 var max_units := 5
 var bonus_units := 1

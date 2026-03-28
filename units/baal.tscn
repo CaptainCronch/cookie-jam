@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://ca2bip7uewjlj"]
+
+[ext_resource type="Script" uid="uid://dg0pel6utshef" path="res://units/baal.gd" id="1_vpykl"]
+[ext_resource type="Texture2D" uid="uid://bl2k8cau2afn2" path="res://units/unit-idle.png" id="2_8jyjo"]
+[ext_resource type="Texture2D" uid="uid://cfj4im0d7uhw7" path="res://particles/smoke.png" id="2_d62dk"]
+[ext_resource type="Texture2D" uid="uid://cy2atioe4urte" path="res://particles/fire.png" id="4_4op4m"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_behgl"]
+radius = 200.0
+
+[sub_resource type="Curve" id="Curve_hvdd5"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.10344827, 1), 0.0, 0.0, 0, 0, Vector2(0.50431037, 1), 0.0, 0.0, 0, 0, Vector2(0.9008621, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[node name="Baal" type="CharacterBody2D" unique_id=1020672018 node_paths=PackedStringArray("sprite", "fire_blast", "left", "right")]
+motion_mode = 1
+script = ExtResource("1_vpykl")
+sprite = NodePath("Sprite2D")
+fire_blast = NodePath("FireBlast")
+left = NodePath("Left")
+right = NodePath("Right")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=867210661]
+shape = SubResource("CircleShape2D_behgl")
+
+[node name="Smoke" type="CPUParticles2D" parent="." unique_id=1853354540]
+position = Vector2(0, -528)
+amount = 50
+texture = ExtResource("2_d62dk")
+lifetime = 5.0
+lifetime_randomness = 0.15
+emission_shape = 2
+emission_sphere_radius = 64.0
+direction = Vector2(0, -1)
+gravity = Vector2(0, -490)
+initial_velocity_min = 500.0
+initial_velocity_max = 1000.0
+angular_velocity_min = -140.49
+angular_velocity_max = 163.9
+angle_min = -720.0
+angle_max = 720.0
+scale_amount_min = 2.0
+scale_amount_max = 8.0
+scale_amount_curve = SubResource("Curve_hvdd5")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2010439257]
+scale = Vector2(12, 12)
+texture = ExtResource("2_8jyjo")
+offset = Vector2(0, -62)
+
+[node name="Left" type="Marker2D" parent="." unique_id=92869896]
+position = Vector2(-468, -568)
+
+[node name="Right" type="Marker2D" parent="." unique_id=1583712047]
+position = Vector2(468, -568)
+
+[node name="FireBlast" type="CPUParticles2D" parent="." unique_id=2036144199]
+position = Vector2(-468, -568)
+emitting = false
+amount = 20
+texture = ExtResource("4_4op4m")
+lifetime = 0.5
+lifetime_randomness = 0.2
+local_coords = true
+emission_shape = 2
+emission_sphere_radius = 32.0
+direction = Vector2(-1, 1)
+spread = 20.0
+gravity = Vector2(0, 245)
+initial_velocity_min = 3000.0
+initial_velocity_max = 3000.0
+damping_min = 3000.0
+damping_max = 4000.0
+angle_min = -10.0
+angle_max = 10.0
+scale_amount_min = 3.0
+scale_amount_max = 4.0
+scale_amount_curve = SubResource("Curve_hvdd5")

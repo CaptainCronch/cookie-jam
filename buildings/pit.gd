@@ -2,6 +2,7 @@ extends Bank
 class_name Pit
 
 const UNIT := preload("uid://c772u1gct8vp4")
+const BAAL = preload("uid://ca2bip7uewjlj")
 
 @export var level_sprites: Array[CompressedTexture2D]
 @export var idol: Sprite2D
@@ -40,9 +41,10 @@ func deposit(origin: Unit, type: Unit.ITEM, strength := 1) -> void:
 			animate()
 			deposit_audio.play()
 		Unit.ITEM.BODY:
-			Global.souls += 1
-			Global.refresh_ui()
-			deposit_flesh_audio.play()
+			for i in (1 if not Global.CHEATS else 5): # instantly upgrade to max if cheats on
+				Global.souls += 1
+				Global.refresh_ui()
+				deposit_flesh_audio.play()
 		Unit.ITEM.ASH:
 			Global.ash += strength
 			Global.refresh_ui()
@@ -86,12 +88,17 @@ func level_up() -> void:
 		4:
 			Global.ui.unlocked_buildings[5] = true
 		5:
-			Global.ui.victory_text.show()
+			#Global.ui.victory_text.show()
 			music.stop()
 			wind.stop()
 			stinger.play()
-		6:
-			Global.ui.victory_text.get_child(0).text = "Will you quit already"
+			var creature := BAAL.instantiate()
+			creature.global_position = global_position
+			Global.baal = creature
+			get_tree().current_scene.add_child(creature)
+			Global.baal_spawned.emit()
+		#6:
+			#Global.ui.victory_text.get_child(0).text = "Will you quit already"
 
 
 func _on_timer_timeout() -> void:
