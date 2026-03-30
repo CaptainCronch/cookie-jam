@@ -12,13 +12,22 @@ radius = 200.0
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.10344827, 1), 0.0, 0.0, 0, 0, Vector2(0.50431037, 1), 0.0, 0.0, 0, 0, Vector2(0.9008621, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 5
 
-[node name="Baal" type="CharacterBody2D" unique_id=1020672018 node_paths=PackedStringArray("sprite", "fire_blast", "left", "right")]
+[sub_resource type="CircleShape2D" id="CircleShape2D_d62dk"]
+radius = 400.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d62dk"]
+size = Vector2(850, 350)
+
+[node name="Baal" type="CharacterBody2D" unique_id=1020672018 node_paths=PackedStringArray("sprite", "fire_blast_left", "fire_blast_right", "fire_area", "fire_collider_left", "fire_collider_right", "step_area")]
 motion_mode = 1
 script = ExtResource("1_vpykl")
 sprite = NodePath("Sprite2D")
-fire_blast = NodePath("FireBlast")
-left = NodePath("Left")
-right = NodePath("Right")
+fire_blast_left = NodePath("FireBlastLeft")
+fire_blast_right = NodePath("FireBlastRight")
+fire_area = NodePath("FireArea")
+fire_collider_left = NodePath("FireArea/LeftCollision")
+fire_collider_right = NodePath("FireArea/RightCollision")
+step_area = NodePath("StepArea")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=867210661]
 shape = SubResource("CircleShape2D_behgl")
@@ -48,13 +57,7 @@ scale = Vector2(12, 12)
 texture = ExtResource("2_8jyjo")
 offset = Vector2(0, -62)
 
-[node name="Left" type="Marker2D" parent="." unique_id=92869896]
-position = Vector2(-468, -568)
-
-[node name="Right" type="Marker2D" parent="." unique_id=1583712047]
-position = Vector2(468, -568)
-
-[node name="FireBlast" type="CPUParticles2D" parent="." unique_id=2036144199]
+[node name="FireBlastLeft" type="CPUParticles2D" parent="." unique_id=2036144199]
 position = Vector2(-468, -568)
 emitting = false
 amount = 20
@@ -64,7 +67,7 @@ lifetime_randomness = 0.2
 local_coords = true
 emission_shape = 2
 emission_sphere_radius = 32.0
-direction = Vector2(-1, 1)
+direction = Vector2(-1.75, 1)
 spread = 20.0
 gravity = Vector2(0, 245)
 initial_velocity_min = 3000.0
@@ -76,3 +79,48 @@ angle_max = 10.0
 scale_amount_min = 3.0
 scale_amount_max = 4.0
 scale_amount_curve = SubResource("Curve_hvdd5")
+
+[node name="FireBlastRight" type="CPUParticles2D" parent="." unique_id=741106888]
+position = Vector2(468, -568)
+emitting = false
+amount = 20
+texture = ExtResource("4_4op4m")
+lifetime = 0.5
+lifetime_randomness = 0.2
+local_coords = true
+emission_shape = 2
+emission_sphere_radius = 32.0
+direction = Vector2(1.75, 1)
+spread = 20.0
+gravity = Vector2(0, 245)
+initial_velocity_min = 3000.0
+initial_velocity_max = 3000.0
+damping_min = 3000.0
+damping_max = 4000.0
+angle_min = -10.0
+angle_max = 10.0
+scale_amount_min = 3.0
+scale_amount_max = 4.0
+scale_amount_curve = SubResource("Curve_hvdd5")
+
+[node name="FireArea" type="Area2D" parent="." unique_id=479461405]
+collision_layer = 8
+collision_mask = 7
+monitorable = false
+
+[node name="LeftCollision" type="CollisionShape2D" parent="FireArea" unique_id=20058086]
+position = Vector2(-1249, 0)
+shape = SubResource("CircleShape2D_d62dk")
+
+[node name="RightCollision" type="CollisionShape2D" parent="FireArea" unique_id=411628768]
+position = Vector2(1249, 0)
+shape = SubResource("CircleShape2D_d62dk")
+
+[node name="StepArea" type="Area2D" parent="." unique_id=2133525024]
+collision_layer = 8
+collision_mask = 7
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StepArea" unique_id=778738077]
+position = Vector2(-1.5, -3)
+shape = SubResource("RectangleShape2D_d62dk")
