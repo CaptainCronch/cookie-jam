@@ -257,10 +257,11 @@ func set_goal(goal: Interactable) -> void:
 	desired_position = current_goal.global_position
 
 
-func hurt(origin: Enemy, strength := 1) -> void:
+func hurt(origin: Enemy, strength := 1, dir := Vector2()) -> void:
 	health -= strength
 	regen_timer = regen_time
-	boost = origin.global_position.direction_to(global_position) * knockback_force
+	var angle := origin.global_position.direction_to(global_position) if is_instance_valid(origin) else dir
+	boost = angle * knockback_force
 	if health <= 0:
 		die(origin)
 

@@ -186,7 +186,8 @@ func die(origin: Unit) -> void:
 	get_tree().current_scene.add_child(puddle)
 	var splatter := BLOOD_SPLATTER.instantiate()
 	splatter.global_position = global_position
-	splatter.rotation = origin.global_position.direction_to(global_position).angle()
+	var angle := origin.global_position.direction_to(global_position).angle() if is_instance_valid(origin) else 0.0
+	splatter.rotation = angle
 	get_tree().current_scene.add_child(splatter)
 	splatter.emitting = true
 	queue_free()

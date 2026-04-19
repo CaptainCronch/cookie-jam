@@ -24,5 +24,7 @@ initial_velocity_max = 800.0
 damping_min = 3000.0
 damping_max = 3000.0
 angle_max = 360.0
+scale_amount_min = 2.0
+scale_amount_max = 2.0
 scale_amount_curve = SubResource("Curve_bpsee")
 script = ExtResource("2_ykkt8")

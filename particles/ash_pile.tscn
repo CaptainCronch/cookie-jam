@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://ctkr8y3pe3cc8"]
+
+[ext_resource type="Texture2D" uid="uid://bw046gslbhc46" path="res://resources/ash.png" id="1_od658"]
+
+[node name="AshPile" type="Node2D" unique_id=674337587]
+
+[node name="Shadow" type="Polygon2D" parent="." unique_id=162669419]
+position = Vector2(10, 1.9999998)
+scale = Vector2(1.3537092, 1.0624255)
+color = Color(0.015686275, 0, 0.050980393, 0.30588236)
+polygon = PackedVector2Array(-46, -2, -45.061375, 6.5886974, -42.106533, 11.29491, -37.674263, 14.118637, -33.98071, 16.001122, -26, 18, -11, 19, 1, 19, 17, 17, 23, 16, 29, 12, 33, 7, 34, 2, 34, -3, 32, -6, 29, -10, 22, -12, 10, -14, -4, -14, -15, -14, -25, -14, -35, -12, -40, -10, -44, -7, -45.061375, -4.706212)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=850300673]
+scale = Vector2(2, 2)
+texture = ExtResource("1_od658")
+offset = Vector2(3, -13)

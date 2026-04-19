@@ -42,6 +42,7 @@ func finished(origin: Unit) -> void:
 	stump.stump_sprite.scale = scale
 	stump.log_sprite.scale = scale
 	get_tree().current_scene.add_child(stump)
-	spawn_particles(WOOD_CHIPS, origin.global_position.direction_to(global_position).angle())
+	var dir := origin.global_position.direction_to(global_position).angle() if is_instance_valid(origin) else 0.0
+	spawn_particles(WOOD_CHIPS, dir)
 	done.emit(item, self)
 	queue_free()

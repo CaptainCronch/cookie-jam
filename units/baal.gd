@@ -14,6 +14,7 @@ class_name Baal
 @export var fire_collider_left: CollisionShape2D
 @export var fire_collider_right: CollisionShape2D
 @export var step_area: Area2D
+@export var player: AnimationPlayer
 
 var speed := default_speed
 var direction := Vector2()
@@ -25,22 +26,27 @@ func _process(_delta: float) -> void:
 	direction = Input.get_vector("a", "d", "w", "s")
 	if direction.x != 0.0: last_direction = direction.x
 	shooting = Input.is_action_pressed("mouse1")
+	
+	if direction.length_squared() == 0.0 and not player.current_animation == "idle":
+		player.play("idle")
+	elif direction.length_squared() > 0.0 and not player.current_animation == "walk":
+		player.play("walk")
 
 
 func _physics_process(delta: float) -> void:
 	check_fire()
-	check_stomp()
+	#check_stomp()
 	
 	fire_blast_right.emitting = false
 	fire_blast_left.emitting = false
 	fire_collider_right.disabled = true
 	fire_collider_left.disabled = true
 	if last_direction > 0.0: 
-		sprite.flip_h = true
+		sprite.scale.x = 1.0
 		fire_blast_right.emitting = shooting
 		fire_collider_right.disabled = !shooting
 	else:
-		sprite.flip_h = false
+		sprite.scale.x = -1.0
 		fire_blast_left.emitting = shooting
 		fire_collider_left.disabled = !shooting
 	
@@ -62,16 +68,31 @@ func check_fire() -> void:
 			pass
 		elif parent is Unit:
 			pass
-		elif area is Interactable:
-			pass
+		elif area is Interactable or Stump:
+			if area.is_in_group("Bodies"): return
+			area.fire()
 
 
 func check_stomp() -> void:
 	for area in step_area.get_overlapping_areas():
 		var parent := area.get_parent()
 		if (parent is Enemy or parent is Victim):
-			pass
+			parent.die(null)
 		elif parent is Unit:
-			pass
+			parent.hurt(null, 0, global_position.direction_to(parent.global_position))
 		elif area is Interactable:
-			area.die()
+			if area.is_in_group("Bodies"): return
+			if area.is_resource: area.finished(null)
+			area.die(null)
+
+
+func _on_step_area_entered(area: Area2D) -> void:
+	var parent := area.get_parent()
+	if (parent is Enemy or parent is Victim):
+		parent.die(null)
+	elif parent is Unit:
+		parent.hurt(null, 0, global_position.direction_to(parent.global_position))
+	elif area is Interactable:
+		if area.is_resource:
+			area.finished(null)
+		area.die(null)

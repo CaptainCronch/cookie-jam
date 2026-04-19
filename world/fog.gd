@@ -35,8 +35,8 @@ func update(vision_position: Vector2i) -> void:
 
 
 func _on_baal_spawned() -> void:
-	vision.width = vision_size.x * 5
-	vision.height = vision_size.y * 5
+	vision.width = vision_size.x * 5.2
+	vision.height = vision_size.y * 5.2
 	vision_image = vision.get_image()
 	vision_image.convert(Image.FORMAT_RGBAH)
 	update(Vector2i(0, 0))

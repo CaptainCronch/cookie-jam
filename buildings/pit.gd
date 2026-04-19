@@ -101,6 +101,14 @@ func level_up() -> void:
 			#Global.ui.victory_text.get_child(0).text = "Will you quit already"
 
 
+func die(_var) -> void:
+	pass
+
+
+func fire() -> void:
+	pass
+
+
 func _on_timer_timeout() -> void:
 	spawn()
 
