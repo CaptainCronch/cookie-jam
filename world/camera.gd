@@ -77,6 +77,8 @@ func _input(event: InputEvent) -> void:
 
 func _process(delta: float) -> void:
 	camera_zoom(delta)
+	clouds.change_clouds(clamp((inverse_lerp(zoom_min.x, 0.06, zoom.x) * -1.0) + 1.0, 0.0, 1.0))
+	
 	if is_instance_valid(baal):
 		global_position = Global.decay_towards_vec2(global_position, baal.global_position + baal_offset, drag_smooth, delta)
 		return
@@ -202,12 +204,6 @@ func camera_move(delta: float) -> void:
 		#drag_desired += old_mouse_pos - get_global_mouse_position()
 	#global_position += old_mouse_pos - get_global_mouse_position()
 	global_position = Global.decay_towards_vec2(global_position, drag_desired, drag_smooth, delta)
-	
-	music.volume_linear = clamp(inverse_lerp(0.1, 0.5, zoom.x), 0.0, 1.0)
-	var sfx_volume: float = linear_to_db(clamp(inverse_lerp(zoom_min.x, 0.5, zoom.x), 0.0, 1.0))
-	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), sfx_volume)
-	ambient.volume_linear = clamp((inverse_lerp(zoom_min.x, 0.2, zoom.x) * -1.0 ) + 0.8, 0.0, 1.0)
-	clouds.change_clouds(clamp((inverse_lerp(zoom_min.x, 0.06, zoom.x) * -1.0) + 1.0, 0.0, 1.0))
 
 
 func camera_zoom(delta) -> void:
@@ -222,6 +218,12 @@ func camera_zoom(delta) -> void:
 	#var old_mouse_pos := get_global_mouse _position()
 	zoom_desired = (zoom_desired + (Vector2.ONE * zoom_sensitivity * zoom_dir * zoom.x)).clamp(zoom_min, zoom_max)
 	zoom = Global.decay_towards_vec2(zoom, zoom_desired, zoom_smooth, delta)
+	
+	if not is_instance_valid(baal):
+		music.volume_linear = clamp(inverse_lerp(0.1, 0.5, zoom.x), 0.0, 1.0)
+		var sfx_volume: float = linear_to_db(clamp(inverse_lerp(zoom_min.x, 0.5, zoom.x), 0.0, 1.0))
+		AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), sfx_volume)
+		ambient.volume_linear = clamp((inverse_lerp(zoom_min.x, 0.2, zoom.x) * -1.0 ) + 0.8, 0.0, 1.0)
 
 
 func select_interactable(object: Interactable) -> void:
@@ -262,3 +264,7 @@ func _on_baal_spawned() -> void:
 	for unit in selected_units:
 		unit.selected(false)
 	selected_units = []
+	
+	music.volume_linear = 1.0
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), linear_to_db(1.0))
+	ambient.volume_linear = 1.0

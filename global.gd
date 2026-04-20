@@ -24,6 +24,7 @@ var souls := 0:
 var ash := 0
 var glassy_clay := 0
 var wave := 1
+var time_factor := 1.0
 
 @onready var timer := Timer.new()
 
@@ -32,6 +33,7 @@ func _ready():
 	#get_window().mode = Window.MODE_FULLSCREEN
 	add_child(timer)
 	timer.timeout.connect(spawn_wave)
+	baal_spawned.connect(_on_baal_spawned)
 	#timer.start(WAVE_TIME * 5)
 
 
@@ -44,8 +46,8 @@ func _process(_delta):
 			DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED)
 			Engine.max_fps = 60
 
-	if Input.is_action_just_pressed("escape"):
-		get_tree().quit() # temporary for testing
+	#if Input.is_action_just_pressed("escape"):
+		#get_tree().quit() # temporary for testing
 
 	if Input.is_action_just_pressed("fullscreen"):
 		if get_window().mode != Window.MODE_FULLSCREEN:
@@ -69,7 +71,7 @@ func spawn_wave() -> void:
 	for i in wave:
 		cities[randi_range(0, cities.size() - 1)].spawn_enemy()
 	wave += 1
-	timer.start(WAVE_TIME)
+	timer.start(WAVE_TIME * time_factor)
 
 
 func mouse_switch(pos := Vector2(0, 0)) -> void :
@@ -166,3 +168,9 @@ func cube(box : BoxShape3D, color = Color.WHITE_SMOKE, persist_ms = 0):
 		mesh_instance.queue_free()
 	else:
 		return mesh_instance
+
+
+func _on_baal_spawned() -> void:
+	timer.stop()
+	time_factor = 0.1
+	spawn_wave()

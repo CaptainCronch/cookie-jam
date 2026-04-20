@@ -15,7 +15,7 @@ _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.10344827, 1), 0.0, 0.0, 0, 0, 
 point_count = 5
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hvdd5"]
-size = Vector2(1400, 500)
+size = Vector2(1600, 500)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d62dk"]
 size = Vector2(500, 150)
@@ -104,7 +104,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.6, 0.8, 1.2),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
-"values": [0.017453292519943295, -0.017453292, 0.017453292519943295, -0.017453292, 0.017453292519943295]
+"values": [0.01745329251994329, -0.017453292, 0.01745329251994329, -0.017453292, 0.01745329251994329]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_lkh40"]
@@ -203,7 +203,7 @@ scale_amount_curve = SubResource("Curve_hvdd5")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2010439257]
 texture = ExtResource("3_d62dk")
-offset = Vector2(85.135, -853.86)
+offset = Vector2(85.135, -883.81)
 
 [node name="FireArea" type="Area2D" parent="." unique_id=479461405]
 collision_layer = 8
@@ -211,12 +211,12 @@ collision_mask = 7
 monitorable = false
 
 [node name="LeftCollision" type="CollisionShape2D" parent="FireArea" unique_id=20058086]
-position = Vector2(-1200, 0)
+position = Vector2(-1000, 0)
 shape = SubResource("RectangleShape2D_hvdd5")
 disabled = true
 
 [node name="RightCollision" type="CollisionShape2D" parent="FireArea" unique_id=411628768]
-position = Vector2(1200, 0)
+position = Vector2(1000, 0)
 shape = SubResource("RectangleShape2D_hvdd5")
 disabled = true
 

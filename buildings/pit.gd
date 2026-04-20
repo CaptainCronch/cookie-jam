@@ -3,6 +3,8 @@ class_name Pit
 
 const UNIT := preload("uid://c772u1gct8vp4")
 const BAAL = preload("uid://ca2bip7uewjlj")
+const FINALE_SONG_INTRO = preload("uid://bsybjpol2pk3h")
+const FINALE_SONG = preload("uid://danacw52wvu0s")
 
 @export var level_sprites: Array[CompressedTexture2D]
 @export var idol: Sprite2D
@@ -77,16 +79,19 @@ func level_up() -> void:
 	$Shadow.show()
 	idol.texture = level_sprites[min(level, 4)]
 	level += 1
-	level_up_audio.play()
 	match level:
 		1:
 			Global.ui.unlocked_buildings[2] = true
+			level_up_audio.play()
 		2:
 			Global.ui.unlocked_buildings[3] = true
+			level_up_audio.play()
 		3:
 			Global.ui.unlocked_buildings[4] = true
+			level_up_audio.play()
 		4:
 			Global.ui.unlocked_buildings[5] = true
+			level_up_audio.play()
 		5:
 			#Global.ui.victory_text.show()
 			music.stop()
@@ -126,5 +131,11 @@ func _on_earned_soul() -> void:
 
 
 func _on_stinger_finished() -> void:
+	music.stream = FINALE_SONG_INTRO
 	music.play()
 	wind.play()
+
+
+func _on_music_finished() -> void:
+	music.stream = FINALE_SONG
+	music.play()

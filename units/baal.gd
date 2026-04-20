@@ -1,7 +1,7 @@
 extends CharacterBody2D
 class_name Baal
 
-@export var default_speed := 1000.0
+@export var default_speed := 1200.0
 @export var acceleration := 5.0
 
 @export var sprite: Sprite2D
@@ -64,26 +64,25 @@ func _physics_process(delta: float) -> void:
 func check_fire() -> void:
 	for area in fire_area.get_overlapping_areas():
 		var parent := area.get_parent()
-		if (parent is Enemy or parent is Victim):
-			pass
+		if parent is Enemy or parent is Victim:
+			parent.fire(self)
 		elif parent is Unit:
 			pass
-		elif area is Interactable or Stump:
-			if area.is_in_group("Bodies"): return
+		elif (area is Interactable or area is Stump) and not area is Body:
+			if area is Body: return
 			area.fire()
 
 
 func check_stomp() -> void:
 	for area in step_area.get_overlapping_areas():
 		var parent := area.get_parent()
-		if (parent is Enemy or parent is Victim):
+		if parent is Enemy or parent is Victim:
 			parent.die(null)
 		elif parent is Unit:
 			parent.hurt(null, 0, global_position.direction_to(parent.global_position))
-		elif area is Interactable:
-			if area.is_in_group("Bodies"): return
+		elif area is Interactable and not area is Body:
 			if area.is_resource: area.finished(null)
-			area.die(null)
+			else: area.die(null)
 
 
 func _on_step_area_entered(area: Area2D) -> void:

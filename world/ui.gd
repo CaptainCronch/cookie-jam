@@ -36,10 +36,16 @@ const BUILDING_COSTS: Array[Dictionary] = [
 @export var controls: MarginContainer
 @export var controls_label: Label
 @export var negatory: AudioStreamPlayer
+@export var quit_bar: TextureProgressBar
+@export var quit_audio: AudioStreamPlayer
 
 var can_cancel_build := false
 var current_building: BUILDINGS = BUILDINGS.NONE
 var baal: Baal
+var quit_time := 100.0
+var quit_clock := 0.0
+#var quit_power := 4.0
+var quit_speed := 60.0
 
 @onready var unlocked_buildings := [true, true, false, false, false, false] if not Global.CHEATS else [true, true, true, true, true, true]
 
@@ -49,7 +55,17 @@ func _ready() -> void:
 	Global.baal_spawned.connect(_on_baal_spawned)
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("escape") and not quit_audio.playing: quit_audio.play()
+	
+	if Input.is_action_pressed("escape"):
+		quit_clock = quit_clock + (quit_speed * delta)
+		#quit_clock = Global.decay_towards(quit_clock, quit_time, quit_power, delta, 0.5)
+		if quit_clock >= quit_time: get_tree().quit()
+	else:
+		quit_clock = maxf(0.0, quit_clock - (quit_speed * delta))
+	quit_bar.value = quit_clock
+	
 	if is_instance_valid(baal): return
 	mine_check.global_position = camera.get_global_mouse_position()
 	build_preview.global_position = camera.get_global_mouse_position()
@@ -164,3 +180,8 @@ func _on_baal_spawned() -> void:
 	build_menu.enabled = false
 	build_preview.hide()
 	baal = Global.baal
+
+
+func _on_quit_audio_finished():
+	quit_audio.pitch_scale = 1.0 + ((quit_clock / 100.0) * 2.0)
+	if not is_zero_approx(quit_clock): quit_audio.play()

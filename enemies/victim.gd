@@ -4,6 +4,9 @@ class_name Victim
 const BODY = preload("uid://bldwnwc8e611l")
 const PUDDLE = preload("uid://du2lw4k1vgxy4")
 const BLOOD_SPLATTER = preload("uid://dfeij4sr7verl")
+const BODY_FIRE = preload("uid://pr3onfr8vwm7")
+const SMOKE_CRISPED = preload("uid://cicnkqtaxkicp")
+const ASH_PILE = preload("uid://ctkr8y3pe3cc8")
 
 @export var default_speed := 100.0
 @export var smooth_buffer := 100.0
@@ -49,6 +52,7 @@ var health := max_health:
 var health_tween: Tween
 var units_to_run_from: Array[Unit] = []
 var dead := false
+var fired := false
 
 @onready var separate_shape: CircleShape2D = separate_collider.shape
 @onready var shader: ShaderMaterial = sprite.material
@@ -66,6 +70,9 @@ func _process(_delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	check_aggro()
+	
+	if fired:
+		desired_position = global_position + Vector2(0, 100).rotated(desired_position.angle() + randfn(0.0, 1.0))
 	
 	distance = global_position.distance_to(desired_position)
 	direction = desired_position.direction_to(global_position)
@@ -157,6 +164,31 @@ func die(origin: Unit) -> void:
 	splatter.rotation = angle
 	get_tree().current_scene.add_child(splatter)
 	splatter.emitting = true
+	queue_free()
+
+
+func fire(origin: Baal) -> void:
+	if fired: return
+	fired = true
+	
+	boost = origin.global_position.direction_to(global_position) * knockback_force * 5
+	speed *= 10
+	desired_position = Vector2(randf_range(-10000, 10000), randf_range(-10000, 10000))
+	
+	var body_fire := BODY_FIRE.instantiate()
+	add_child(body_fire)
+	
+	await get_tree().create_timer(5.0).timeout
+	
+	var smoke := SMOKE_CRISPED.instantiate()
+	smoke.global_position = global_position
+	smoke.emitting = true
+	get_tree().current_scene.add_child(smoke)
+	
+	var ash := ASH_PILE.instantiate()
+	ash.global_position = global_position
+	get_tree().current_scene.add_child(ash)
+	
 	queue_free()
 
 

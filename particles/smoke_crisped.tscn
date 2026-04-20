@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://ddx5nye86fjaq"]
+[gd_scene format=3 uid="uid://cicnkqtaxkicp"]
 
-[ext_resource type="Texture2D" uid="uid://cfj4im0d7uhw7" path="res://particles/smoke.png" id="1_bkptx"]
-[ext_resource type="Script" uid="uid://dgmf4drf5gfkp" path="res://particles/self_destruct_particles.gd" id="2_sxv6i"]
+[ext_resource type="Texture2D" uid="uid://cfj4im0d7uhw7" path="res://particles/smoke.png" id="1_mmmpl"]
+[ext_resource type="Script" uid="uid://dgmf4drf5gfkp" path="res://particles/self_destruct_particles.gd" id="2_hw1fu"]
 
 [sub_resource type="Curve" id="Curve_bpsee"]
 _data = [Vector2(0, 0), 0.0, 11.346993, 0, 0, Vector2(0.04310344, 1), 0.105322585, 0.0, 0, 0, Vector2(0.9655173, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -18.768538, 0.0, 0, 0]
@@ -10,14 +10,14 @@ point_count = 4
 [node name="SmokeCrisped" type="CPUParticles2D" unique_id=1552947772]
 modulate = Color(0, 0, 0, 0.49411765)
 emitting = false
-amount = 20
-texture = ExtResource("1_bkptx")
+amount = 10
+texture = ExtResource("1_mmmpl")
 lifetime = 3.0
 one_shot = true
 explosiveness = 1.0
 lifetime_randomness = 0.2
 emission_shape = 2
-emission_sphere_radius = 128.0
+emission_sphere_radius = 32.0
 spread = 180.0
 gravity = Vector2(0, -490)
 initial_velocity_min = 100.0
@@ -25,7 +25,5 @@ initial_velocity_max = 200.0
 damping_min = 100.0
 damping_max = 200.0
 angle_max = 360.0
-scale_amount_min = 2.0
-scale_amount_max = 2.0
 scale_amount_curve = SubResource("Curve_bpsee")
-script = ExtResource("2_sxv6i")
+script = ExtResource("2_hw1fu")

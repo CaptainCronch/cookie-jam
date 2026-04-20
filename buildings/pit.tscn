@@ -260,6 +260,7 @@ bus = &"SFX"
 
 [node name="IdolLevelUp" type="AudioStreamPlayer" parent="." unique_id=1453433772]
 stream = ExtResource("10_drp58")
+volume_db = -4.0
 max_polyphony = 5
 
 [connection signal="input_event" from="." to="." method="_on_input_event"]

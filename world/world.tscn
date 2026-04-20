@@ -31,6 +31,7 @@
 [ext_resource type="Shader" uid="uid://cfnr1xeyiulul" path="res://shaders/checkerboard.gdshader" id="17_avd5l"]
 [ext_resource type="Shader" uid="uid://bmvfbfgv0bdep" path="res://shaders/checkerboard-blur.gdshader" id="20_0pnie"]
 [ext_resource type="AudioStream" uid="uid://t7kq15p8bic8" path="res://sounds/cant-build.mp3" id="21_hnpqp"]
+[ext_resource type="AudioStream" uid="uid://bml8a1hmu844f" path="res://sounds/enemy-notice.mp3" id="22_ifjjt"]
 [ext_resource type="PackedScene" uid="uid://bdq2u6jukn06x" path="res://buildings/pit.tscn" id="24_llyeo"]
 [ext_resource type="Shader" uid="uid://bntp4pcxqbmjt" path="res://shaders/clouds.gdshader" id="25_jgi7c"]
 [ext_resource type="Script" uid="uid://w61fkfnnxxap" path="res://world/clouds.gd" id="25_ll3gq"]
@@ -63,6 +64,23 @@ font_size = 22
 
 [sub_resource type="LabelSettings" id="LabelSettings_lwhbe"]
 font_size = 24
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ifjjt"]
+shader = ExtResource("17_avd5l")
+shader_parameter/size = 25.0
+shader_parameter/speed = 20.0
+shader_parameter/speed_factor = 1.0
+shader_parameter/color1 = Color(0.12225228, 0.12225222, 0.12225223, 1)
+shader_parameter/color2 = Color(0.0627451, 0.0627451, 0.0627451, 1)
+shader_parameter/color3 = Color(0.0627451, 0.0627451, 0.0627451, 1)
+
+[sub_resource type="Gradient" id="Gradient_33qpb"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ifjjt"]
+gradient = SubResource("Gradient_33qpb")
+width = 1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cqwbg"]
 shader = ExtResource("25_jgi7c")
@@ -200,7 +218,7 @@ bus = &"Ambient"
 stream = ExtResource("3_avd5l")
 bus = &"Music"
 
-[node name="UI" type="CanvasLayer" parent="." unique_id=661678817 node_paths=PackedStringArray("unit_label", "wood_label", "clay_label", "souls_label", "ash_label", "glassy_clay_label", "build_menu", "camera", "build_preview", "mine_check", "info_box", "info_label", "victory_text", "controls", "controls_label", "negatory")]
+[node name="UI" type="CanvasLayer" parent="." unique_id=661678817 node_paths=PackedStringArray("unit_label", "wood_label", "clay_label", "souls_label", "ash_label", "glassy_clay_label", "build_menu", "camera", "build_preview", "mine_check", "info_box", "info_label", "victory_text", "controls", "controls_label", "negatory", "quit_bar", "quit_audio")]
 script = ExtResource("1_pkg7o")
 unit_label = NodePath("Resources/HBoxContainer/Unit")
 wood_label = NodePath("Resources/HBoxContainer/Wood")
@@ -218,6 +236,8 @@ victory_text = NodePath("Victory")
 controls = NodePath("Controls")
 controls_label = NodePath("Controls/Label")
 negatory = NodePath("Negatory")
+quit_bar = NodePath("QuitBar")
+quit_audio = NodePath("Quit")
 
 [node name="Resources" type="MarginContainer" parent="UI" unique_id=1650681504]
 anchors_preset = 3
@@ -489,6 +509,23 @@ autowrap_mode = 3
 [node name="Negatory" type="AudioStreamPlayer" parent="UI" unique_id=211028607]
 stream = ExtResource("21_hnpqp")
 max_polyphony = 16
+
+[node name="QuitBar" type="TextureProgressBar" parent="UI" unique_id=1918867998]
+material = SubResource("ShaderMaterial_ifjjt")
+custom_minimum_size = Vector2(0, 64)
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 1.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+step = 0.001
+nine_patch_stretch = true
+texture_progress = SubResource("GradientTexture1D_ifjjt")
+metadata/_edit_use_anchors_ = true
+
+[node name="Quit" type="AudioStreamPlayer" parent="UI" unique_id=1027291493]
+stream = ExtResource("22_ifjjt")
 
 [node name="Environment" type="Node2D" parent="." unique_id=1131195652]
 y_sort_enabled = true
@@ -2199,9 +2236,11 @@ stinger = NodePath("../Stinger")
 [node name="Body" parent="." unique_id=945281621 instance=ExtResource("41_33qpb")]
 position = Vector2(64, 357)
 
+[connection signal="finished" from="Music" to="Pit" method="_on_music_finished"]
 [connection signal="finished" from="Stinger" to="Pit" method="_on_stinger_finished"]
 [connection signal="mouse_entered" from="UI/ClickCheck" to="UI" method="_on_click_check_mouse_entered"]
 [connection signal="mouse_exited" from="UI/ClickCheck" to="UI" method="_on_click_check_mouse_exited"]
 [connection signal="selection_changed" from="UI/BuildMenu" to="UI" method="_on_build_menu_selection_changed"]
 [connection signal="slot_selected" from="UI/BuildMenu" to="UI" method="_on_build_menu_slot_selected"]
+[connection signal="finished" from="UI/Quit" to="UI" method="_on_quit_audio_finished"]
 [connection signal="body_entered" from="Camera2D/Selector" to="Camera2D" method="_on_selector_body_entered"]

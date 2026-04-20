@@ -26,3 +26,7 @@ func finished(_origin: Unit) -> void:
 	audio.global_position = global_position
 	get_tree().current_scene.add_child(audio)
 	queue_free()
+
+
+func die(_origin: Enemy) -> void:
+	pass
