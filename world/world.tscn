@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://daweajpr78dxr" path="res://world/ui.gd" id="1_pkg7o"]
 [ext_resource type="AudioStream" uid="uid://c3lhclywlxcg0" path="res://world/ambiance-looped.tres" id="2_j7vgi"]
 [ext_resource type="Script" uid="uid://dded46d5rqlqr" path="res://world/camera.gd" id="2_tlwt5"]
-[ext_resource type="AudioStream" uid="uid://d2hupjfh755p8" path="res://world/Stinger_v1.mp3" id="3_avd5l"]
+[ext_resource type="AudioStream" uid="uid://d2hupjfh755p8" path="res://world/stinger.mp3" id="3_avd5l"]
 [ext_resource type="Texture2D" uid="uid://i628tjcomtel" path="res://resources/wood.png" id="3_dqqhb"]
 [ext_resource type="Script" uid="uid://o2yv2fne47d6" path="res://addons/advanced_radial_menu/radial_menu_class.gd" id="3_gbfbk"]
 [ext_resource type="Texture2D" uid="uid://dpiksumdpaobv" path="res://resources/soul-3.png" id="3_inp7a"]
@@ -41,14 +41,13 @@
 [ext_resource type="AudioStream" uid="uid://cih07swafemnl" path="res://sounds/go-command-1.mp3" id="36_q3kex"]
 [ext_resource type="AudioStream" uid="uid://dcep2yn10r3bp" path="res://sounds/go-command-2.mp3" id="37_hm5b2"]
 [ext_resource type="AudioStream" uid="uid://dj75twlwyt7np" path="res://sounds/away-command.mp3" id="38_hm5b2"]
-[ext_resource type="PackedScene" uid="uid://bldwnwc8e611l" path="res://resources/body.tscn" id="41_33qpb"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_dwbse"]
 font_size = 22
 
 [sub_resource type="LabelSettings" id="LabelSettings_k8wd0"]
 line_spacing = -3.0
-font_size = 22
+font_size = 20
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ll3gq"]
 shader = ExtResource("17_avd5l")
@@ -63,7 +62,7 @@ shader_parameter/color3 = Color(0.0627451, 0.0627451, 0.0627451, 1)
 font_size = 22
 
 [sub_resource type="LabelSettings" id="LabelSettings_lwhbe"]
-font_size = 24
+font_size = 30
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ifjjt"]
 shader = ExtResource("17_avd5l")
@@ -448,13 +447,17 @@ theme_override_constants/margin_bottom = 16
 layout_mode = 2
 text = "Scroll wheel - Zoom
 Middle click drag / WASD / Arrow keys - Pan
-Space + Left click - Select units
-Space + Right click - Deselect units
-Shift + A - Select all units
+
+Space + Left click - Select demons
+Space + Right click - Deselect demons
+Shift + A - Select all demons
+
 Left click - Go command
 Shift + Left click - Away command
 Right click - Interact command
-Control + Left click - Build"
+
+Control + Left click - Build
+Escape - Quit"
 label_settings = SubResource("LabelSettings_k8wd0")
 
 [node name="InfoBox" type="PanelContainer" parent="UI" unique_id=271340823]
@@ -501,7 +504,7 @@ custom_minimum_size = Vector2(512, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
-text = "CONGRATULATIONS! This mortal plane is now ready to host Baal's birthday party! Yayyyyyyyyyyyyyyyyyyyyyy!!!!!!!"
+text = "HAPPY BIRTHDAY! :D"
 label_settings = SubResource("LabelSettings_lwhbe")
 horizontal_alignment = 1
 autowrap_mode = 3
@@ -526,6 +529,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Quit" type="AudioStreamPlayer" parent="UI" unique_id=1027291493]
 stream = ExtResource("22_ifjjt")
+volume_db = 6.0
 
 [node name="Environment" type="Node2D" parent="." unique_id=1131195652]
 y_sort_enabled = true
@@ -1807,327 +1811,1623 @@ y_sort_enabled = true
 
 [node name="Victim" parent="Environment/Victims" unique_id=1355565438 instance=ExtResource("27_2tavo")]
 position = Vector2(-167, 3471)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim2" parent="Environment/Victims" unique_id=802221474 instance=ExtResource("27_2tavo")]
 position = Vector2(-21, 3416)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim3" parent="Environment/Victims" unique_id=1696481255 instance=ExtResource("27_2tavo")]
 position = Vector2(-41, 3565)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim4" parent="Environment/Victims" unique_id=2042662156 instance=ExtResource("27_2tavo")]
 position = Vector2(-1910, 2644)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim5" parent="Environment/Victims" unique_id=1839979012 instance=ExtResource("27_2tavo")]
 position = Vector2(-1764, 2591)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim6" parent="Environment/Victims" unique_id=295035678 instance=ExtResource("27_2tavo")]
 position = Vector2(-1784, 2740)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim7" parent="Environment/Victims" unique_id=1641036209 instance=ExtResource("27_2tavo")]
 position = Vector2(-2605, -2475)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim8" parent="Environment/Victims" unique_id=1827907416 instance=ExtResource("27_2tavo")]
 position = Vector2(-2459, -2528)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim9" parent="Environment/Victims" unique_id=1869898980 instance=ExtResource("27_2tavo")]
 position = Vector2(-2479, -2379)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim10" parent="Environment/Victims" unique_id=585827191 instance=ExtResource("27_2tavo")]
 position = Vector2(911, -2914)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim11" parent="Environment/Victims" unique_id=1649398932 instance=ExtResource("27_2tavo")]
 position = Vector2(1057, -2967)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim12" parent="Environment/Victims" unique_id=118798623 instance=ExtResource("27_2tavo")]
 position = Vector2(1037, -2818)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim13" parent="Environment/Victims" unique_id=238810784 instance=ExtResource("27_2tavo")]
 position = Vector2(-194, -5845)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim14" parent="Environment/Victims" unique_id=2030666175 instance=ExtResource("27_2tavo")]
 position = Vector2(-48, -5898)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim15" parent="Environment/Victims" unique_id=73349665 instance=ExtResource("27_2tavo")]
 position = Vector2(-68, -5749)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim16" parent="Environment/Victims" unique_id=1607187382 instance=ExtResource("27_2tavo")]
 position = Vector2(948, -5258)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim17" parent="Environment/Victims" unique_id=654130507 instance=ExtResource("27_2tavo")]
 position = Vector2(1094, -5311)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim18" parent="Environment/Victims" unique_id=800420576 instance=ExtResource("27_2tavo")]
 position = Vector2(1074, -5162)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim19" parent="Environment/Victims" unique_id=1890258781 instance=ExtResource("27_2tavo")]
 position = Vector2(3105, -5020)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim20" parent="Environment/Victims" unique_id=53930812 instance=ExtResource("27_2tavo")]
 position = Vector2(3251, -5073)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim21" parent="Environment/Victims" unique_id=959508749 instance=ExtResource("27_2tavo")]
 position = Vector2(3231, -4924)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim22" parent="Environment/Victims" unique_id=785778518 instance=ExtResource("27_2tavo")]
 position = Vector2(4755, -3323)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim23" parent="Environment/Victims" unique_id=2063742437 instance=ExtResource("27_2tavo")]
 position = Vector2(4901, -3376)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim24" parent="Environment/Victims" unique_id=728502514 instance=ExtResource("27_2tavo")]
 position = Vector2(4881, -3227)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim25" parent="Environment/Victims" unique_id=1638993753 instance=ExtResource("27_2tavo")]
 position = Vector2(4216, -1419)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim26" parent="Environment/Victims" unique_id=412608918 instance=ExtResource("27_2tavo")]
 position = Vector2(4362, -1472)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim27" parent="Environment/Victims" unique_id=2069231587 instance=ExtResource("27_2tavo")]
 position = Vector2(4342, -1323)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim28" parent="Environment/Victims" unique_id=2055458121 instance=ExtResource("27_2tavo")]
 position = Vector2(4722, 448)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim29" parent="Environment/Victims" unique_id=1894348333 instance=ExtResource("27_2tavo")]
 position = Vector2(4868, 395)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim30" parent="Environment/Victims" unique_id=728196443 instance=ExtResource("27_2tavo")]
 position = Vector2(4848, 544)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim31" parent="Environment/Victims" unique_id=1486971366 instance=ExtResource("27_2tavo")]
 position = Vector2(3239, 2228)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim32" parent="Environment/Victims" unique_id=867813795 instance=ExtResource("27_2tavo")]
 position = Vector2(3385, 2175)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim33" parent="Environment/Victims" unique_id=1882789337 instance=ExtResource("27_2tavo")]
 position = Vector2(3365, 2324)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim34" parent="Environment/Victims" unique_id=1380228640 instance=ExtResource("27_2tavo")]
 position = Vector2(4042, 4025)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim35" parent="Environment/Victims" unique_id=1405297253 instance=ExtResource("27_2tavo")]
 position = Vector2(4188, 3972)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim36" parent="Environment/Victims" unique_id=412511525 instance=ExtResource("27_2tavo")]
 position = Vector2(4168, 4121)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim37" parent="Environment/Victims" unique_id=1043435459 instance=ExtResource("27_2tavo")]
 position = Vector2(1390, 3746)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim38" parent="Environment/Victims" unique_id=1402722969 instance=ExtResource("27_2tavo")]
 position = Vector2(1536, 3693)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim39" parent="Environment/Victims" unique_id=97963866 instance=ExtResource("27_2tavo")]
 position = Vector2(1516, 3842)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim40" parent="Environment/Victims" unique_id=867795638 instance=ExtResource("27_2tavo")]
 position = Vector2(483, 5805)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim41" parent="Environment/Victims" unique_id=935841858 instance=ExtResource("27_2tavo")]
 position = Vector2(629, 5752)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim42" parent="Environment/Victims" unique_id=68662473 instance=ExtResource("27_2tavo")]
 position = Vector2(609, 5901)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim43" parent="Environment/Victims" unique_id=1263925787 instance=ExtResource("27_2tavo")]
 position = Vector2(-1611, 4357)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim44" parent="Environment/Victims" unique_id=1819987079 instance=ExtResource("27_2tavo")]
 position = Vector2(-1465, 4304)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim45" parent="Environment/Victims" unique_id=1730392776 instance=ExtResource("27_2tavo")]
 position = Vector2(-1485, 4453)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim46" parent="Environment/Victims" unique_id=2072149 instance=ExtResource("27_2tavo")]
 position = Vector2(-3476, 5933)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim47" parent="Environment/Victims" unique_id=1755827084 instance=ExtResource("27_2tavo")]
 position = Vector2(-3330, 5880)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim48" parent="Environment/Victims" unique_id=444073328 instance=ExtResource("27_2tavo")]
 position = Vector2(-3350, 6029)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim49" parent="Environment/Victims" unique_id=132767295 instance=ExtResource("27_2tavo")]
 position = Vector2(-4122, 3595)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim50" parent="Environment/Victims" unique_id=1831856994 instance=ExtResource("27_2tavo")]
 position = Vector2(-3976, 3542)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim51" parent="Environment/Victims" unique_id=1537362245 instance=ExtResource("27_2tavo")]
 position = Vector2(-3996, 3691)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim52" parent="Environment/Victims" unique_id=244992122 instance=ExtResource("27_2tavo")]
 position = Vector2(-6687, 2094)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim53" parent="Environment/Victims" unique_id=656606854 instance=ExtResource("27_2tavo")]
 position = Vector2(-6541, 2041)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim54" parent="Environment/Victims" unique_id=767928626 instance=ExtResource("27_2tavo")]
 position = Vector2(-6561, 2190)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim55" parent="Environment/Victims" unique_id=1632588809 instance=ExtResource("27_2tavo")]
 position = Vector2(-6006, -174)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim56" parent="Environment/Victims" unique_id=1695942609 instance=ExtResource("27_2tavo")]
 position = Vector2(-5860, -227)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim57" parent="Environment/Victims" unique_id=1669484846 instance=ExtResource("27_2tavo")]
 position = Vector2(-5880, -78)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim58" parent="Environment/Victims" unique_id=275166759 instance=ExtResource("27_2tavo")]
 position = Vector2(-4575, -1308)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim59" parent="Environment/Victims" unique_id=1321538639 instance=ExtResource("27_2tavo")]
 position = Vector2(-4429, -1361)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim60" parent="Environment/Victims" unique_id=500553927 instance=ExtResource("27_2tavo")]
 position = Vector2(-4449, -1212)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim61" parent="Environment/Victims" unique_id=1857556115 instance=ExtResource("27_2tavo")]
 position = Vector2(-5639, -3175)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim62" parent="Environment/Victims" unique_id=1436920032 instance=ExtResource("27_2tavo")]
 position = Vector2(-5493, -3228)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim63" parent="Environment/Victims" unique_id=1183002006 instance=ExtResource("27_2tavo")]
 position = Vector2(-5513, -3079)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim64" parent="Environment/Victims" unique_id=1055947635 instance=ExtResource("27_2tavo")]
 position = Vector2(-4836, -5600)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim65" parent="Environment/Victims" unique_id=662403861 instance=ExtResource("27_2tavo")]
 position = Vector2(-4690, -5653)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim66" parent="Environment/Victims" unique_id=641133682 instance=ExtResource("27_2tavo")]
 position = Vector2(-4710, -5504)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim67" parent="Environment/Victims" unique_id=2091168663 instance=ExtResource("27_2tavo")]
 position = Vector2(-3580, -4396)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim68" parent="Environment/Victims" unique_id=1080505847 instance=ExtResource("27_2tavo")]
 position = Vector2(-3434, -4449)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim69" parent="Environment/Victims" unique_id=838293396 instance=ExtResource("27_2tavo")]
 position = Vector2(-3454, -4300)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim70" parent="Environment/Victims" unique_id=204255923 instance=ExtResource("27_2tavo")]
 position = Vector2(-1207, -7519)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim71" parent="Environment/Victims" unique_id=1817056875 instance=ExtResource("27_2tavo")]
 position = Vector2(-1061, -7572)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim72" parent="Environment/Victims" unique_id=710774902 instance=ExtResource("27_2tavo")]
 position = Vector2(-1081, -7423)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim73" parent="Environment/Victims" unique_id=807707210 instance=ExtResource("27_2tavo")]
 position = Vector2(-3637, 730)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim74" parent="Environment/Victims" unique_id=1717431516 instance=ExtResource("27_2tavo")]
 position = Vector2(-3491, 677)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim75" parent="Environment/Victims" unique_id=2094479262 instance=ExtResource("27_2tavo")]
 position = Vector2(-3511, 826)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim76" parent="Environment/Victims" unique_id=116515157 instance=ExtResource("27_2tavo")]
 position = Vector2(3269, -201)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim77" parent="Environment/Victims" unique_id=713867643 instance=ExtResource("27_2tavo")]
 position = Vector2(3415, -254)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim78" parent="Environment/Victims" unique_id=922918159 instance=ExtResource("27_2tavo")]
 position = Vector2(3395, -105)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim79" parent="Environment/Victims" unique_id=5418848 instance=ExtResource("27_2tavo")]
 position = Vector2(6336, 2670)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim80" parent="Environment/Victims" unique_id=566017652 instance=ExtResource("27_2tavo")]
 position = Vector2(6482, 2617)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim81" parent="Environment/Victims" unique_id=779446634 instance=ExtResource("27_2tavo")]
 position = Vector2(6462, 2766)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim82" parent="Environment/Victims" unique_id=831404777 instance=ExtResource("27_2tavo")]
 position = Vector2(7865, 2194)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim83" parent="Environment/Victims" unique_id=1159271102 instance=ExtResource("27_2tavo")]
 position = Vector2(8011, 2141)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim84" parent="Environment/Victims" unique_id=1954408161 instance=ExtResource("27_2tavo")]
 position = Vector2(7991, 2290)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim85" parent="Environment/Victims" unique_id=144081409 instance=ExtResource("27_2tavo")]
 position = Vector2(7562, 3232)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim86" parent="Environment/Victims" unique_id=2079697928 instance=ExtResource("27_2tavo")]
 position = Vector2(7708, 3179)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim87" parent="Environment/Victims" unique_id=1580971378 instance=ExtResource("27_2tavo")]
 position = Vector2(7688, 3328)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim88" parent="Environment/Victims" unique_id=447268086 instance=ExtResource("27_2tavo")]
 position = Vector2(7864, -2992)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim89" parent="Environment/Victims" unique_id=1723503629 instance=ExtResource("27_2tavo")]
 position = Vector2(8010, -3045)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim90" parent="Environment/Victims" unique_id=1044834616 instance=ExtResource("27_2tavo")]
 position = Vector2(7990, -2896)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim91" parent="Environment/Victims" unique_id=1177760619 instance=ExtResource("27_2tavo")]
 position = Vector2(5058, -6427)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim92" parent="Environment/Victims" unique_id=900570451 instance=ExtResource("27_2tavo")]
 position = Vector2(5204, -6480)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim93" parent="Environment/Victims" unique_id=1704487139 instance=ExtResource("27_2tavo")]
 position = Vector2(5184, -6331)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim94" parent="Environment/Victims" unique_id=1362771941 instance=ExtResource("27_2tavo")]
 position = Vector2(3142, -6557)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim95" parent="Environment/Victims" unique_id=1749507813 instance=ExtResource("27_2tavo")]
 position = Vector2(3288, -6610)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim96" parent="Environment/Victims" unique_id=1012817481 instance=ExtResource("27_2tavo")]
 position = Vector2(3268, -6461)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim97" parent="Environment/Victims" unique_id=645603109 instance=ExtResource("27_2tavo")]
 position = Vector2(2172, -7868)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim98" parent="Environment/Victims" unique_id=67549694 instance=ExtResource("27_2tavo")]
 position = Vector2(2318, -7921)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim99" parent="Environment/Victims" unique_id=1698277968 instance=ExtResource("27_2tavo")]
 position = Vector2(2298, -7772)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim100" parent="Environment/Victims" unique_id=924352024 instance=ExtResource("27_2tavo")]
 position = Vector2(-3360, -7226)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim101" parent="Environment/Victims" unique_id=221891816 instance=ExtResource("27_2tavo")]
 position = Vector2(-3214, -7279)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim102" parent="Environment/Victims" unique_id=1951645193 instance=ExtResource("27_2tavo")]
 position = Vector2(-3234, -7130)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim103" parent="Environment/Victims" unique_id=1308683253 instance=ExtResource("27_2tavo")]
 position = Vector2(-8683, 443)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim104" parent="Environment/Victims" unique_id=903886807 instance=ExtResource("27_2tavo")]
 position = Vector2(-8537, 390)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim105" parent="Environment/Victims" unique_id=1513060153 instance=ExtResource("27_2tavo")]
 position = Vector2(-8557, 539)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim106" parent="Environment/Victims" unique_id=497875482 instance=ExtResource("27_2tavo")]
 position = Vector2(-1217, -4021)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim107" parent="Environment/Victims" unique_id=650282026 instance=ExtResource("27_2tavo")]
 position = Vector2(-1071, -4074)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="Victim108" parent="Environment/Victims" unique_id=2001442501 instance=ExtResource("27_2tavo")]
 position = Vector2(-1091, -3925)
+default_speed = null
+smooth_buffer = null
+close_buffer = null
+acceleration = null
+away_multiplier = null
+damage = null
+interact_time = null
+seek_time = null
+max_health = null
+health_change_boost = null
+health_change_boost_time = null
+knockback_force = null
 
 [node name="TowardsPoint" type="Polygon2D" parent="." unique_id=2096268932]
 visible = false
@@ -2232,9 +3532,6 @@ bus = &"SFX"
 music = NodePath("../Music")
 wind = NodePath("../Wind")
 stinger = NodePath("../Stinger")
-
-[node name="Body" parent="." unique_id=945281621 instance=ExtResource("41_33qpb")]
-position = Vector2(64, 357)
 
 [connection signal="finished" from="Music" to="Pit" method="_on_music_finished"]
 [connection signal="finished" from="Stinger" to="Pit" method="_on_stinger_finished"]

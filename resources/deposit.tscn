@@ -283,7 +283,7 @@ random_volume_offset_db = 2.0
 streams_count = 1
 stream_0/stream = ExtResource("7_ohn4i")
 
-[node name="Deposit" type="Area2D" unique_id=655526278 node_paths=PackedStringArray("harvest_audio", "finish_audio", "spawn_audio", "animator") groups=["Deposits", "Resource"]]
+[node name="Deposit" type="Area2D" unique_id=655526278 node_paths=PackedStringArray("harvest_audio", "finish_audio", "spawn_audio", "animator") groups=["Deposits", "Destroyable", "Resource"]]
 monitoring = false
 script = ExtResource("1_gp5bx")
 harvest_audio = NodePath("Harvest")

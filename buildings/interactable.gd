@@ -7,6 +7,7 @@ const BUILDING_FINISH := preload("uid://klhgoetryh7o")
 const BONFIRE = preload("uid://doqpob1bdob4o")
 const SMOKE_BURNED = preload("uid://ddx5nye86fjaq")
 const ASH_PILE = preload("uid://ctkr8y3pe3cc8")
+const EXTINGUISH = preload("uid://d2h0bp2sev1pb")
 
 #signal give(type: TYPE)
 #signal deposited()
@@ -87,10 +88,20 @@ func fire() -> void:
 	fired = true
 	spawn_particles(BONFIRE, rotation, Vector2(), true)
 	await get_tree().create_timer(2.0).timeout
+	
 	spawn_particles(SMOKE_BURNED, rotation)
 	var ash: Node2D = ASH_PILE.instantiate()
 	ash.global_position = global_position
 	get_tree().current_scene.add_child(ash)
+	
+	var audio: AudioStreamPlayer2D = SELF_DESTRUCT_AUDIO_POSITIONAL.instantiate()
+	audio.stream = EXTINGUISH
+	audio.bus = "SFX"
+	audio.global_position = global_position
+	audio.pitch_scale = randfn(0.8, 0.2)
+	audio.volume_db = randfn(8.0, 2.0)
+	get_tree().current_scene.add_child(audio)
+	
 	queue_free()
 
 

@@ -5,6 +5,9 @@ const SELF_DESTRUCT_AUDIO_POSITIONAL = preload("uid://cl3nvgh1e7s7v")
 const UNIT_DIE = preload("uid://dddukldwa6i33")
 const SMOKE_SPLATTER = preload("uid://u27o3bdt6maj")
 const SMOKE_APPEAR = preload("uid://ytyoua1fyh0b")
+const BODY_FIRE = preload("uid://pr3onfr8vwm7")
+const SMOKE_CRISPED = preload("uid://cicnkqtaxkicp")
+const EXTINGUISH = preload("uid://d2h0bp2sev1pb")
 
 signal freed(unit: Unit)
 
@@ -70,6 +73,7 @@ var health_tween: Tween
 var enemies_to_hit: Array[CharacterBody2D] = []
 var interacting := false
 var dead := false
+var fired := false
 
 @onready var separate_shape: CircleShape2D = separate_collider.shape
 @onready var shader: ShaderMaterial = sprite.material
@@ -292,6 +296,39 @@ func die(origin: Enemy) -> void:
 	audio.global_position = global_position
 	get_tree().current_scene.add_child(audio)
 	queue_free()
+
+
+func fire(origin: Baal) -> void:
+	if fired: return
+	fired = true
+	
+	boost = origin.global_position.direction_to(global_position) * knockback_force * 5
+	speed *= 1.5
+	desired_position = Vector2(randf_range(-10000, 10000), randf_range(-10000, 10000))
+	current_goal = null
+	
+	var body_fire := BODY_FIRE.instantiate()
+	add_child(body_fire)
+	
+	await get_tree().create_timer(5.0).timeout
+	
+	var smoke := SMOKE_CRISPED.instantiate()
+	smoke.global_position = global_position
+	smoke.emitting = true
+	get_tree().current_scene.add_child(smoke)
+	
+	var audio: AudioStreamPlayer2D = SELF_DESTRUCT_AUDIO_POSITIONAL.instantiate()
+	audio.stream = EXTINGUISH
+	audio.bus = "SFX"
+	audio.global_position = global_position
+	audio.pitch_scale = randfn(1.2, 0.2)
+	audio.volume_db = randfn(8.0, 2.0)
+	get_tree().current_scene.add_child(audio)
+	
+	fired = false
+	body_fire.queue_free()
+	speed /= 1.5
+	desired_position = global_position
 
 
 func give(type: ITEM) -> void:

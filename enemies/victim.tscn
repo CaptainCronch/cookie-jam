@@ -148,7 +148,7 @@ random_volume_offset_db = 1.0
 streams_count = 1
 stream_0/stream = ExtResource("5_e3s8g")
 
-[node name="Victim" type="CharacterBody2D" unique_id=1355565438 node_paths=PackedStringArray("separate_area", "separate_collider", "aggro_area", "sprite", "animator", "notice_audio") groups=["Enemies"]]
+[node name="Victim" type="CharacterBody2D" unique_id=1355565438 node_paths=PackedStringArray("separate_area", "separate_collider", "aggro_area", "sprite", "animator", "notice_audio") groups=["Destroyable", "Enemies"]]
 z_as_relative = false
 collision_layer = 4
 motion_mode = 1

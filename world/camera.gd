@@ -21,6 +21,8 @@ const UNIT_DESELECT = preload("uid://b0pcm8xx1dqew")
 @export var selector_radius := 64.0
 @export var min_drag_sound := 1.0
 @export var baal_offset := Vector2(0, -256)
+@export var decay := 0.9  # How quickly the shaking stops [0, 1].
+@export var max_offset := Vector2(128, 128)  # Maximum hor/ver shake in pixels.
 
 @export var selector: Area2D
 @export var towards_point: Node2D
@@ -46,14 +48,20 @@ var last_selected: Interactable
 var dragging := false
 var go_cycle := false
 var baal: Baal
+var noise_y := 0
+var trauma := 0.0  # Current shake strength.
+var trauma_power := 2  # Trauma exponent. Use [2, 3].
 
 @onready var selector_shape: CircleShape2D = selector.get_node("CollisionShape2D").shape
 @onready var selector_visualizer: Polygon2D = selector.get_node("Polygon2D")
 @onready var zoom_stream: AudioStreamPlaybackPolyphonic = zoom_audio.get_stream_playback()
 @onready var unit_stream: AudioStreamPlaybackPolyphonic = unit_audio.get_stream_playback()
+@onready var noise := FastNoiseLite.new()
 
 
 func _ready() -> void:
+	noise.seed = randi()
+	noise.noise_type = FastNoiseLite.TYPE_SIMPLEX
 	Global.camera = self
 	$Selector/Polygon2D.polygon = generate_circle_polygon(selector_radius, 32)
 	$Selector/Polygon2D.uv = generate_circle_polygon(0.5, 32, Vector2(0.5, 0.5))
@@ -78,6 +86,10 @@ func _input(event: InputEvent) -> void:
 func _process(delta: float) -> void:
 	camera_zoom(delta)
 	clouds.change_clouds(clamp((inverse_lerp(zoom_min.x, 0.06, zoom.x) * -1.0) + 1.0, 0.0, 1.0))
+	
+	if trauma:
+		trauma = maxf(trauma - decay * delta, 0.0)
+		shake()
 	
 	if is_instance_valid(baal):
 		global_position = Global.decay_towards_vec2(global_position, baal.global_position + baal_offset, drag_smooth, delta)
@@ -268,3 +280,16 @@ func _on_baal_spawned() -> void:
 	music.volume_linear = 1.0
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), linear_to_db(1.0))
 	ambient.volume_linear = 1.0
+
+
+func shake() -> void:
+	var amount := pow(trauma, trauma_power)
+	#noise_y += 1
+	#offset.x = max_offset.x * amount * noise.get_noise_2d(noise.seed * 2, noise_y)
+	#offset.y = max_offset.y * amount * noise.get_noise_2d(noise.seed * 3, noise_y)
+	offset = Vector2(randfn(0.0, max_offset.x * amount), randfn(0.0, max_offset.y * amount))
+	#print(noise.get_noise_2d(noise.seed * 2, noise_y))
+
+
+func add_trauma(amount: float) -> void:
+	trauma = minf(trauma + amount, 1.0)

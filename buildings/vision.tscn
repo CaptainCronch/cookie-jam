@@ -12,7 +12,7 @@ random_pitch = 1.0594631
 streams_count = 1
 stream_0/stream = ExtResource("3_a0na2")
 
-[node name="Vision" type="Area2D" unique_id=1247282839 node_paths=PackedStringArray("marker") groups=["Vision"]]
+[node name="Vision" type="Area2D" unique_id=1247282839 node_paths=PackedStringArray("marker") groups=["Destroyable", "Vision"]]
 monitoring = false
 script = ExtResource("1_7fojq")
 marker = NodePath("Marker2D")

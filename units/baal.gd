@@ -15,6 +15,7 @@ class_name Baal
 @export var fire_collider_right: CollisionShape2D
 @export var step_area: Area2D
 @export var player: AnimationPlayer
+@export var fire_blast_audio: AudioStreamPlayer2D
 
 var speed := default_speed
 var direction := Vector2()
@@ -41,14 +42,18 @@ func _physics_process(delta: float) -> void:
 	fire_blast_left.emitting = false
 	fire_collider_right.disabled = true
 	fire_collider_left.disabled = true
-	if last_direction > 0.0: 
+	if last_direction > 0.0:
 		sprite.scale.x = 1.0
 		fire_blast_right.emitting = shooting
 		fire_collider_right.disabled = !shooting
+		fire_blast_audio.position = fire_blast_right.position
 	else:
 		sprite.scale.x = -1.0
 		fire_blast_left.emitting = shooting
 		fire_collider_left.disabled = !shooting
+		fire_blast_audio.position = fire_blast_left.position
+	
+	fire_blast_audio.volume_db = 6.0 if shooting else -100.0
 	
 	#if distance < close_buffer:
 		#if not animator.current_animation == "idle": animator.play("idle")
@@ -64,10 +69,8 @@ func _physics_process(delta: float) -> void:
 func check_fire() -> void:
 	for area in fire_area.get_overlapping_areas():
 		var parent := area.get_parent()
-		if parent is Enemy or parent is Victim:
+		if parent is Enemy or parent is Victim or parent is Unit:
 			parent.fire(self)
-		elif parent is Unit:
-			pass
 		elif (area is Interactable or area is Stump) and not area is Body:
 			if area is Body: return
 			area.fire()
@@ -83,6 +86,10 @@ func check_stomp() -> void:
 		elif area is Interactable and not area is Body:
 			if area.is_resource: area.finished(null)
 			else: area.die(null)
+
+
+func stomp_shake() -> void:
+	Global.camera.add_trauma(0.3)
 
 
 func _on_step_area_entered(area: Area2D) -> void:

@@ -5,7 +5,7 @@ signal updated_fog
 signal baal_spawned
 
 const WAVE_TIME := 120.0
-const CHEATS := true
+const CHEATS := false
 
 var camera: God
 var ui: UI

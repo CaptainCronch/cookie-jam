@@ -7,6 +7,8 @@ const BLOOD_SPLATTER = preload("uid://dfeij4sr7verl")
 const BODY_FIRE = preload("uid://pr3onfr8vwm7")
 const SMOKE_CRISPED = preload("uid://cicnkqtaxkicp")
 const ASH_PILE = preload("uid://ctkr8y3pe3cc8")
+const SELF_DESTRUCT_AUDIO_POSITIONAL := preload("uid://cl3nvgh1e7s7v")
+const EXTINGUISH = preload("uid://d2h0bp2sev1pb")
 
 @export var default_speed := 300.0
 @export var smooth_buffer := 100.0
@@ -209,7 +211,7 @@ func fire(origin: Baal) -> void:
 	fired = true
 	
 	boost = origin.global_position.direction_to(global_position) * knockback_force * 5
-	speed *= 2
+	speed *= 2.5
 	desired_position = Vector2(randf_range(-10000, 10000), randf_range(-10000, 10000))
 	
 	var body_fire := BODY_FIRE.instantiate()
@@ -225,6 +227,14 @@ func fire(origin: Baal) -> void:
 	var ash := ASH_PILE.instantiate()
 	ash.global_position = global_position
 	get_tree().current_scene.add_child(ash)
+	
+	var audio: AudioStreamPlayer2D = SELF_DESTRUCT_AUDIO_POSITIONAL.instantiate()
+	audio.stream = EXTINGUISH
+	audio.bus = "SFX"
+	audio.global_position = global_position
+	audio.pitch_scale = randfn(1.2, 0.2)
+	audio.volume_db = randfn(8.0, 2.0)
+	get_tree().current_scene.add_child(audio)
 	
 	queue_free()
 

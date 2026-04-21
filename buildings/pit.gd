@@ -14,6 +14,7 @@ const FINALE_SONG = preload("uid://danacw52wvu0s")
 @export var deposit_audio: AudioStreamPlayer2D
 @export var deposit_flesh_audio: AudioStreamPlayer2D
 @export var level_up_audio: AudioStreamPlayer
+@export var end_checker: Timer
 
 var level := 0
 var lifetime_souls := 0
@@ -102,6 +103,7 @@ func level_up() -> void:
 			Global.baal = creature
 			get_tree().current_scene.add_child(creature)
 			Global.baal_spawned.emit()
+			end_checker.start(1.0)
 		#6:
 			#Global.ui.victory_text.get_child(0).text = "Will you quit already"
 
@@ -133,9 +135,16 @@ func _on_earned_soul() -> void:
 func _on_stinger_finished() -> void:
 	music.stream = FINALE_SONG_INTRO
 	music.play()
-	wind.play()
+	#wind.play()
 
 
 func _on_music_finished() -> void:
 	music.stream = FINALE_SONG
 	music.play()
+
+
+func _on_end_checker_timeout() -> void:
+	if get_tree().get_nodes_in_group("Destroyable").size() > 0:
+		end_checker.start(1.0)
+	else:
+		Global.ui.victory_text.show()

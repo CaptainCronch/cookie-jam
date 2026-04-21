@@ -176,7 +176,7 @@ func _on_baal_spawned() -> void:
 	build_menu.hide()
 	info_box.hide()
 	controls.show()
-	controls_label.text = "Scroll wheel - Zoom\nWASD / Arrow keys - Move\nLeft click - Incinerate"
+	controls_label.text = "Scroll wheel - Zoom\nWASD / Arrow keys - Move\nLeft click - Incinerate\nEscape - Quit"
 	build_menu.enabled = false
 	build_preview.hide()
 	baal = Global.baal
